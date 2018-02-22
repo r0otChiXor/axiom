@@ -1,10 +1,10 @@
 Sample configuration files for:
 
-SystemD: pivxd.service
-Upstart: pivxd.conf
-OpenRC:  pivxd.openrc
-         pivxd.openrcconf
-CentOS:  pivxd.init
+SystemD: castled.service
+Upstart: castled.conf
+OpenRC:  castled.openrc
+         castled.openrcconf
+CentOS:  castled.init
 
 have been made available to assist packagers in creating node packages here.
 

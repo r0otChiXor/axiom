@@ -1,6 +1,6 @@
 PIVX Core version 2.2.1 is now available from:
 
-  <https://github.com/pivx-project/pivx/releases>
+  <https://github.com/MyCryptoCoins/pivx/releases>
 
 This is a new minor version release, including various bug fixes and
 performance improvements, as well as updated translations.

@@ -1,21 +1,21 @@
 
 Debian
 ====================
-This directory contains files used to package pivxd/pivx-qt
-for Debian-based Linux systems. If you compile pivxd/pivx-qt yourself, there are some useful files here.
+This directory contains files used to package castled/castle-qt
+for Debian-based Linux systems. If you compile castled/castle-qt yourself, there are some useful files here.
 
-## pivx: URI support ##
+## castle: URI support ##
 
 
-pivx-qt.desktop  (Gnome / Open Desktop)
+castle-qt.desktop  (Gnome / Open Desktop)
 To install:
 
-	sudo desktop-file-install pivx-qt.desktop
+	sudo desktop-file-install castle-qt.desktop
 	sudo update-desktop-database
 
 If you build yourself, you will either need to modify the paths in
-the .desktop file or copy or symlink your pivxqt binary to `/usr/bin`
-and the `../../share/pixmaps/pivx128.png` to `/usr/share/pixmaps`
+the .desktop file or copy or symlink your castleqt binary to `/usr/bin`
+and the `../../share/pixmaps/castle128.png` to `/usr/share/pixmaps`
 
-pivx-qt.protocol (KDE)
+castle-qt.protocol (KDE)
 

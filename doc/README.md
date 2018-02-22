@@ -13,12 +13,12 @@ The following are some helpful notes on how to run PIVX on your native platform.
 
 Unpack the files into a directory and run:
 
-- bin/32/pivx-qt (GUI, 32-bit) or bin/32/pivxd (headless, 32-bit)
-- bin/64/pivx-qt (GUI, 64-bit) or bin/64/pivxd (headless, 64-bit)
+- bin/32/castle-qt (GUI, 32-bit) or bin/32/castled (headless, 32-bit)
+- bin/64/castle-qt (GUI, 64-bit) or bin/64/castled (headless, 64-bit)
 
 ### Windows
 
-Unpack the files into a directory, and then run pivx-qt.exe.
+Unpack the files into a directory, and then run castle-qt.exe.
 
 ### OSX
 
