@@ -35,9 +35,9 @@ def check_json_precision():
 def determine_db_dir():
     """Return the default location of the castle data directory"""
     if platform.system() == "Darwin":
-        return os.path.expanduser("~/Library/Application Support/PIVX/")
+        return os.path.expanduser("~/Library/Application Support/Castle/")
     elif platform.system() == "Windows":
-        return os.path.join(os.environ['APPDATA'], "PIVX")
+        return os.path.join(os.environ['APPDATA'], "Castle")
     return os.path.expanduser("~/.castle")
 
 def read_bitcoin_config(dbdir):

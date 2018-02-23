@@ -16,14 +16,14 @@ BEGIN
     BEGIN
         BLOCK "040904E4" // U.S. English - multilingual (hex)
         BEGIN
-            VALUE "CompanyName",        "Pivx"
-            VALUE "FileDescription",    "Pivx-cli (OSS RPC client for Pivx)"
+            VALUE "CompanyName",        "Castle"
+            VALUE "FileDescription",    "Castle-cli (OSS RPC client for Castle)"
             VALUE "FileVersion",        VER_FILEVERSION_STR
             VALUE "InternalName",       "castle-cli"
             VALUE "LegalCopyright",     COPYRIGHT_STR
             VALUE "LegalTrademarks1",   "Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php."
             VALUE "OriginalFilename",   "castle-cli.exe"
-            VALUE "ProductName",        "Pivx-cli"
+            VALUE "ProductName",        "Castle-cli"
             VALUE "ProductVersion",     VER_PRODUCTVERSION_STR
         END
     END

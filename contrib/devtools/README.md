@@ -36,7 +36,7 @@ couldn't mess with the sources.
 
 Setup
 ---------
-Configuring the github-merge tool for the PIVX repository is done in the following way:
+Configuring the github-merge tool for the Castle repository is done in the following way:
 
     git config githubmerge.repository PIVX-Project/PIVX
     git config githubmerge.testcmd "make -j4 check" (adapt to whatever you want to use for testing)
@@ -45,7 +45,7 @@ Configuring the github-merge tool for the PIVX repository is done in the followi
 optimize-pngs.py
 ================
 
-A script to optimize png files in the PIVX
+A script to optimize png files in the Castle
 repository (requires pngcrush).
 
 fix-copyright-headers.py

@@ -13,7 +13,7 @@
  * for both castled and castle-qt, to make it harder for attackers to
  * target servers or GUI users specifically.
  */
-const std::string CLIENT_NAME("PIVX Core");
+const std::string CLIENT_NAME("Castle Core");
 
 /**
  * Client version number

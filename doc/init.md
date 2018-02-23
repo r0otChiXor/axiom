@@ -89,7 +89,7 @@ use old versions of Upstart and do not supply the start-stop-daemon uitility.
 Copy castled.init to /etc/init.d/castled. Test by running "service castled start".
 
 Using this script, you can adjust the path and flags to the castled program by
-setting the PIVXD and FLAGS environment variables in the file
+setting the CASTLED and FLAGS environment variables in the file
 /etc/sysconfig/castled. You can also use the DAEMONOPTS environment variable here.
 
 5. Auto-respawn

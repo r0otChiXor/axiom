@@ -62,12 +62,12 @@
         <translation>Ontvangstadressen</translation>
     </message>
     <message>
-        <source>These are your PIVX addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Dit zijn uw PIVXadressen om betalingen mee te verzenden. Controleer altijd zowel het bedrag als het ontvangstadres voor het verzenden.</translation>
+        <source>These are your Castle addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Dit zijn uw Castleadressen om betalingen mee te verzenden. Controleer altijd zowel het bedrag als het ontvangstadres voor het verzenden.</translation>
     </message>
     <message>
-        <source>These are your PIVX addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Dit zijn uw PIVXadressen waarop betalingen kunnen worden ontvangen. Het wordt aangeraden om een nieuw ontvangstadres voor elke transactie te gebruiken.</translation>
+        <source>These are your Castle addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>Dit zijn uw Castleadressen waarop betalingen kunnen worden ontvangen. Het wordt aangeraden om een nieuw ontvangstadres voor elke transactie te gebruiken.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -172,8 +172,8 @@
         <translation>Bevestig versleuteling van de portemonnee</translation>
     </message>
     <message>
-        <source>PIVX will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your PIVs from being stolen by malware infecting your computer.</source>
-        <translation>PIVX zal nu afsluiten om het versleutelingsproces te voltooien. Onthoud dat het versleutelen van uw portemonnee u niet volledig kan beschermen: Malware kan uw computer infecteren en uw PIVs stelen.</translation>
+        <source>Castle will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your PIVs from being stolen by malware infecting your computer.</source>
+        <translation>Castle zal nu afsluiten om het versleutelingsproces te voltooien. Onthoud dat het versleutelen van uw portemonnee u niet volledig kan beschermen: Malware kan uw computer infecteren en uw PIVs stelen.</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -235,16 +235,16 @@
         <translation>&amp;BIP 38 Versleuteling</translation>
     </message>
     <message>
-        <source>Enter a Pivx Address that you would like to encrypt using BIP 38. Enter a passphrase in the middle box. Press encrypt to compute the encrypted private key.</source>
-        <translation>Voer een PIVX adres in dat u wilt versleutelen met BIP 38. Voer een wachtwoord in, in het middelste veld. Druk op versleutelen om de versleutelde geheime sleutel te berekenen.</translation>
+        <source>Enter a Castle Address that you would like to encrypt using BIP 38. Enter a passphrase in the middle box. Press encrypt to compute the encrypted private key.</source>
+        <translation>Voer een Castle adres in dat u wilt versleutelen met BIP 38. Voer een wachtwoord in, in het middelste veld. Druk op versleutelen om de versleutelde geheime sleutel te berekenen.</translation>
     </message>
     <message>
         <source>Address:</source>
         <translation>Adres:</translation>
     </message>
     <message>
-        <source>The PIVX address to sign the message with</source>
-        <translation>Het PIVX adres om het bericht met te ondertekenen</translation>
+        <source>The Castle address to sign the message with</source>
+        <translation>Het Castle adres om het bericht met te ondertekenen</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -275,8 +275,8 @@
         <translation>Kopieer de huidige handtekening naar het systeemklembord</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this PIVX address</source>
-        <translation>Onderteken het bericht om te bewijzen dat u het PIVX adres bezit</translation>
+        <source>Sign the message to prove you own this Castle address</source>
+        <translation>Onderteken het bericht om te bewijzen dat u het Castle adres bezit</translation>
     </message>
     <message>
         <source>Encrypt &amp;Key</source>
@@ -299,12 +299,12 @@
         <translation>Voer de BIP 38 versleutelde geheime sleutel in. Voer het wachtwoord in, in het middelste veld. Druk op Ontsleutelen Sleutel om de geheime sleutel te berekenen.  Nadat de geheime sleutel is ontsleuteld, zal het klikken op 'Adres Importeren' de geheime sleutel toevoegen aan de portemonnee.</translation>
     </message>
     <message>
-        <source>The PIVX address the message was signed with</source>
-        <translation>Het PIVX adres waarmee het bericht was ondertekend</translation>
+        <source>The Castle address the message was signed with</source>
+        <translation>Het Castle adres waarmee het bericht was ondertekend</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified PIVX address</source>
-        <translation>Controleer een bericht om te verifiëren dat het ondertekend is door het gespecificeerde PIVX adres</translation>
+        <source>Verify the message to ensure it was signed with the specified Castle address</source>
+        <translation>Controleer een bericht om te verifiëren dat het ondertekend is door het gespecificeerde Castle adres</translation>
     </message>
     <message>
         <source>Decrypt &amp;Key</source>
@@ -594,16 +594,16 @@
         <translation>Tabblad werkbalk</translation>
     </message>
     <message>
-        <source>PIVX Core</source>
-        <translation>PIVX Kern</translation>
+        <source>Castle Core</source>
+        <translation>Castle Kern</translation>
     </message>
     <message>
-        <source>Send coins to a PIVX address</source>
-        <translation>Verstuur munten naar een PIVX adres</translation>
+        <source>Send coins to a Castle address</source>
+        <translation>Verstuur munten naar een Castle adres</translation>
     </message>
     <message>
         <source>Request payments (generates QR codes and castle: URIs)</source>
-        <translation>Vraag betaling aan (genereert QR-codes en PIVX: URI's)</translation>
+        <translation>Vraag betaling aan (genereert QR-codes en Castle: URI's)</translation>
     </message>
     <message>
         <source>&amp;Masternodes</source>
@@ -614,24 +614,24 @@
         <translation>Bekijk masternodes</translation>
     </message>
     <message>
-        <source>&amp;About PIVX Core</source>
-        <translation>&amp;Over PIVX Kern</translation>
+        <source>&amp;About Castle Core</source>
+        <translation>&amp;Over Castle Kern</translation>
     </message>
     <message>
-        <source>Show information about PIVX Core</source>
-        <translation>Toon informatie over PIVX Kern</translation>
+        <source>Show information about Castle Core</source>
+        <translation>Toon informatie over Castle Kern</translation>
     </message>
     <message>
-        <source>Modify configuration options for PIVX</source>
-        <translation>Wijzig PIVX configuratie opties</translation>
+        <source>Modify configuration options for Castle</source>
+        <translation>Wijzig Castle configuratie opties</translation>
     </message>
     <message>
-        <source>Sign messages with your PIVX addresses to prove you own them</source>
-        <translation>Onderteken berichten met uw PIVX adressen om te bewijzen dat u deze adressen bezit</translation>
+        <source>Sign messages with your Castle addresses to prove you own them</source>
+        <translation>Onderteken berichten met uw Castle adressen om te bewijzen dat u deze adressen bezit</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified PIVX addresses</source>
-        <translation>Controleer berichten om te verifiëren dat deze ondertekend zijn met de gespecificeerde PIVX adressen</translation>
+        <source>Verify messages to ensure they were signed with specified Castle addresses</source>
+        <translation>Controleer berichten om te verifiëren dat deze ondertekend zijn met de gespecificeerde Castle adressen</translation>
     </message>
     <message>
         <source>&amp;BIP38 tool</source>
@@ -662,8 +662,8 @@
         <translation>Open Masternode configuratiebestand</translation>
     </message>
     <message>
-        <source>Open a PIVX: URI or payment request</source>
-        <translation>Open een PIVX: URI of betaalverzoek</translation>
+        <source>Open a Castle: URI or payment request</source>
+        <translation>Open een Castle: URI of betaalverzoek</translation>
     </message>
     <message>
         <source>&amp;Blockchain explorer</source>
@@ -674,12 +674,12 @@
         <translation>Block verkenner venster</translation>
     </message>
     <message>
-        <source>PIVX Core client</source>
-        <translation>PIVX Core client</translation>
+        <source>Castle Core client</source>
+        <translation>Castle Core client</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to PIVX network</source>
-        <translation><numerusform>%n actieve verbinding(en) naar het PIVX netwerk</numerusform><numerusform>%n actieve verbinding(en) naar het PIVX netwerk</numerusform></translation>
+        <source>%n active connection(s) to Castle network</source>
+        <translation><numerusform>%n actieve verbinding(en) naar het Castle netwerk</numerusform><numerusform>%n actieve verbinding(en) naar het Castle netwerk</numerusform></translation>
     </message>
     <message>
         <source>Synchronizing with network...</source>
@@ -1042,8 +1042,8 @@ MultiSend: %1</translation>
         <translation>Wijzig verzendadres</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid PIVX address.</source>
-        <translation>Het ingevoerde adres: "%1" is geen geldig PIVX adres.</translation>
+        <source>The entered address "%1" is not a valid Castle address.</source>
+        <translation>Het ingevoerde adres: "%1" is geen geldig Castle adres.</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -1072,16 +1072,16 @@ MultiSend: %1</translation>
         <translation>versie</translation>
     </message>
     <message>
-        <source>PIVX Core</source>
-        <translation>PIVX Kern</translation>
+        <source>Castle Core</source>
+        <translation>Castle Kern</translation>
     </message>
     <message>
         <source>(%1-bit)</source>
         <translation>(%1-bit)</translation>
     </message>
     <message>
-        <source>About PIVX Core</source>
-        <translation>Over PIVX Core</translation>
+        <source>About Castle Core</source>
+        <translation>Over Castle Core</translation>
     </message>
     <message>
         <source>Command-line options</source>
@@ -1111,16 +1111,16 @@ MultiSend: %1</translation>
         <translation>Welkom</translation>
     </message>
     <message>
-        <source>Welcome to PIVX Core.</source>
-        <translation>Welkom bij PIVX Core</translation>
+        <source>Welcome to Castle Core.</source>
+        <translation>Welkom bij Castle Core</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
         <translation>Gebruik de standaard datafolder </translation>
     </message>
     <message>
-        <source>PIVX Core</source>
-        <translation>PIVX Kern</translation>
+        <source>Castle Core</source>
+        <translation>Castle Kern</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1336,20 +1336,20 @@ MultiSend: %1</translation>
         <translation>Expert</translation>
     </message>
     <message>
-        <source>Automatically start PIVX after logging in to the system.</source>
-        <translation>PIVX automatisch opstarten na inloggen op het systeem.</translation>
+        <source>Automatically start Castle after logging in to the system.</source>
+        <translation>Castle automatisch opstarten na inloggen op het systeem.</translation>
     </message>
     <message>
-        <source>&amp;Start PIVX on system login</source>
-        <translation>&amp;PIVX starten bij systeemlogin</translation>
+        <source>&amp;Start Castle on system login</source>
+        <translation>&amp;Castle starten bij systeemlogin</translation>
     </message>
     <message>
         <source>&amp;Network</source>
         <translation>&amp;Netwerk</translation>
     </message>
     <message>
-        <source>The user interface language can be set here. This setting will take effect after restarting PIVX.</source>
-        <translation>De gebruikersinterface taal kan hier ingesteld worden. Deze instelling zal uitgevoerd na herstart van PIVX.</translation>
+        <source>The user interface language can be set here. This setting will take effect after restarting Castle.</source>
+        <translation>De gebruikersinterface taal kan hier ingesteld worden. Deze instelling zal uitgevoerd na herstart van Castle.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1619,8 +1619,8 @@ MultiSend: %1</translation>
         <translation>Hoeveelheid</translation>
     </message>
     <message>
-        <source>Enter a PIVX address (e.g. %1)</source>
-        <translation>Voer een PIVX adres in (b.v. %1)</translation>
+        <source>Enter a Castle address (e.g. %1)</source>
+        <translation>Voer een Castle adres in (b.v. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1821,8 +1821,8 @@ MultiSend: %1</translation>
         <translation>Uit:</translation>
     </message>
     <message>
-        <source>Welcome to the PIVX RPC console.</source>
-        <translation>Welkom bij de PIVX RPC console.</translation>
+        <source>Welcome to the Castle RPC console.</source>
+        <translation>Welkom bij de Castle RPC console.</translation>
     </message>
     <message>
         <source>%1 B</source>
@@ -2121,8 +2121,8 @@ MultiSend: %1</translation>
         <translation>anonieme financiën</translation>
     </message>
     <message>
-        <source>Warning: Invalid PIVX address</source>
-        <translation>Waarschuwing: Ongeldig PIVX adres</translation>
+        <source>Warning: Invalid Castle address</source>
+        <translation>Waarschuwing: Ongeldig Castle adres</translation>
     </message>
     <message>
         <source>any available funds (not recommended)</source>
@@ -2176,8 +2176,8 @@ MultiSend: %1</translation>
         <translation>Betaal &amp;Naar:</translation>
     </message>
     <message>
-        <source>The PIVX address to send the payment to</source>
-        <translation>Het PIVX adres om de betaling naar te verzenden</translation>
+        <source>The Castle address to send the payment to</source>
+        <translation>Het Castle adres om de betaling naar te verzenden</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2231,8 +2231,8 @@ MultiSend: %1</translation>
 <context>
     <name>ShutdownWindow</name>
     <message>
-        <source>PIVX Core is shutting down...</source>
-        <translation>PIVX Core is aan het afsluiten...</translation>
+        <source>Castle Core is shutting down...</source>
+        <translation>Castle Core is aan het afsluiten...</translation>
     </message>
     <message>
         <source>Do not shut down the computer until this window disappears.</source>
@@ -2250,8 +2250,8 @@ MultiSend: %1</translation>
         <translation>&amp;Onderteken Bericht</translation>
     </message>
     <message>
-        <source>The PIVX address to sign the message with</source>
-        <translation>Het PIVX adres om het bericht met te ondertekenen</translation>
+        <source>The Castle address to sign the message with</source>
+        <translation>Het Castle adres om het bericht met te ondertekenen</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2282,16 +2282,16 @@ MultiSend: %1</translation>
         <translation>Kopieer de huidige handtekening naar het systeemklembord</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this PIVX address</source>
-        <translation>Onderteken het bericht om te bewijzen dat u het PIVX adres bezit</translation>
+        <source>Sign the message to prove you own this Castle address</source>
+        <translation>Onderteken het bericht om te bewijzen dat u het Castle adres bezit</translation>
     </message>
     <message>
-        <source>The PIVX address the message was signed with</source>
-        <translation>Het PIVX adres waarmee het bericht was ondertekend</translation>
+        <source>The Castle address the message was signed with</source>
+        <translation>Het Castle adres waarmee het bericht was ondertekend</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified PIVX address</source>
-        <translation>Controleer een bericht om te verifiëren dat het ondertekend is door het gespecificeerde PIVX adres</translation>
+        <source>Verify the message to ensure it was signed with the specified Castle address</source>
+        <translation>Controleer een bericht om te verifiëren dat het ondertekend is door het gespecificeerde Castle adres</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -2361,8 +2361,8 @@ MultiSend: %1</translation>
 <context>
     <name>SplashScreen</name>
     <message>
-        <source>PIVX Core</source>
-        <translation>PIVX Kern</translation>
+        <source>Castle Core</source>
+        <translation>Castle Kern</translation>
     </message>
     <message>
         <source>Version %1</source>
@@ -2377,8 +2377,8 @@ MultiSend: %1</translation>
         <translation>De Dash Core ontwikkelaars</translation>
     </message>
     <message>
-        <source>The PIVX Core developers</source>
-        <translation>De PIVX Core ontwikkelaars</translation>
+        <source>The Castle Core developers</source>
+        <translation>De Castle Core ontwikkelaars</translation>
     </message>
     <message>
         <source>[testnet]</source>
@@ -2802,8 +2802,8 @@ MultiSend: %1</translation>
         <translation>Copyright (C) 2014-%i The Dash Core Ontwikkelaars</translation>
     </message>
     <message>
-        <source>Copyright (C) 2015-%i The PIVX Core Developers</source>
-        <translation>Copyright (C) 2015-%i The PIVX Core Ontwikkelaars</translation>
+        <source>Copyright (C) 2015-%i The Castle Core Developers</source>
+        <translation>Copyright (C) 2015-%i The Castle Core Ontwikkelaars</translation>
     </message>
     <message>
         <source>Debugging/Testing options:</source>

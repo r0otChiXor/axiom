@@ -1,9 +1,9 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=PIVX
-Comment=PIVX P2P Cryptocurrency
-Comment[fr]=PIVX, monnaie virtuelle cryptographique pair à pair
-Comment[tr]=PIVX, eşten eşe kriptografik sanal para birimi
+Name=Castle
+Comment=Castle P2P Cryptocurrency
+Comment[fr]=Castle, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Castle, eşten eşe kriptografik sanal para birimi
 Exec=castle-qt %u
 Terminal=false
 Type=Application
