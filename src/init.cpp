@@ -1627,7 +1627,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         }
         fVerifyingBlocks = false;
 
-        bool fEnableZCSTLBackups = GetBoolArg("-backupcstl", true);
+        bool fEnableZCSTLBackups = GetBoolArg("-backupzcstl", true);
         pwalletMain->setZCSTLAutoBackups(fEnableZCSTLBackups);
     }  // (!fDisableWallet)
 #else  // ENABLE_WALLET
