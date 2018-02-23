@@ -42,7 +42,7 @@ The following are developer notes on how to build Castle on your native platform
 
 Development
 ---------------------
-The Castle repo's [root README](https://github.com/PIVX-Project/PIVX/blob/master/README.md) contains relevant information on the development process and automated testing.
+The Castle repo's [root README](https://github.com/MyCryptoCoins/Castle/blob/master/README.md) contains relevant information on the development process and automated testing.
 
 - [Developer Notes](developer-notes.md)
 - [Multiwallet Qt Development](multiwallet-qt.md)

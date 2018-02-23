@@ -172,16 +172,16 @@
         <translation>Bevestig versleuteling van de portemonnee</translation>
     </message>
     <message>
-        <source>Castle will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your PIVs from being stolen by malware infecting your computer.</source>
-        <translation>Castle zal nu afsluiten om het versleutelingsproces te voltooien. Onthoud dat het versleutelen van uw portemonnee u niet volledig kan beschermen: Malware kan uw computer infecteren en uw PIVs stelen.</translation>
+        <source>Castle will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your CSTLs from being stolen by malware infecting your computer.</source>
+        <translation>Castle zal nu afsluiten om het versleutelingsproces te voltooien. Onthoud dat het versleutelen van uw portemonnee u niet volledig kan beschermen: Malware kan uw computer infecteren en uw CSTLs stelen.</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
         <translation>Weet u zeker dat u uw portemonnee wilt versleutelen?</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PIV&lt;/b&gt;!</source>
-        <translation>Waarschuwing: Als u uw portemonnee versleutelt en uw wachtwoord vergeet, zult u &lt;b&gt;AL UW PIV VERLIEZEN&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR CSTL&lt;/b&gt;!</source>
+        <translation>Waarschuwing: Als u uw portemonnee versleutelt en uw wachtwoord vergeet, zult u &lt;b&gt;AL UW CSTL VERLIEZEN&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Wallet encrypted</source>
@@ -1500,16 +1500,16 @@ MultiSend: %1</translation>
 <context>
     <name>PrivacyDialog</name>
     <message>
-        <source>Enter an amount of Piv to convert to zPiv</source>
-        <translation>Vul de hoeveleheid in om Piv te converteren naar zPiv</translation>
+        <source>Enter an amount of CSTL to convert to zCSTL</source>
+        <translation>Vul de hoeveleheid in om CSTL te converteren naar zCSTL</translation>
     </message>
     <message>
         <source>0</source>
         <translation>0</translation>
     </message>
     <message>
-        <source>zPIV</source>
-        <translation>zPIV</translation>
+        <source>zCSTL</source>
+        <translation>zCSTL</translation>
     </message>
     <message>
         <source>Reset</source>
@@ -2029,8 +2029,8 @@ MultiSend: %1</translation>
         <translation>Wijzig:</translation>
     </message>
     <message>
-        <source>0 PIV</source>
-        <translation>0 PIV</translation>
+        <source>0 CSTL</source>
+        <translation>0 CSTL</translation>
     </message>
     <message>
         <source>Transaction Fee:</source>
@@ -2737,10 +2737,10 @@ MultiSend: %1</translation>
     </message>
 </context>
 <context>
-    <name>ZPivControlDialog</name>
+    <name>ZCSTLControlDialog</name>
     <message>
-        <source>Select zPiv to Spend</source>
-        <translation>Selecteer zPiv om te spenderen</translation>
+        <source>Select zCSTL to Spend</source>
+        <translation>Selecteer zCSTL om te spenderen</translation>
     </message>
     <message>
         <source>Quantity</source>
@@ -2751,8 +2751,8 @@ MultiSend: %1</translation>
         <translation>0</translation>
     </message>
     <message>
-        <source>zPiv</source>
-        <translation>zPiv</translation>
+        <source>zCSTL</source>
+        <translation>zCSTL</translation>
     </message>
     <message>
         <source>Select/Deselect All</source>

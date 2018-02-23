@@ -20,18 +20,18 @@ BitcoinUnits::BitcoinUnits(QObject* parent) : QAbstractListModel(parent),
 QList<BitcoinUnits::Unit> BitcoinUnits::availableUnits()
 {
     QList<BitcoinUnits::Unit> unitlist;
-    unitlist.append(PIV);
-    unitlist.append(mPIV);
-    unitlist.append(uPIV);
+    unitlist.append(CSTL);
+    unitlist.append(mCSTL);
+    unitlist.append(uCSTL);
     return unitlist;
 }
 
 bool BitcoinUnits::valid(int unit)
 {
     switch (unit) {
-    case PIV:
-    case mPIV:
-    case uPIV:
+    case CSTL:
+    case mCSTL:
+    case uCSTL:
         return true;
     default:
         return false;
@@ -41,12 +41,12 @@ bool BitcoinUnits::valid(int unit)
 QString BitcoinUnits::id(int unit)
 {
     switch (unit) {
-    case PIV:
-        return QString("castle");
-    case mPIV:
-        return QString("mcastle");
-    case uPIV:
-        return QString::fromUtf8("ucastle");
+    case CSTL:
+        return QString("Castle");
+    case mCSTL:
+        return QString("mCastle");
+    case uCSTL:
+        return QString::fromUtf8("uCastle");
     default:
         return QString("???");
     }
@@ -56,23 +56,23 @@ QString BitcoinUnits::name(int unit)
 {
     if (Params().NetworkID() == CBaseChainParams::MAIN) {
         switch (unit) {
-        case PIV:
-            return QString("PIV");
-        case mPIV:
-            return QString("mPIV");
-        case uPIV:
-            return QString::fromUtf8("μPIV");
+        case CSTL:
+            return QString("CSTL");
+        case mCSTL:
+            return QString("mCSTL");
+        case uCSTL:
+            return QString::fromUtf8("μCSTL");
         default:
             return QString("???");
         }
     } else {
         switch (unit) {
-        case PIV:
-            return QString("tPIV");
-        case mPIV:
-            return QString("mtPIV");
-        case uPIV:
-            return QString::fromUtf8("μtPIV");
+        case CSTL:
+            return QString("tCSTL");
+        case mCSTL:
+            return QString("mtCSTL");
+        case uCSTL:
+            return QString::fromUtf8("μtCSTL");
         default:
             return QString("???");
         }
@@ -83,23 +83,23 @@ QString BitcoinUnits::description(int unit)
 {
     if (Params().NetworkID() == CBaseChainParams::MAIN) {
         switch (unit) {
-        case PIV:
-            return QString("PIV");
-        case mPIV:
-            return QString("Milli-PIV (1 / 1" THIN_SP_UTF8 "000)");
-        case uPIV:
-            return QString("Micro-PIV (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+        case CSTL:
+            return QString("CSTL");
+        case mCSTL:
+            return QString("Milli-CSTL (1 / 1" THIN_SP_UTF8 "000)");
+        case uCSTL:
+            return QString("Micro-CSTL (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
         default:
             return QString("???");
         }
     } else {
         switch (unit) {
-        case PIV:
-            return QString("TestPIVs");
-        case mPIV:
-            return QString("Milli-TestPIV (1 / 1" THIN_SP_UTF8 "000)");
-        case uPIV:
-            return QString("Micro-TestPIV (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+        case CSTL:
+            return QString("TestCSTLs");
+        case mCSTL:
+            return QString("Milli-TestCSTL (1 / 1" THIN_SP_UTF8 "000)");
+        case uCSTL:
+            return QString("Micro-TestCSTL (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
         default:
             return QString("???");
         }
@@ -109,11 +109,11 @@ QString BitcoinUnits::description(int unit)
 qint64 BitcoinUnits::factor(int unit)
 {
     switch (unit) {
-    case PIV:
+    case CSTL:
         return 100000000;
-    case mPIV:
+    case mCSTL:
         return 100000;
-    case uPIV:
+    case uCSTL:
         return 100;
     default:
         return 100000000;
@@ -123,11 +123,11 @@ qint64 BitcoinUnits::factor(int unit)
 int BitcoinUnits::decimals(int unit)
 {
     switch (unit) {
-    case PIV:
+    case CSTL:
         return 8;
-    case mPIV:
+    case mCSTL:
         return 5;
-    case uPIV:
+    case uCSTL:
         return 2;
     default:
         return 0;

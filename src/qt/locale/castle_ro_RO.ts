@@ -183,7 +183,7 @@
     </message>
     </context>
 <context>
-    <name>ZPivControlDialog</name>
+    <name>ZCSTLControlDialog</name>
     </context>
 <context>
     <name>castle-core</name>

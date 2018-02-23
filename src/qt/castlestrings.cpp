@@ -58,7 +58,7 @@ QT_TRANSLATE_NOOP("castle-core", ""
 QT_TRANSLATE_NOOP("castle-core", ""
 "Enable SwiftX, show confirmations for locked transactions (bool, default: %s)"),
 QT_TRANSLATE_NOOP("castle-core", ""
-"Enable automatic wallet backups triggered after each zPiv minting (0-1, "
+"Enable automatic wallet backups triggered after each zCSTL minting (0-1, "
 "default: %u)"),
 QT_TRANSLATE_NOOP("castle-core", ""
 "Enable spork administration functionality with the appropriate private key."),
@@ -89,10 +89,10 @@ QT_TRANSLATE_NOOP("castle-core", ""
 "Execute command when the best block changes (%s in cmd is replaced by block "
 "hash)"),
 QT_TRANSLATE_NOOP("castle-core", ""
-"Fees (in PIV/Kb) smaller than this are considered zero fee for relaying "
+"Fees (in CSTL/Kb) smaller than this are considered zero fee for relaying "
 "(default: %s)"),
 QT_TRANSLATE_NOOP("castle-core", ""
-"Fees (in PIV/Kb) smaller than this are considered zero fee for transaction "
+"Fees (in CSTL/Kb) smaller than this are considered zero fee for transaction "
 "creation (default: %s)"),
 QT_TRANSLATE_NOOP("castle-core", ""
 "Flush database activity from memory pool to disk log every <n> megabytes "
@@ -187,10 +187,10 @@ QT_TRANSLATE_NOOP("castle-core", ""
 "Unable to locate enough Obfuscation denominated funds for this transaction."),
 QT_TRANSLATE_NOOP("castle-core", ""
 "Unable to locate enough Obfuscation non-denominated funds for this "
-"transaction that are not equal 10000 PIV."),
+"transaction that are not equal 10000 CSTL."),
 QT_TRANSLATE_NOOP("castle-core", ""
 "Unable to locate enough funds for this transaction that are not equal 10000 "
-"PIV."),
+"CSTL."),
 QT_TRANSLATE_NOOP("castle-core", ""
 "Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: "
 "%s)"),
@@ -304,7 +304,7 @@ QT_TRANSLATE_NOOP("castle-core", "Failed to listen on any port. Use -listen=0 if
 QT_TRANSLATE_NOOP("castle-core", "Failed to read block index"),
 QT_TRANSLATE_NOOP("castle-core", "Failed to read block"),
 QT_TRANSLATE_NOOP("castle-core", "Failed to write block index"),
-QT_TRANSLATE_NOOP("castle-core", "Fee (in PIV/kB) to add to transactions you send (default: %s)"),
+QT_TRANSLATE_NOOP("castle-core", "Fee (in CSTL/kB) to add to transactions you send (default: %s)"),
 QT_TRANSLATE_NOOP("castle-core", "Finalizing transaction."),
 QT_TRANSLATE_NOOP("castle-core", "Force safe mode (default: %u)"),
 QT_TRANSLATE_NOOP("castle-core", "Found enough users, signing ( waiting %s )"),
