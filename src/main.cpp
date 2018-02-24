@@ -82,7 +82,7 @@ bool fVerifyingBlocks = false;
 unsigned int nCoinCacheSize = 5000;
 bool fAlerts = DEFAULT_ALERTS;
 
-unsigned int nStakeMinAge = 60 * 60;
+unsigned int nStakeMinAge = 6 * 60 * 60;  // 6h
 int64_t nReserveBalance = 0;
 
 /** Fees smaller than this (in upiv) are considered zero fee (for relaying and mining)
@@ -110,7 +110,7 @@ static void CheckBlockIndex();
 /** Constant stuff for coinbase transactions we create: */
 CScript COINBASE_FLAGS;
 
-const string strMessageMagic = "DarkNet Signed Message:\n";
+const string strMessageMagic = "Castle Signed Message:\n";
 
 // Internal stuff
 namespace

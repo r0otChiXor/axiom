@@ -101,9 +101,9 @@ public:
 };
 
 /** base58-encoded Castle addresses.
- * Public-key-hash-addresses have version 0 (or 111 testnet).
+ * Public-key-hash-addresses have version 28 (or 88 testnet). C/c
  * The data vector contains RIPEMD160(SHA256(pubkey)), where pubkey is the serialized public key.
- * Script-hash-addresses have version 5 (or 196 testnet).
+ * Script-hash-addresses have version 46 (or 108 testnet). K/k
  * The data vector contains RIPEMD160(SHA256(cscript)), where cscript is the serialized redemption script.
  */
 class CBitcoinAddress : public CBase58Data
