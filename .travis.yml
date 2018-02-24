@@ -83,6 +83,7 @@ deploy:
     secret_access_key:
       secure: hpm4q6lIobUj7WHSy/9/xTpvLHVJoTIuoM3QcDzXSOM58tD/LKysozG0BOEbAvt4ka29o47bkj49j3wGSOJwmNFPYdpQ1Y/GR4rwhwoOrYkPeQXYw88/lMyoYEeNqcGNkl1JsTTbICjurVhf/gmJZRmQvhg+hnhps5ksTbOX4GwogO3ABORrKeWTNWAwFIpOraFxxVsbK7FAhhc3JdqOegrk58X9d40vOh85f8cu4Jp/yHgT15DSkuDxAkX6+nLb+hMa09sY1UDyvO6WNVmyTQwsVluslUWALDz+bJ6fwGxAn9STV3nDiWyMTy/b/TSZ1sFe9VAzIN/as9R+BUJF4KQ+YJRXAzq9XRK5hh77F338EzdjhUO5ZvgfdMDWdM8Pg5iVGT0Ez8P+k9Zu36x9r8nGIKft9PqhzY61Y6ZfWSuG6hjNV2NnLGjdhGBZ1+hG/PfvOEg3mub+LFHuAUYNuOkpncQzF3hRIIw/DS4+l+XF5FvcPFYBf3eLzWG2wHEaKl4IveJVf+hJs0k0yv55P8znzt89LMTbXxm3KOZTYmH6dR/4rZlKTG++Ag3H3NaI1bC8109LD+x17CsF7AWw/79vtKRl3pRPJ77Ty+nuaxCDmEeUu82jgxr7j6GaSYaklxuIbUhUHOCnZKGwp3QRFq92IiUD5qXSnit1j6lbrE4=
     bucket: coin-build-archive
+    region: us-west-2
     local-dir: build
     upload-dir: castle
     acl: public_read
