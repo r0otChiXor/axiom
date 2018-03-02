@@ -127,7 +127,7 @@ public:
         nLastPOWBlock = 259200;
         nModifierUpdateBlock = 615800;
         nZerocoinStartHeight = 863787;
-        nZerocoinStartTime = 1508214600; // October 17, 2017 4:30:00 AM
+        nZerocoinStartTime = 1519976760; // October 17, 2017 4:30:00 AM
         nBlockEnforceSerialRange = 895400; //Enforce serial range starting this block
         nBlockRecalculateAccumulators = 908000; //Trigger a recalculation of accumulators
         nBlockFirstFraudulent = 891737; //First block that bad serials emerged
