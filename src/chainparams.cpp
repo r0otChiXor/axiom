@@ -111,7 +111,7 @@ public:
         vAlertPubKey = ParseHex("0000098d3ba6ba6e7423fa5cbd6a89e0a9a5348f88d332b44a5cb1a8b7ed2c1eaa335fc8dc4f012cb8241cc0bdafd6ca70c5f5448916e4e6f511bcd746ed57dc50");
         nDefaultPort = 35433;
         bnProofOfWorkLimit = ~uint256(0) >> 20; // Castle starting difficulty is 1 / 2^12
-        nSubsidyHalvingInterval = 210000;
+        nSubsidyHalvingInterval = 262980; // 1 yr at 2 min blocks
         nMaxReorganizationDepth = 100;
         nEnforceBlockUpgradeMajority = 750;
         nRejectBlockOutdatedMajority = 950;
@@ -124,15 +124,15 @@ public:
         nMaxMoneyOut = 21000000 * COIN;
 
         /** Height or Time Based Activations **/
-        nLastPOWBlock = 259200;
-        nModifierUpdateBlock = 615800;
-        nZerocoinStartHeight = 863787;
-        nZerocoinStartTime = 1519976760; // October 17, 2017 4:30:00 AM
-        nBlockEnforceSerialRange = 895400; //Enforce serial range starting this block
-        nBlockRecalculateAccumulators = 908000; //Trigger a recalculation of accumulators
-        nBlockFirstFraudulent = 891737; //First block that bad serials emerged
-        nBlockLastGoodCheckpoint = 891730; //Last valid accumulator checkpoint
-        nBlockEnforceInvalidUTXO = 902850; //Start enforcing the invalid UTXO's
+        nLastPOWBlock = nSubsidyHalvingInterval * 5;  // 5 yrs at 2min blocks
+        nModifierUpdateBlock = 1; // TODO
+        nZerocoinStartHeight = 1;
+        nZerocoinStartTime = 1519976760; // March 2, 2018 07:48:00 GMT
+        nBlockEnforceSerialRange = 1; //Enforce serial range starting this block
+        nBlockRecalculateAccumulators = 1; //Trigger a recalculation of accumulators
+        nBlockFirstFraudulent = 1; //First block that bad serials emerged
+        nBlockLastGoodCheckpoint = 1; //Last valid accumulator checkpoint
+        nBlockEnforceInvalidUTXO = 1; //Start enforcing the invalid UTXO's
 
         /**
          * Build the genesis block. Note that the output of the genesis coinbase cannot

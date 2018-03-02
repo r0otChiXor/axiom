@@ -301,28 +301,41 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int64_t nFe
         }
     }
 
-    CAmount blockValue = GetBlockValue(pindexPrev->nHeight);
-    CAmount masternodePayment = GetMasternodePayment(pindexPrev->nHeight, blockValue);
+    CAmount blockValue = 0;
 
     if (hasPayment) {
+        CAmount masternodePayment;
+
         if (fProofOfStake) {
             /**For Proof Of Stake vout[0] must be null
              * Stake reward can be split into many different outputs, so we must
              * use vout.size() to align with several different cases.
              * An additional output is appended as the masternode payment
              */
-            unsigned int i = txNew.vout.size();
+            unsigned int i;
+	    for (i = 1; i < txNew.vout.size(); i++) {
+		blockValue += txNew.vout[i].nValue;
+	    }
+            masternodePayment = GetMasternodePayment(pindexPrev->nHeight, blockValue, 0, fProofOfStake);
+
             txNew.vout.resize(i + 1);
             txNew.vout[i].scriptPubKey = payee;
             txNew.vout[i].nValue = masternodePayment;
 
+#if 0
             //subtract mn payment from the stake reward
             txNew.vout[i - 1].nValue -= masternodePayment;
+#endif
         } else {
+            blockValue = GetBlockValue(pindexPrev->nHeight);
+            masternodePayment = GetMasternodePayment(pindexPrev->nHeight, blockValue, 0, fProofOfStake);
+
             txNew.vout.resize(2);
             txNew.vout[1].scriptPubKey = payee;
             txNew.vout[1].nValue = masternodePayment;
+#if 0
             txNew.vout[0].nValue = blockValue - masternodePayment;
+#endif
         }
 
         CTxDestination address1;
@@ -534,7 +547,7 @@ bool CMasternodeBlockPayees::IsTransactionValid(const CTransaction& txNew)
         nMasternode_Drift_Count = mnodeman.size() + Params().MasternodeCountDrift();
     }
 
-    CAmount requiredMasternodePayment = GetMasternodePayment(nBlockHeight, nReward, nMasternode_Drift_Count);
+    CAmount requiredMasternodePayment = GetMasternodePayment(nBlockHeight, nReward, nMasternode_Drift_Count, txNew.IsCoinStake());
 
     //require at least 6 signatures
     BOOST_FOREACH (CMasternodePayee& payee, vecPayments)
