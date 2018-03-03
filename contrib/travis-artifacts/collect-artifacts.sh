@@ -1,6 +1,16 @@
 #!/bin/bash -ex
 
-BUILDDIR=build/$TRAVIS_COMMIT/$HOST
+if [ $# -lt 3 ] ; then
+    echo "Usage: $0 basedir commit host"
+    exit 1
+fi
+
+BASEDIR=$1
+BUILDDIR=$BASEDIR/build/$2/$3
+OUTDIR=$BASEDIR/out
+
+cd $BASEDIR
+
 mkdir -p $BUILDDIR
 touch $BUILDDIR/.dummy
 

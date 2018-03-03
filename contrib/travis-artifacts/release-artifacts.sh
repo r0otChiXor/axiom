@@ -1,6 +1,16 @@
 #!/bin/bash -ex
 
-RELEASEDIR=release-build/$TRAVIS_TAG/$HOST
+if [ $# -lt 3 ] ; then
+    echo "Usage: $0 basedir tag host"
+    exit 1
+fi
+
+BASEDIR=$1
+RELEASEIR=$BASEDIR/release-build/$2/$3
+OUTDIR=$BASEDIR/out
+
+cd $BASEDIR
+
 mkdir -p $RELEASEDIR
 ZIPFILES=$OUTDIR/bin/*
 
