@@ -31,8 +31,8 @@ CoinSpend::CoinSpend(const ZerocoinParams* p, const PrivateCoin& coin, Accumulat
     }
 
     // The serial # needs to be within the specified range our else it can be incremented by the modulus and create another valid proof
-    if (!HasValidSerial(p)) {
-        throw ZerocoinException("Invalid serial # range");
+    if (!HasValidSerial((ZerocoinParams *)p)) {
+        throw std::runtime_error("Invalid serial # range");
     }
 
     // 1: Generate two separate commitments to the public coin (C), each under
