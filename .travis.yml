@@ -70,8 +70,8 @@ after_script:
 notifications:
     webhooks: http://travis-hooks.mycryptocoins.net/travis-ci.php
 before_deploy:
-  - $TRAVIS_BUILD_DIR/contrib/travis-artifacts/collect-artifacts.sh $TRAVIS_BUILD_DIR $OUTDIR $TRAVIS_COMMIT $HOST
-  - if [ -n "$TRAVIS_TAG" ] ; then $TRAVIS_BUILD_DIR/contrib/travis-artifacts/release-artifacts.sh $TRAVIS_BUILD_DIR $OUTDIR $TRAVIS_TAG $HOST ; fi
+  - $TRAVIS_BUILD_DIR/contrib/travis-artifacts/collect-artifacts.sh $TRAVIS_BUILD_DIR $OUTDIR build $TRAVIS_COMMIT $HOST
+  - if [ -n "$TRAVIS_TAG" ] ; then $TRAVIS_BUILD_DIR/contrib/travis-artifacts/collect-artifacts.sh $TRAVIS_BUILD_DIR $OUTDIR release-build $TRAVIS_TAG $HOST ; fi
 deploy:
   - provider: s3
     skip_cleanup: true

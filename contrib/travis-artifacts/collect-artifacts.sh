@@ -1,28 +1,31 @@
 #!/bin/bash -ex
 
-if [ $# -lt 4 ] ; then
-    echo "Usage: $0 basedir outdir commit host"
+if [ $# -lt 5 ] ; then
+    echo "Usage: $0 basedir outdir releasedir commit host"
     exit 1
 fi
 
 BASEDIR=$1
 OUTDIR=$2
-BUILDDIR=$BASEDIR/build/$3/$4
+RELEASEBASE=$3
+COMMIT=$4
+HOST=$5
 
-cd $BASEDIR/bitcoin-$4
+RELEASEDIR=$BASEDIR/$RELEASEBASE/$COMMIT/$HOST
 
-mkdir -p $BUILDDIR
-touch $BUILDDIR/.dummy
+cd $BASEDIR/bitcoin-$HOST
+
+mkdir -p $RELEASEDIR
+ZIPFILES=$OUTDIR/bin/*
 
 # Linux artifacts
-cp -a $OUTDIR/bin $BUILDDIR || true
+[ "$ZIPFILES" = "$OUTDIR/bin/*" ] || \
+       zip -uj $RELEASEDIR/castle-$COMMIT.zip $ZIPFILES
 
 # MaxOSX artifacts
-cp -a Castle-Qt.app $BUILDDIR || true
-cp -a Castle-Core.dmg $BUILDDIR || true
+cp -a Castle-Core.dmg $RELEASEDIR || true
 
 # Windows artifacts
-cp -a release/* $BUILDDIR || true
-cp -a castle-*-win*-setup.exe $BUILDDIR || true
+cp -a castle-*-win*-setup.exe $RELEASEDIR || true
 
-find $BUILDDIR
+find $RELEASEDIR
