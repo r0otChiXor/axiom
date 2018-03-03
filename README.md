@@ -3,54 +3,55 @@ Castle Core integration/staging repository
 
 [![Build Status](https://travis-ci.org/MyCryptoCoins/Castle.svg?branch=master)](https://travis-ci.org/MyCryptoCoins/Castle) [![GitHub version](https://badge.fury.io/gh/MyCryptoCoins%2FCastle.svg)](https://badge.fury.io/gh/MyCryptoCoins%2FCastle)
 
-Castle is an open source crypto-currency focused on fast private transactions with low transaction fees & environmental footprint.  It utilizes a custom Proof of Stake protocol for securing its network and uses an innovative variable seesaw reward mechanism that dynamically balances 90% of its block reward size between masternodes and staking nodes and 10% dedicated for budget proposals. The goal of Castle is to achieve a decentralized sustainable crypto currency with near instant full-time private transactions, fair governance and community intelligence.
+Castle is an open source crypto-currency focused on fast private transactions with low transaction fees & environmental footprint.  The goal of Castle is to achieve a decentralized sustainable crypto currency with near instant full-time private transactions, fair governance and community intelligence.
+
+Castle is based on [PIVX](http://www.pivx.org) code.
+
 - Anonymized transactions using the [_Zerocoin Protocol_](http://www.pivx.org/zpiv).
 - Fast transactions featuring guaranteed zero confirmation transactions, we call it _SwiftX_.
 - Decentralized blockchain voting utilizing Masternode technology to form a DAO. The blockchain will distribute monthly treasury funds based on successful proposals submitted by the community and voted on by the DAO.
 
-More information at [pivx.org](http://www.pivx.org) Visit our ANN thread at [BitcoinTalk](http://www.bitcointalk.org/index.php?topic=1262920)
+More information at [TBD Website](http://www.tbd.org) Visit our ANN thread at [BitcoinTalk](http://www.bitcointalk.org/index.php?topic=TBD)
 
 ### Coin Specs
 <table>
 <tr><td>Algo</td><td>Quark</td></tr>
-<tr><td>Block Time</td><td>60 Seconds</td></tr>
+<tr><td>Block Time</td><td>120 Seconds</td></tr>
 <tr><td>Difficulty Retargeting</td><td>Every Block</td></tr>
-<tr><td>Max Coin Supply (PoW Phase)</td><td>43,199,500 CSTL</td></tr>
-<tr><td>Max Coin Supply (PoS Phase)</td><td>Infinite</td></tr>
-<tr><td>Premine</td><td>60,000 CSTL*</td></tr>
+<tr><td>Max Coin Supply from PoW</td><td>10,519,200 CSTL</td></tr>
+<tr><td>Max Coin Supply from PoS</td><td>Infinite</td></tr>
+<tr><td>Premine</td><td>8,000,000 CSTL*</td></tr>
 </table>
 
-*60,000 CSTL Premine was burned in block [279917](http://www.presstab.pw/phpexplorer/PIVX/block.php?blockhash=206d9cfe859798a0b0898ab00d7300be94de0f5469bb446cecb41c3e173a57e0)
+*8,000,000 CSTL Premine will burned TBD
 
 ### Reward Distribution
 
 <table>
 <th colspan=4>Genesis Block</th>
 <tr><th>Block Height</th><th>Reward Amount</th><th>Notes</th></tr>
-<tr><td>1</td><td>60,000 CSTL</td><td>Initial Pre-mine, burnt in block <a href="http://www.presstab.pw/phpexplorer/PIVX/block.php?blockhash=206d9cfe859798a0b0898ab00d7300be94de0f5469bb446cecb41c3e173a57e0">279917</a></td></tr>
+<tr><td>1</td><td>8,000,000 CSTL</td><td>Initial Pre-mine, to be burnt TBD</td></tr>
 </table>
 
 ### PoW Rewards Breakdown
 
 <table>
-<th>Block Height</th><th>Masternodes</th><th>Miner</th><th>Budget</th>
-<tr><td>2-43200</td><td>20% (50 CSTL)</td><td>80% (200 CSTL)</td><td>N/A</td></tr>
-<tr><td>43201-151200</td><td>20% (50 CSTL)</td><td>70% (200 CSTL)</td><td>10% (25 CSTL)</td></tr>
-<tr><td>151201-259200</td><td>45% (22.5 CSTL)</td><td>45% (22.5 CSTL)</td><td>10% (5 CSTL)</td></tr>
+<th>Year</th><th>Block Height</th><th>Masternodes</th><th>Miner</th><th>Budget</th>
+<tr><td>1</td><td>2-262980</td><td>30% (2.4 CSTL)</td><td>8 CSTL</td><td>1% (0.08 CSTL)</td></tr>
+<tr><td>2</td><td>262981-525960</td><td>30% (1.2 CSTL)</td><td>4 CSTL</td><td>1% (0.04 CSTL)</td></tr>
+<tr><td>3</td><td>525961-788940</td><td>30% (0.6 CSTL)</td><td>2 CSTL</td><td>1% (0.02 CSTL)</td></tr>
+<tr><td>4</td><td>788941-1051920</td><td>30% (0.3 CSTL)</td><td>1 CSTL</td><td>1% (0.01 CSTL)</td></tr>
+<tr><td>5</td><td>1051921-1314900</td><td>30% (0.15 CSTL)</td><td>0.5 CSTL</td><td>1% (0.005 CSTL)</td></tr>
+<tr><td>6-</td><td>1314901-</td><td>N/A</td><td>POW off</td><td>N/A</td></tr>
 </table>
 
 ### PoS Rewards Breakdown
 
 <table>
-<th>Phase</th><th>Block Height</th><th>Reward</th><th>Masternodes & Stakers</th><th>Budget</th>
-<tr><td>Phase 1</td><td>259201-302399</td><td>50 CSTL</td><td>90% (45 CSTL)</td><td>10% (5 CSTL)</td></tr>
-<tr><td>Phase 2</td><td>302400-345599</td><td>45 CSTL</td><td>90% (40.5 CSTL)</td><td>10% (4.5 CSTL)</td></tr>
-<tr><td>Phase 3</td><td>345600-388799</td><td>40 CSTL</td><td>90% (36 CSTL)</td><td>10% (4 CSTL)</td></tr>
-<tr><td>Phase 4</td><td>388800-431999</td><td>35 CSTL</td><td>90% (31.5 CSTL)</td><td>10% (3.5 CSTL)</td></tr>
-<tr><td>Phase 5</td><td>432000-475199</td><td>30 CSTL</td><td>90% (27 CSTL)</td><td>10% (3 CSTL)</td></tr>
-<tr><td>Phase 6</td><td>475200-518399</td><td>25 CSTL</td><td>90% (22.5 CSTL)</td><td>10% (2.5 CSTL)</td></tr>
-<tr><td>Phase 7</td><td>518400-561599</td><td>20 CSTL</td><td>90% (18 CSTL)</td><td>10% (2 CSTL)</td></tr>
-<tr><td>Phase 8</td><td>561600-604799</td><td>15 CSTL</td><td>90% (13.5 CSTL)</td><td>10% (1.5 CSTL)</td></tr>
-<tr><td>Phase 9</td><td>604800-647999</td><td>10 CSTL</td><td>90% (9 CSTL)</td><td>10% (1 CSTL)</td></tr>
-<tr><td>Phase X</td><td>648000-Infinite</td><td>5 CSTL</td><td>90% (4.5 CSTL)</td><td>10% (0.5 CSTL)</td></tr>
+<th>Block Height</th><th>Reward</th><th>Minimum Staking Time</th><th>Masternodes</th><th>Stakers</th><th>Budget</th>
+<tr><td>2-</td><td>8% APR</td><td>6 hours</td><td>20% of stake</td><td>8% APR</td><td>1% of stake</td></tr>
 </table>
+
+### Note about Masternode and Budget
+
+The masternode payments and budget payments are minted additional to the POW and POS rewards rather than deducted from them.  This is done to make it simpler for miners and stakers to calculate their return, and to reduce the surprise factor.
