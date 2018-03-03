@@ -2117,7 +2117,7 @@ double ConvertBitsToDouble(unsigned int nBits)
     return dDiff;
 }
 
-int64_t GetBlockValue(int nHeight)
+int64_t GetPOWBlockValue(int nHeight)
 {
     int64_t nSubsidy = 0 * COIN;
 
@@ -2133,7 +2133,7 @@ int64_t GetBlockValue(int nHeight)
         }
     } else {
         if (nHeight == 0) {
-            nSubsidy = 20000000 * COIN;
+            nSubsidy = 8000000 * COIN;
         } else if (nHeight <= Params().LAST_POW_BLOCK() && nHeight > 0) {
 	    // 2 min blocks, get number of intervals
             int64_t nIntervals = nHeight / Params().SubsidyHalvingInterval();
@@ -3173,7 +3173,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     LogPrint("bench", "      - Connect %u transactions: %.2fms (%.3fms/tx, %.3fms/txin) [%.2fs]\n", (unsigned)block.vtx.size(), 0.001 * (nTime1 - nTimeStart), 0.001 * (nTime1 - nTimeStart) / block.vtx.size(), nInputs <= 1 ? 0 : 0.001 * (nTime1 - nTimeStart) / (nInputs - 1), nTimeConnect * 0.000001);
 
     //PoW phase redistributed fees to miner. PoS stage destroys fees.
-    CAmount nExpectedMint = GetBlockValue(pindex->pprev->nHeight);
+    CAmount nExpectedMint = GetPOWBlockValue(pindex->pprev->nHeight);
 #if 0
     if (block.IsProofOfWork())
         nExpectedMint += nFees;
