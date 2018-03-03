@@ -76,15 +76,8 @@ after_script:
 notifications:
     webhooks: http://travis-hooks.mycryptocoins.net/travis-ci.php
 before_deploy:
-  - BUILDDIR=build/$TRAVIS_COMMIT/$HOST
-  - mkdir -p $BUILDDIR
-  - touch $BUILDDIR/.dummy
-  - cp -a $OUTDIR/bin $BUILDDIR || true
-  - cp -a Castle-Qt.app $BUILDDIR || true
-  - cp -a Castle-Core.dmg $BUILDDIR || true
-  - cp -a release/* $BUILDDIR || true
-  - cp -a castle-*-win*-setup.exe $BUILDDIR || true
-  - find $BUILDDIR
+  - contrib/travis-artifacts/collect-artifacts.sh
+  - [ -z "$TRAVIS_TAG" ] || contrib/travis-artifacts/release-artifacts.sh
 deploy:
   - provider: s3
     skip_cleanup: true
@@ -103,7 +96,8 @@ deploy:
     skip_cleanup: true
     api_key:
       secure: lJqus52v0Sj6sw7lrz4Dogi4uGF6viaoyYVP4zcBHELQeCD1VhcZYr4CAS9VItQkEaTEyLHC3/wRJb1n4bTCt69CIcFd758LTw8Vzq7W5iy9jJqouVvD+qFf82aGh2Hnz/PH52PhQHI3Go4U4XhN99UpOhHCane3sLFNqrTX2hrtXayKzyUQHMuMVZ9xe8DxZFfBSoCyaV82BWpRvON9IZ9aW1y8xlTCA+JWs+djM7csC8lBXnDXC3qnvbWMc7wHoQT0+EUYdaFDGHxctwls5w4NK6GCoSXSeGIYSKVVZ2b2BMV4XqelDvLWUr8XJi2Oz0sNUxHZsHDmu6aHeUVaKBsbBbFOwXxcBMKKx8Xn518u4KCcpsgjM7MySayozheclT9jyOpAGc0nCR+Lg4tJW60p50RfaldpnUZTbvjPKwuREaURLYW8N+yRWng5k/Kr2hTBgWevA6Pb/Be54IDkgVS4JLCeFdwUV3k0du0uGvw2iu3rQiNJgRfEhdPYHpGwrub22KkvUFrQJxP/lJK02wG7xT/juWlAI4Z9XDbpHqsIdwufLn56fbXjvI9zgl1h3XFL3FGwU/OJGCMr5R9tigMJ/djIPH8qWspnfDhbWlcDEbqDK74zEIH698gXoIZatOF6QFmNFTQvQTO5N/3w6JjhD3Sj06CffX9HgFMqP9c=
-    file: build/*
+    file_glob: true
+    file: release-build/*
     on:
       repo: MyCryptoCoins/Castle
       tags: true
