@@ -1,13 +1,13 @@
 #!/bin/bash -ex
 
-if [ $# -lt 3 ] ; then
-    echo "Usage: $0 basedir commit host"
+if [ $# -lt 4 ] ; then
+    echo "Usage: $0 basedir outdir commit host"
     exit 1
 fi
 
 BASEDIR=$1
-BUILDDIR=$BASEDIR/build/$2/$3
-OUTDIR=$BASEDIR/out
+OUTDIR=$2
+BUILDDIR=$BASEDIR/build/$3/$4
 
 cd $BASEDIR
 

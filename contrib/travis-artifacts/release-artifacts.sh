@@ -1,13 +1,13 @@
 #!/bin/bash -ex
 
-if [ $# -lt 3 ] ; then
+if [ $# -lt 4 ] ; then
     echo "Usage: $0 basedir tag host"
     exit 1
 fi
 
 BASEDIR=$1
-RELEASEIR=$BASEDIR/release-build/$2/$3
-OUTDIR=$BASEDIR/out
+OUTDIR=$2
+RELEASEIR=$BASEDIR/release-build/$3/$4
 
 cd $BASEDIR
 
