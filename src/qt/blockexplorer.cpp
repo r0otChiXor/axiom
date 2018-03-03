@@ -226,6 +226,7 @@ std::string BlockToString(CBlockIndex* pBlock)
         Generated = OutVolume;
     else
         Generated = GetPOWBlockValue(pBlock->nHeight - 1);
+    // TODO:  what about POS?
 
     std::string BlockContentCells[] =
         {

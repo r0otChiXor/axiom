@@ -534,7 +534,15 @@ bool CMasternodeBlockPayees::IsTransactionValid(const CTransaction& txNew)
 
     std::string strPayeesPossible = "";
 
-    CAmount nReward = GetPOWBlockValue(nBlockHeight);
+    CAmount nReward;
+    if (txNew.IsCoinStake()) {
+	uint64_t nCoinAge;
+	uint32_t nTime = chainActive[nBlockHeight]->nTime;
+	txNew.GetCoinAge(nCoinAge, nTime);
+	nReward = GetPOSBlockValue(nCoinAge);
+    } else {
+        nReward = GetPOWBlockValue(nBlockHeight);
+    }
 
     if (IsSporkActive(SPORK_8_MASTERNODE_PAYMENT_ENFORCEMENT)) {
         // Get a stable number of masternodes by ignoring newly activated (< 8000 sec old) masternodes

@@ -57,6 +57,8 @@ class CValidationState;
 struct CBlockTemplate;
 struct CNodeStateStats;
 
+static const uint64_t COIN_YEAR_REWARD = 8 * CENT;
+
 /** Default for -blockmaxsize and -blockminsize, which control the range of sizes the mining code will create **/
 static const unsigned int DEFAULT_BLOCK_MAX_SIZE = 2000000;
 static const unsigned int DEFAULT_BLOCK_MIN_SIZE = 0;
@@ -245,6 +247,7 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
 
 bool ActivateBestChain(CValidationState& state, CBlock* pblock = NULL, bool fAlreadyChecked = false);
 CAmount GetPOWBlockValue(int nHeight);
+CAmount GetPOSBlockValue(int64_t nCoinAge);
 
 /** Create a new block index entry for a given block hash */
 CBlockIndex* InsertBlockIndex(uint256 hash);

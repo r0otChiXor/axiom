@@ -514,7 +514,6 @@ void CBudgetManager::FillBlockPayee(CMutableTransaction& txNew, CAmount nFees, b
         ++it;
     }
 
-    CAmount blockValue = GetPOWBlockValue(pindexPrev->nHeight);
 
     if (fProofOfStake) {
         if (nHighestCount > 0) {
@@ -532,6 +531,8 @@ void CBudgetManager::FillBlockPayee(CMutableTransaction& txNew, CAmount nFees, b
             LogPrint("masternode","CBudgetManager::FillBlockPayee - No Budget payment, nHighestCount = %d\n", nHighestCount);
         }
     } else {
+        CAmount blockValue = GetPOWBlockValue(pindexPrev->nHeight);
+
         //miners get the full amount on these blocks
         txNew.vout[0].nValue = blockValue;
 

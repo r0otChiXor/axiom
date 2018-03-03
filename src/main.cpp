@@ -867,6 +867,16 @@ int GetIXConfirmations(uint256 nTXHash)
     return 0;
 }
 
+
+bool CTransaction::GetCoinAge(uint64_t& nCoinAge, uint32_t nTime) const
+{
+    uint32_t nTxTime = nTime;
+    if (!nTxTime) {
+	nTxTime = GetAdjustedTime();
+    }
+    return ::GetCoinAge(*this, nTxTime, nCoinAge);
+}
+
 // ppcoin: total coin age spent in transaction, in the unit of coin-days.
 // Only those coins meeting minimum age requirement counts. As those
 // transactions not in main chain are not currently indexed so we
@@ -2143,6 +2153,14 @@ int64_t GetPOWBlockValue(int nHeight)
     return nSubsidy;
 }
 
+int64_t GetPOSBlockValue(int64_t nCoinAge)
+{
+    int64_t nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8);
+
+    return nSubsidy;
+}
+
+
 int64_t GetMasternodePayment(int nHeight, int64_t blockValue, int nMasternodeCount, bool isPOS)
 {
     int64_t ret = 0;
@@ -3172,12 +3190,15 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     nTimeConnect += nTime1 - nTimeStart;
     LogPrint("bench", "      - Connect %u transactions: %.2fms (%.3fms/tx, %.3fms/txin) [%.2fs]\n", (unsigned)block.vtx.size(), 0.001 * (nTime1 - nTimeStart), 0.001 * (nTime1 - nTimeStart) / block.vtx.size(), nInputs <= 1 ? 0 : 0.001 * (nTime1 - nTimeStart) / (nInputs - 1), nTimeConnect * 0.000001);
 
-    //PoW phase redistributed fees to miner. PoS stage destroys fees.
-    CAmount nExpectedMint = GetPOWBlockValue(pindex->pprev->nHeight);
-#if 0
-    if (block.IsProofOfWork())
-        nExpectedMint += nFees;
-#endif
+    CAmount nExpectedMint;
+
+    if (block.IsProofOfWork()) {
+        nExpectedMint = GetPOWBlockValue(pindex->pprev->nHeight);
+    } else {
+        uint64_t nCoinAge;
+	block.vtx[1].GetCoinAge(nCoinAge, block.nTime);
+	nExpectedMint = GetPOSBlockValue(nCoinAge);
+    }
 
     //Check that the block does not overmint
     if (!IsBlockValueValid(block, nExpectedMint, pindex->nMint)) {
