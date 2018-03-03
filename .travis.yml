@@ -83,6 +83,7 @@ before_deploy:
   - cp -a Castle-Qt.app $BUILDDIR || true
   - cp -a Castle-Core.dmg $BUILDDIR || true
   - cp -a release/* $BUILDDIR || true
+  - cp -a castle-*-win*-setup.exe $BUILDDIR || true
   - find $BUILDDIR
 deploy:
   - provider: s3
