@@ -78,9 +78,11 @@ notifications:
 before_deploy:
   - BUILDDIR=build/$TRAVIS_COMMIT/$HOST
   - mkdir -p $BUILDDIR
+  - touch $BUILDDIR/.dummy
   - cp -a $OUTDIR/bin $BUILDDIR || true
   - cp -a Castle-Qt.app $BUILDDIR || true
   - cp -a Castle-Core.dmg $BUILDDIR || true
+  - cp -a release/* $BUILDDIR || true
   - find $BUILDDIR
 deploy:
   - provider: s3
