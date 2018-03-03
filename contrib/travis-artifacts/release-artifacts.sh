@@ -9,7 +9,7 @@ BASEDIR=$1
 OUTDIR=$2
 RELEASEIR=$BASEDIR/release-build/$3/$4
 
-cd $BASEDIR
+cd $BASEDIR/bitcoin-$4
 
 mkdir -p $RELEASEDIR
 ZIPFILES=$OUTDIR/bin/*

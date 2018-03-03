@@ -9,7 +9,7 @@ BASEDIR=$1
 OUTDIR=$2
 BUILDDIR=$BASEDIR/build/$3/$4
 
-cd $BASEDIR
+cd $BASEDIR/bitcoin-$4
 
 mkdir -p $BUILDDIR
 touch $BUILDDIR/.dummy
