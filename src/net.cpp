@@ -1444,14 +1444,22 @@ void ThreadOpenAddedConnections()
         // (keeping in mind that addnode entries can have many IPs if fNameLookup)
         {
             LOCK(cs_vNodes);
-            BOOST_FOREACH (CNode* pnode, vNodes)
-                for (list<vector<CService> >::iterator it = lservAddressesToAdd.begin(); it != lservAddressesToAdd.end(); it++)
-                    BOOST_FOREACH (CService& addrNode, *(it))
+            BOOST_FOREACH (CNode* pnode, vNodes) {
+                for (list<vector<CService> >::iterator it = lservAddressesToAdd.begin(); it != lservAddressesToAdd.end(); ) {
+                    bool found = false;
+                    BOOST_FOREACH (CService& addrNode, *(it)) {
                         if (pnode->addr == addrNode) {
                             it = lservAddressesToAdd.erase(it);
-                            it--;
+			    found = true;
                             break;
                         }
+		    }
+
+		    if (!found) {
+			it++;
+		    }
+		}
+            }
         }
         BOOST_FOREACH (vector<CService>& vserv, lservAddressesToAdd) {
             CSemaphoreGrant grant(*semOutbound);
