@@ -16,11 +16,11 @@ RELEASEDIR=$BASEDIR/$RELEASEBASE/$COMMIT/$HOST
 cd $BASEDIR/bitcoin-$HOST
 
 mkdir -p $RELEASEDIR
-ZIPFILES=$(ls $OUTDIR/bin)
+ZIPFILES=$(ls $OUTDIR/bin/*)
 
 # Linux artifacts
 [ -z "$ZIPFILES" ] || \
-       zip -uj $RELEASEDIR/castle-$COMMIT.zip $ZIPFILES
+       zip -uj $RELEASEDIR/castle-$COMMIT.zip $(ZIPFILES
 
 # MaxOSX artifacts
 cp -a Castle-Core.dmg $RELEASEDIR || true
