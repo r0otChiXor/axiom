@@ -17,10 +17,9 @@ cd $BASEDIR/bitcoin-$HOST
 
 mkdir -p $RELEASEDIR
 ZIPFILES=$(ls $OUTDIR/bin)
-exit 1
 
 # Linux artifacts
-[ "$ZIPFILES" = "$OUTDIR/bin/*" ] || \
+[ -z "$ZIPFILES" ] || \
        zip -uj $RELEASEDIR/castle-$COMMIT.zip $ZIPFILES
 
 # MaxOSX artifacts
