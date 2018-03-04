@@ -16,7 +16,7 @@ RELEASEDIR=$BASEDIR/$RELEASEBASE/$COMMIT/$HOST
 cd $BASEDIR/bitcoin-$HOST
 
 mkdir -p $RELEASEDIR
-ZIPFILES=$(ls $OUTDIR/bin/*)
+ZIPFILES=$(ls $OUTDIR/bin/* || true)
 
 # Linux artifacts
 [ -z "$ZIPFILES" ] || \
