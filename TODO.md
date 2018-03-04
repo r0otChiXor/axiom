@@ -1,0 +1,7 @@
+ - new zerocoin modulus
+ - test POW
+ - test POS
+ - test masternode payment
+ - test masternode budgeting
+ - DNS seeds
+ - initial seed nodes
