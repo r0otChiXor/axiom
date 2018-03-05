@@ -4542,9 +4542,12 @@ CBlockIndex* CBlockIndex::GetAncestor(int height)
 
     CBlockIndex* pindexWalk = this;
     int heightWalk = nHeight;
-    while (heightWalk > height) {
+    while (heightWalk > height && pindexWalk) {
         int heightSkip = GetSkipHeight(heightWalk);
         int heightSkipPrev = GetSkipHeight(heightWalk - 1);
+	LogPrintf("nHeight: %d, Height: %d, heightWalk: %d, heightSkip: %d, heightSkipPrev: %d\n", nHeight, height, heightWalk, heightSkip, heightSkipPrev);
+        LogPrintf("pindexWalk: %p\n", pindexWalk);
+
         if (heightSkip == height ||
             (heightSkip > height && !(heightSkipPrev < heightSkip - 2 && heightSkipPrev >= height))) {
             // Only follow pskip if pprev->pskip isn't better than pskip->pprev.
