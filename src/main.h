@@ -58,6 +58,7 @@ struct CBlockTemplate;
 struct CNodeStateStats;
 
 static const uint64_t COIN_YEAR_REWARD = 8 * CENT;
+static const uint32_t MASTERNODE_COINS = 40000;
 
 /** Default for -blockmaxsize and -blockminsize, which control the range of sizes the mining code will create **/
 static const unsigned int DEFAULT_BLOCK_MAX_SIZE = 2000000;

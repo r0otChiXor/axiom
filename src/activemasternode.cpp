@@ -13,7 +13,7 @@
 #include "spork.h"
 
 //
-// Bootup the Masternode, look for a 40000 Castle input and register on the network
+// Bootup the Masternode, look for a MASTERNODE_COINS Castle input and register on the network
 //
 void CActiveMasternode::ManageStatus()
 {
@@ -458,7 +458,7 @@ vector<COutput> CActiveMasternode::SelectCoinsMasternode()
 
     // Filter
     BOOST_FOREACH (const COutput& out, vCoins) {
-        if (out.tx->vout[out.i].nValue == 40000 * COIN) { //exactly
+        if (out.tx->vout[out.i].nValue == MASTERNODE_COINS * COIN) { //exactly
             filteredCoins.push_back(out);
         }
     }

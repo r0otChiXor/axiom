@@ -637,7 +637,7 @@ void BitcoinMiner(CWallet* pwallet, bool fProofOfStake)
                     LogPrintf("CastleMiner : %u transactions in block (%u bytes)\n", pblock->vtx.size(),
                               ::GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION));
 
-                    LogPrintf("CastleMoner : proof-of-work found  \n  hash: %s  \ntarget: %s\n", hash.GetHex(), hashTarget.GetHex());
+                    LogPrintf("CastleMiner : proof-of-work found  \n  hash: %s  \ntarget: %s\n", hash.GetHex(), hashTarget.GetHex());
                     ProcessBlockFound(pblock, *pwallet, reservekey);
                     SetThreadPriority(THREAD_PRIORITY_LOWEST);
 
