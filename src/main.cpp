@@ -2161,13 +2161,12 @@ int64_t GetPOSBlockValue(int64_t nCoinAge)
 }
 
 
-int64_t GetMasternodePayment(int nHeight, int64_t blockValue, bool isPOS)
+int64_t GetMasternodePayment(int64_t blockValue, bool isPOS)
 {
     int64_t ret = 0;
 
     if (Params().NetworkID() == CBaseChainParams::TESTNET) {
-        if (nHeight < 200)
-            return 0;
+        return 0;
     }
 
     if (isPOS) {
@@ -3197,6 +3196,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
 	block.vtx[1].GetCoinAge(nCoinAge, block.nTime);
 	nExpectedMint = GetPOSBlockValue(nCoinAge);
     }
+    nExpectedMint += GetMasternodePayment(nExpectedMint, !block.IsProofOfWork());
 
     //Check that the block does not overmint
     if (!IsBlockValueValid(block, nExpectedMint, pindex->nMint)) {

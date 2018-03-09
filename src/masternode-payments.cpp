@@ -204,11 +204,6 @@ bool IsBlockValueValid(const CBlock& block, CAmount nExpectedValue, CAmount nMin
             }
         }
     } else { // we're synced and have data so check the budget schedule
-
-	// Account for masternode cut
-	bool fIsProofOfStake = !block.IsProofOfWork();
-        nExpectedValue += GetMasternodePayment(nHeight, nExpectedValue, fIsProofOfStake);
-
         //are these blocks even enabled
         if (!IsSporkActive(SPORK_13_ENABLE_SUPERBLOCKS)) {
             return nMinted <= nExpectedValue;
@@ -320,7 +315,7 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int64_t nFe
 	    for (i = 1; i < txNew.vout.size(); i++) {
 		blockValue += txNew.vout[i].nValue;
 	    }
-            masternodePayment = GetMasternodePayment(pindexPrev->nHeight, blockValue, fProofOfStake);
+            masternodePayment = GetMasternodePayment(blockValue, fProofOfStake);
 
             txNew.vout.resize(i + 1);
             txNew.vout[i].scriptPubKey = payee;
@@ -332,7 +327,7 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int64_t nFe
 #endif
         } else {
             blockValue = GetPOWBlockValue(pindexPrev->nHeight);
-            masternodePayment = GetMasternodePayment(pindexPrev->nHeight, blockValue, fProofOfStake);
+            masternodePayment = GetMasternodePayment(blockValue, fProofOfStake);
 
             txNew.vout.resize(2);
             txNew.vout[1].scriptPubKey = payee;
@@ -561,7 +556,7 @@ bool CMasternodeBlockPayees::IsTransactionValid(const CTransaction& txNew)
         nMasternode_Drift_Count = mnodeman.size() + Params().MasternodeCountDrift();
     }
 
-    CAmount requiredMasternodePayment = GetMasternodePayment(nBlockHeight, nReward, txNew.IsCoinStake());
+    CAmount requiredMasternodePayment = GetMasternodePayment(nReward, txNew.IsCoinStake());
 
     //require at least 6 signatures
     BOOST_FOREACH (CMasternodePayee& payee, vecPayments)
