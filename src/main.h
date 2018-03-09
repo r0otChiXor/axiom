@@ -59,6 +59,8 @@ struct CNodeStateStats;
 
 static const uint64_t COIN_YEAR_REWARD = 8 * CENT;
 static const uint32_t MASTERNODE_COINS = 40000;
+static const uint32_t MASTERNODE_POS_PERCENT = 35;
+static const uint32_t MASTERNODE_POW_PERCENT = 35;
 
 /** Default for -blockmaxsize and -blockminsize, which control the range of sizes the mining code will create **/
 static const unsigned int DEFAULT_BLOCK_MAX_SIZE = 2000000;
@@ -243,7 +245,7 @@ bool DisconnectBlocksAndReprocess(int blocks);
 
 // ***TODO***
 double ConvertBitsToDouble(unsigned int nBits);
-int64_t GetMasternodePayment(int nHeight, int64_t blockValue, int nMasternodeCount = 0, bool isPOS = false);
+int64_t GetMasternodePayment(int nHeight, int64_t blockValue, bool isPOS = false);
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader* pblock, bool fProofOfStake);
 
 bool ActivateBestChain(CValidationState& state, CBlock* pblock = NULL, bool fAlreadyChecked = false);

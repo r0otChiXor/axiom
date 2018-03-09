@@ -2161,7 +2161,7 @@ int64_t GetPOSBlockValue(int64_t nCoinAge)
 }
 
 
-int64_t GetMasternodePayment(int nHeight, int64_t blockValue, int nMasternodeCount, bool isPOS)
+int64_t GetMasternodePayment(int nHeight, int64_t blockValue, bool isPOS)
 {
     int64_t ret = 0;
 
@@ -2171,9 +2171,9 @@ int64_t GetMasternodePayment(int nHeight, int64_t blockValue, int nMasternodeCou
     }
 
     if (isPOS) {
-	ret = blockValue * 2 / 10;
+	ret = blockValue * MASTERNODE_POS_PERCENT / 100;
     } else {
-	ret = blockValue * 3 / 10;
+	ret = blockValue * MASTERNODE_POW_PERCENT / 100;
     }
 
     return ret;
