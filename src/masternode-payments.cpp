@@ -206,7 +206,7 @@ bool IsBlockValueValid(const CBlock& block, CAmount nExpectedValue, CAmount nMin
     } else { // we're synced and have data so check the budget schedule
 
 	// Account for masternode cut
-	bool fIsProofOfStake = !block.isProofOfWork();
+	bool fIsProofOfStake = !block.IsProofOfWork();
         nExpectedValue += GetMasternodePayment(nHeight, nExpectedValue, fIsProofOfStake);
 
         //are these blocks even enabled
