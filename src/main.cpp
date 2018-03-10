@@ -4545,8 +4545,8 @@ CBlockIndex* CBlockIndex::GetAncestor(int height)
     while (heightWalk > height && pindexWalk) {
         int heightSkip = GetSkipHeight(heightWalk);
         int heightSkipPrev = GetSkipHeight(heightWalk - 1);
-	LogPrintf("nHeight: %d, Height: %d, heightWalk: %d, heightSkip: %d, heightSkipPrev: %d\n", nHeight, height, heightWalk, heightSkip, heightSkipPrev);
-        LogPrintf("pindexWalk: %p\n", pindexWalk);
+	//LogPrintf("nHeight: %d, Height: %d, heightWalk: %d, heightSkip: %d, heightSkipPrev: %d\n", nHeight, height, heightWalk, heightSkip, heightSkipPrev);
+        //LogPrintf("pindexWalk: %p\n", pindexWalk);
 
         if (heightSkip == height ||
             (heightSkip > height && !(heightSkipPrev < heightSkip - 2 && heightSkipPrev >= height))) {
