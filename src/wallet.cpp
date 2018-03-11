@@ -2954,7 +2954,8 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
             //presstab HyperStake - calculate the total size of our new output including the stake reward so that we can use it to decide whether to split the stake outputs
             uint64_t nCoinAge;
-            CTransaction(txNew).GetCoinAge(nCoinAge, nTxNewTime);
+            uint64_t nRawValue;
+            CTransaction(txNew).GetCoinAge(nCoinAge, nTxNewTime, nRawValue);
             uint64_t nTotalSize = pcoin.first->vout[pcoin.second].nValue + GetPOSBlockValue(nCoinAge);
 
             //presstab HyperStake - if MultiSend is set to send in coinstake we will add our outputs here (values asigned further down)
@@ -2974,10 +2975,11 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
     // Calculate reward
     CAmount nReward;
+    uint64_t nRawValue;
     uint64_t nCoinAge;
-    CTransaction(txNew).GetCoinAge(nCoinAge, nTxNewTime);
+    CTransaction(txNew).GetCoinAge(nCoinAge, nTxNewTime, nRawValue);
     nReward = GetPOSBlockValue(nCoinAge);
-    nCredit += nReward;
+    nCredit = nRawValue + nReward;
 
     CAmount nMinFee = 0;
     while (true) {
@@ -3007,7 +3009,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     }
 
     //Masternode payment
-    FillBlockPayee(txNew, nMinFee, true);
+    FillBlockPayee(txNew, nMinFee, true, nTxNewTime);
 
     // Sign
     int nIn = 0;

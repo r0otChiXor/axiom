@@ -433,6 +433,7 @@ bool CheckStakeModifierCheckpoints(int nHeight, unsigned int nStakeModifierCheck
 {
     if (fTestNet) return true; // Testnet has no checkpoints
     if (mapStakeModifierCheckpoints.count(nHeight)) {
+	LogPrintf("height: %d, calculated: 0x%08x, checkpoint: 0x%08x\n", nHeight, nStakeModifierChecksum, mapStakeModifierCheckpoints[nHeight]);
         return nStakeModifierChecksum == mapStakeModifierCheckpoints[nHeight];
     }
     return true;

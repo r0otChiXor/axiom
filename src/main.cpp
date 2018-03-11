@@ -868,13 +868,13 @@ int GetIXConfirmations(uint256 nTXHash)
 }
 
 
-bool CTransaction::GetCoinAge(uint64_t& nCoinAge, uint32_t nTime) const
+bool CTransaction::GetCoinAge(uint64_t& nCoinAge, uint32_t nTime, uint64_t& nRawValue) const
 {
     uint32_t nTxTime = nTime;
     if (!nTxTime) {
-	nTxTime = GetAdjustedTime();
+        nTxTime = GetAdjustedTime();
     }
-    return ::GetCoinAge(*this, nTxTime, nCoinAge);
+    return ::GetCoinAge(*this, nTxTime, nCoinAge, nRawValue);
 }
 
 // ppcoin: total coin age spent in transaction, in the unit of coin-days.
@@ -884,10 +884,11 @@ bool CTransaction::GetCoinAge(uint64_t& nCoinAge, uint32_t nTime) const
 // guaranteed to be in main chain by sync-checkpoint. This rule is
 // introduced to help nodes establish a consistent view of the coin
 // age (trust score) of competing branches.
-bool GetCoinAge(const CTransaction& tx, const unsigned int nTxTime, uint64_t& nCoinAge)
+bool GetCoinAge(const CTransaction& tx, const unsigned int nTxTime, uint64_t& nCoinAge, uint64_t& nRawValue)
 {
     uint256 bnCentSecond = 0; // coin age in the unit of cent-seconds
     nCoinAge = 0;
+    nRawValue = 0;
 
     CBlockIndex* pindex = NULL;
     BOOST_FOREACH (const CTxIn& txin, tx.vin) {
@@ -919,11 +920,14 @@ bool GetCoinAge(const CTransaction& tx, const unsigned int nTxTime, uint64_t& nC
         }
 
         int64_t nValueIn = txPrev.vout[txin.prevout.n].nValue;
-        bnCentSecond += uint256(nValueIn) * (nTxTime - prevblock.nTime);
+        nRawValue += nValueIn;
+        bnCentSecond += uint256(nValueIn) / CENT * (nTxTime - prevblock.nTime);
     }
 
-    uint256 bnCoinDay = bnCentSecond / COIN / (24 * 60 * 60);
-    LogPrintf("coin age bnCoinDay=%s\n", bnCoinDay.ToString().c_str());
+    //LogPrintf("coin age nTxTime=%d\n", nTxTime);
+    //LogPrintf("coin age bnCentSecond=%s\n", bnCentSecond.ToString().c_str());
+    uint256 bnCoinDay = bnCentSecond * CENT / (24 * 60 * 60);
+    //LogPrintf("coin age bnCoinDay=%s\n", bnCoinDay.ToString().c_str());
     nCoinAge = bnCoinDay.GetCompact();
     return true;
 }
@@ -2134,9 +2138,9 @@ int64_t GetPOWBlockValue(int nHeight)
     if (Params().NetworkID() == CBaseChainParams::TESTNET) {
         if (nHeight < 200 && nHeight > 0) {
             nSubsidy = 250000 * COIN;
-	} else if (nHeight < 86400 && nHeight > 0) {
+        } else if (nHeight < 86400 && nHeight > 0) {
             nSubsidy = 250 * COIN;
-	} else if (nHeight < 145000 && nHeight >= 86400) {
+        } else if (nHeight < 145000 && nHeight >= 86400) {
             nSubsidy = 8 * COIN;
         } else if (nHeight <= Params().LAST_POW_BLOCK() && nHeight >= 145000) {
             nSubsidy = 45 * COIN;
@@ -2145,17 +2149,17 @@ int64_t GetPOWBlockValue(int nHeight)
         if (nHeight == 0) {
             nSubsidy = 8000000 * COIN;
         } else if (nHeight <= Params().LAST_POW_BLOCK() && nHeight > 0) {
-	    // 2 min blocks, get number of intervals
+            // 2 min blocks, get number of intervals
             int64_t nIntervals = nHeight / Params().SubsidyHalvingInterval();
             nSubsidy = (8 * COIN) >> nIntervals;
-	}
+        }
     }
     return nSubsidy;
 }
 
 int64_t GetPOSBlockValue(int64_t nCoinAge)
 {
-    int64_t nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8);
+    int64_t nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) / CENT;
 
     return nSubsidy;
 }
@@ -2170,9 +2174,9 @@ int64_t GetMasternodePayment(int64_t blockValue, bool isPOS)
     }
 
     if (isPOS) {
-	ret = blockValue * MASTERNODE_POS_PERCENT / 100;
+        ret = (blockValue * MASTERNODE_POS_PERCENT) / 100;
     } else {
-	ret = blockValue * MASTERNODE_POW_PERCENT / 100;
+        ret = (blockValue * MASTERNODE_POW_PERCENT) / 100;
     }
 
     return ret;
@@ -3032,10 +3036,6 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
         return true;
     }
 
-    if (pindex->nHeight <= Params().LAST_POW_BLOCK() && block.IsProofOfStake())
-        return state.DoS(100, error("ConnectBlock() : PoS period not active"),
-            REJECT_INVALID, "PoS-early");
-
     if (pindex->nHeight > Params().LAST_POW_BLOCK() && block.IsProofOfWork())
         return state.DoS(100, error("ConnectBlock() : PoW period ended"),
             REJECT_INVALID, "PoW-ended");
@@ -3188,15 +3188,25 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     LogPrint("bench", "      - Connect %u transactions: %.2fms (%.3fms/tx, %.3fms/txin) [%.2fs]\n", (unsigned)block.vtx.size(), 0.001 * (nTime1 - nTimeStart), 0.001 * (nTime1 - nTimeStart) / block.vtx.size(), nInputs <= 1 ? 0 : 0.001 * (nTime1 - nTimeStart) / (nInputs - 1), nTimeConnect * 0.000001);
 
     CAmount nExpectedMint;
+    uint64_t nBlockHeight = pindex->pprev->nHeight;
 
     if (block.IsProofOfWork()) {
-        nExpectedMint = GetPOWBlockValue(pindex->pprev->nHeight);
+        nExpectedMint = GetPOWBlockValue(nBlockHeight);
+        LogPrintf("POW: before masternode: %s  ", FormatMoney(nExpectedMint));
+        nExpectedMint += GetMasternodePayment(nExpectedMint, false);
+        LogPrintf("after masternode: %s\n", FormatMoney(nExpectedMint));
     } else {
         uint64_t nCoinAge;
-	block.vtx[1].GetCoinAge(nCoinAge, block.nTime);
-	nExpectedMint = GetPOSBlockValue(nCoinAge);
+        uint64_t nRawValue;
+        uint64_t nReward;
+        uint32_t nTime = block.nTime;
+        block.vtx[1].GetCoinAge(nCoinAge, nTime, nRawValue);
+        nReward = GetPOSBlockValue(nCoinAge);
+        nExpectedMint = nRawValue + nReward;
+        LogPrintf("POS: before masternode: %s  ", FormatMoney(nExpectedMint));
+        nExpectedMint += GetMasternodePayment(nReward, true);
+        LogPrintf("after masternode: %s\n", FormatMoney(nExpectedMint));
     }
-    nExpectedMint += GetMasternodePayment(nExpectedMint, !block.IsProofOfWork());
 
     //Check that the block does not overmint
     if (!IsBlockValueValid(block, nExpectedMint, pindex->nMint)) {
@@ -4545,7 +4555,7 @@ CBlockIndex* CBlockIndex::GetAncestor(int height)
     while (heightWalk > height && pindexWalk) {
         int heightSkip = GetSkipHeight(heightWalk);
         int heightSkipPrev = GetSkipHeight(heightWalk - 1);
-	//LogPrintf("nHeight: %d, Height: %d, heightWalk: %d, heightSkip: %d, heightSkipPrev: %d\n", nHeight, height, heightWalk, heightSkip, heightSkipPrev);
+        //LogPrintf("nHeight: %d, Height: %d, heightWalk: %d, heightSkip: %d, heightSkipPrev: %d\n", nHeight, height, heightWalk, heightSkip, heightSkipPrev);
         //LogPrintf("pindexWalk: %p\n", pindexWalk);
 
         if (heightSkip == height ||
@@ -4654,7 +4664,9 @@ bool ProcessNewBlock(CValidationState& state, CNode* pfrom, CBlock* pblock, CDis
             pwalletMain->AutoCombineDust();
     }
 
-    LogPrintf("%s : ACCEPTED in %ld milliseconds with size=%d\n", __func__, GetTimeMillis() - nStartTime,
+    LogPrintf("%s : ACCEPTED (%s) in %ld milliseconds with size=%d\n", __func__,
+              pblock->IsProofOfStake() ? "POS" : "POW",
+              GetTimeMillis() - nStartTime,
               pblock->GetSerializeSize(SER_DISK, CLIENT_VERSION));
 
     return true;
