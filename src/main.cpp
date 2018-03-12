@@ -2851,8 +2851,6 @@ bool RecalculateCSTLSupply(int nHeightStart)
 
     CBlockIndex* pindex = chainActive[nHeightStart];
     CAmount nSupplyPrev = pindex->pprev->nMoneySupply;
-    if (nHeightStart == Params().Zerocoin_StartHeight())
-        nSupplyPrev = CAmount(5449796547496199);
 
     while (true) {
         if (pindex->nHeight % 1000 == 0)
@@ -2890,6 +2888,9 @@ bool RecalculateCSTLSupply(int nHeightStart)
 
         // Rewrite money supply
         pindex->nMoneySupply = nSupplyPrev + nValueOut - nValueIn;
+        LogPrintf("MoneySupply @ height %d: %s (prev %s)\n", pindex->nHeight,
+                  FormatMoney(pindex->nMoneySupply),
+		  FormatMoney(nSupplyPrev));
         nSupplyPrev = pindex->nMoneySupply;
 
         // Add fraudulent funds to the supply and remove any recovered funds.
@@ -3178,6 +3179,9 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     CAmount nMoneySupplyPrev = pindex->pprev ? pindex->pprev->nMoneySupply : 0;
     pindex->nMoneySupply = nMoneySupplyPrev + nValueOut - nValueIn;
     pindex->nMint = pindex->nMoneySupply - nMoneySupplyPrev + nFees;
+    LogPrintf("MoneySupply @ height %d: %s (prev %s), mint: %s\n",
+              pindex->nHeight, FormatMoney(pindex->nMoneySupply),
+	      FormatMoney(nMoneySupplyPrev), FormatMoney(pindex->nMint));
 
 //    LogPrintf("XX69----------> ConnectBlock(): nValueOut: %s, nValueIn: %s, nFees: %s, nMint: %s zCSTLSpent: %s\n",
 //              FormatMoney(nValueOut), FormatMoney(nValueIn),
