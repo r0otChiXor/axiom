@@ -30,6 +30,7 @@ static const char* ppszTypeName[] =
         "mn budget finalized vote",
         "mn quorum",
         "mn announce",
+        "mn potential announce",
         "mn ping",
         "dstx"};
 

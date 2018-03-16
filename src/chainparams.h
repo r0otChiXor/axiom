@@ -118,6 +118,9 @@ public:
     int Zerocoin_StartTime() const { return nZerocoinStartTime; }
     int Block_Enforce_Invalid() const { return nBlockEnforceInvalidUTXO; }
 
+    int MasternodeMaxBase() const { return nMasternodeMaxBase; }
+    int MasternodeMaxIncrement() const { return nMasternodeMaxIncrement; }
+
 protected:
     CChainParams() {}
 
@@ -136,6 +139,8 @@ protected:
     int64_t nTargetSpacing;
     int nLastPOWBlock;
     int nMasternodeCountDrift;
+    int nMasternodeMaxBase;
+    int nMasternodeMaxIncrement;
     int nMaturity;
     int nModifierUpdateBlock;
     CAmount nMaxMoneyOut;

@@ -10,8 +10,9 @@
 #define MASTERNODE_SYNC_INITIAL 0
 #define MASTERNODE_SYNC_SPORKS 1
 #define MASTERNODE_SYNC_LIST 2
-#define MASTERNODE_SYNC_MNW 3
-#define MASTERNODE_SYNC_BUDGET 4
+#define MASTERNODE_SYNC_POTENTIAL 3
+#define MASTERNODE_SYNC_MNW 4
+#define MASTERNODE_SYNC_BUDGET 5
 #define MASTERNODE_SYNC_BUDGET_PROP 10
 #define MASTERNODE_SYNC_BUDGET_FIN 11
 #define MASTERNODE_SYNC_FAILED 998
@@ -31,10 +32,12 @@ class CMasternodeSync
 {
 public:
     std::map<uint256, int> mapSeenSyncMNB;
+    std::map<uint256, int> mapSeenSyncMNPB;
     std::map<uint256, int> mapSeenSyncMNW;
     std::map<uint256, int> mapSeenSyncBudget;
 
     int64_t lastMasternodeList;
+    int64_t lastMasternodePotentialList;
     int64_t lastMasternodeWinner;
     int64_t lastBudgetItem;
     int64_t lastFailure;
@@ -42,11 +45,13 @@ public:
 
     // sum of all counts
     int sumMasternodeList;
+    int sumMasternodePotentialList;
     int sumMasternodeWinner;
     int sumBudgetItemProp;
     int sumBudgetItemFin;
     // peers that reported counts
     int countMasternodeList;
+    int countMasternodePotentialList;
     int countMasternodeWinner;
     int countBudgetItemProp;
     int countBudgetItemFin;
@@ -61,6 +66,7 @@ public:
     CMasternodeSync();
 
     void AddedMasternodeList(uint256 hash);
+    void AddedMasternodePotentialList(uint256 hash, std::vector<CNetAddr>& seenNodes);
     void AddedMasternodeWinner(uint256 hash);
     void AddedBudgetItem(uint256 hash);
     void GetNextAsset();

@@ -66,19 +66,20 @@ CMasternode::CMasternode()
     pubKeyCollateralAddress = CPubKey();
     pubKeyMasternode = CPubKey();
     sig = std::vector<unsigned char>();
-    activeState = MASTERNODE_ENABLED;
+    activeState = MASTERNODE_POTENTIAL;
     sigTime = GetAdjustedTime();
     lastPing = CMasternodePing();
     cacheInputAge = 0;
     cacheInputAgeBlock = 0;
     unitTest = false;
     allowFreeTx = true;
-    nActiveState = MASTERNODE_ENABLED,
+    nActiveState = MASTERNODE_POTENTIAL,
     protocolVersion = PROTOCOL_VERSION;
     nLastDsq = 0;
     nScanningErrorCount = 0;
     nLastScanningErrorBlockHeight = 0;
     lastTimeChecked = 0;
+    vSeenByNodes.clear();
     nLastDsee = 0;  // temporary, do not save. Remove after migration to v12
     nLastDseep = 0; // temporary, do not save. Remove after migration to v12
 }
@@ -98,12 +99,13 @@ CMasternode::CMasternode(const CMasternode& other)
     cacheInputAgeBlock = other.cacheInputAgeBlock;
     unitTest = other.unitTest;
     allowFreeTx = other.allowFreeTx;
-    nActiveState = MASTERNODE_ENABLED,
+    nActiveState = MASTERNODE_POTENTIAL,
     protocolVersion = other.protocolVersion;
     nLastDsq = other.nLastDsq;
     nScanningErrorCount = other.nScanningErrorCount;
     nLastScanningErrorBlockHeight = other.nLastScanningErrorBlockHeight;
     lastTimeChecked = 0;
+    vSeenByNodes = other.vSeenByNodes;
     nLastDsee = other.nLastDsee;   // temporary, do not save. Remove after migration to v12
     nLastDseep = other.nLastDseep; // temporary, do not save. Remove after migration to v12
 }
@@ -116,19 +118,20 @@ CMasternode::CMasternode(const CMasternodeBroadcast& mnb)
     pubKeyCollateralAddress = mnb.pubKeyCollateralAddress;
     pubKeyMasternode = mnb.pubKeyMasternode;
     sig = mnb.sig;
-    activeState = MASTERNODE_ENABLED;
+    activeState = MASTERNODE_POTENTIAL;
     sigTime = mnb.sigTime;
     lastPing = mnb.lastPing;
     cacheInputAge = 0;
     cacheInputAgeBlock = 0;
     unitTest = false;
     allowFreeTx = true;
-    nActiveState = MASTERNODE_ENABLED,
+    nActiveState = MASTERNODE_POTENTIAL,
     protocolVersion = mnb.protocolVersion;
     nLastDsq = mnb.nLastDsq;
     nScanningErrorCount = 0;
     nLastScanningErrorBlockHeight = 0;
     lastTimeChecked = 0;
+    vSeenByNodes.clear();
     nLastDsee = 0;  // temporary, do not save. Remove after migration to v12
     nLastDseep = 0; // temporary, do not save. Remove after migration to v12
 }
@@ -198,7 +201,6 @@ void CMasternode::Check(bool forceCheck)
     //once spent, stop doing the checks
     if (activeState == MASTERNODE_VIN_SPENT) return;
 
-
     if (!IsPingedWithin(MASTERNODE_REMOVAL_SECONDS)) {
         activeState = MASTERNODE_REMOVE;
         return;
@@ -225,6 +227,15 @@ void CMasternode::Check(bool forceCheck)
                 return;
             }
         }
+    }
+
+    if (activeState == MASTERNODE_POTENTIAL)
+    {
+	// Check number of nodes seen vs required
+        if (!mnodeman.CheckConsensus(*this)) {
+	    // if not successful, done here
+	    return;
+	}
     }
 
     activeState = MASTERNODE_ENABLED; // OK
@@ -301,6 +312,8 @@ std::string CMasternode::GetStatus()
     switch (nActiveState) {
     case CMasternode::MASTERNODE_PRE_ENABLED:
         return "PRE_ENABLED";
+    case CMasternode::MASTERNODE_POTENTIAL:
+        return "POTENTIAL";
     case CMasternode::MASTERNODE_ENABLED:
         return "ENABLED";
     case CMasternode::MASTERNODE_EXPIRED:
@@ -326,6 +339,16 @@ bool CMasternode::IsValidNetAddr()
            (IsReachable(addr) && addr.IsRoutable());
 }
 
+void CMasternode::UpdateSeenNodes(std::vector<CNetAddr>& seenNodes)
+{
+    std::vector<CNetAddr> temp;
+    std::sort(vSeenByNodes.begin(), vSeenByNodes.end());
+    std::sort(seenNodes.begin(), seenNodes.end());
+    std::set_union(vSeenByNodes.begin(), vSeenByNodes.end(), seenNodes.begin(),
+		   seenNodes.end(), temp.begin());
+    std::copy(temp.begin(), temp.end(), vSeenByNodes.begin());
+}
+
 CMasternodeBroadcast::CMasternodeBroadcast()
 {
     vin = CTxIn();
@@ -333,7 +356,7 @@ CMasternodeBroadcast::CMasternodeBroadcast()
     pubKeyCollateralAddress = CPubKey();
     pubKeyMasternode1 = CPubKey();
     sig = std::vector<unsigned char>();
-    activeState = MASTERNODE_ENABLED;
+    activeState = MASTERNODE_POTENTIAL;
     sigTime = GetAdjustedTime();
     lastPing = CMasternodePing();
     cacheInputAge = 0;
@@ -353,7 +376,7 @@ CMasternodeBroadcast::CMasternodeBroadcast(CService newAddr, CTxIn newVin, CPubK
     pubKeyCollateralAddress = pubKeyCollateralAddressNew;
     pubKeyMasternode = pubKeyMasternodeNew;
     sig = std::vector<unsigned char>();
-    activeState = MASTERNODE_ENABLED;
+    activeState = MASTERNODE_POTENTIAL;
     sigTime = GetAdjustedTime();
     lastPing = CMasternodePing();
     cacheInputAge = 0;
@@ -549,7 +572,7 @@ bool CMasternodeBroadcast::CheckAndUpdate(int& nDos)
         LogPrint("masternode","mnb - Got updated entry for %s\n", vin.prevout.hash.ToString());
         if (pmn->UpdateFromNewBroadcast((*this))) {
             pmn->Check();
-            if (pmn->IsEnabled()) Relay();
+            if (pmn->IsEnabled() || pmn->IsPotential()) Relay();
         }
         masternodeSync.AddedMasternodeList(GetHash());
     }
@@ -569,7 +592,7 @@ bool CMasternodeBroadcast::CheckInputsAndAdd(int& nDoS)
 
     if (pmn != NULL) {
         // nothing to do here if we already know about this masternode and it's enabled
-        if (pmn->IsEnabled()) return true;
+        if (pmn->IsEnabled() || pmn->IsPotential()) return true;
         // if it's not enabled, remove old MN first and continue
         else
             mnodeman.Remove(pmn->vin);

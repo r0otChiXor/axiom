@@ -5393,6 +5393,14 @@ bool static AlreadyHave(const CInv& inv)
             return true;
         }
         return false;
+    case MSG_MASTERNODE_POTENTIAL_ANNOUNCE:
+        if (mnodeman.mapSeenMasternodeBroadcast.count(inv.hash)) {
+	    std::vector<CNetAddr> myaddr;
+	    myaddr.push_back(activeMasternode.service);
+            masternodeSync.AddedMasternodePotentialList(inv.hash, myaddr);
+            return true;
+        }
+        return false;
     case MSG_MASTERNODE_PING:
         return mnodeman.mapSeenMasternodePing.count(inv.hash);
     }
@@ -5580,6 +5588,19 @@ void static ProcessGetData(CNode* pfrom)
                         ss.reserve(1000);
                         ss << mnodeman.mapSeenMasternodeBroadcast[inv.hash];
                         pfrom->PushMessage("mnb", ss);
+                        pushed = true;
+                    }
+                }
+
+                if (!pushed && inv.type == MSG_MASTERNODE_POTENTIAL_ANNOUNCE) {
+                    if (mnodeman.mapSeenMasternodeBroadcast.count(inv.hash)) {
+			CMasternodeBroadcast mnp = mnodeman.mapSeenMasternodeBroadcast[inv.hash];
+			CMasternode mn(mnp);
+                        CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+                        ss.reserve(1000 + 8 * mn.vSeenByNodes.size());
+                        ss << mnp;
+			ss << mn.vSeenByNodes;
+                        pfrom->PushMessage("mnpb", ss);
                         pushed = true;
                     }
                 }

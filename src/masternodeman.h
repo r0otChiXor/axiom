@@ -17,6 +17,7 @@
 
 #define MASTERNODES_DUMP_SECONDS (15 * 60)
 #define MASTERNODES_DSEG_SECONDS (3 * 60 * 60)
+#define MASTERNODES_DSEGP_SECONDS (3 * 60 * 60)
 
 using namespace std;
 
@@ -58,14 +59,21 @@ private:
     // critical section to protect the inner data structures specifically on messaging
     mutable CCriticalSection cs_process_message;
 
-    // map to hold all MNs
+    // vector to hold all MNs
     std::vector<CMasternode> vMasternodes;
+    // vector to hold all potential MNs
+    std::vector<CMasternode> vPotentialMasternodes;
     // who's asked for the Masternode list and the last time
     std::map<CNetAddr, int64_t> mAskedUsForMasternodeList;
     // who we asked for the Masternode list and the last time
     std::map<CNetAddr, int64_t> mWeAskedForMasternodeList;
     // which Masternodes we've asked for
     std::map<COutPoint, int64_t> mWeAskedForMasternodeListEntry;
+    
+    // who's asked for the Masternode list and the last time
+    std::map<CNetAddr, int64_t> mAskedUsForPotentialMasternodeList;
+    // who we asked for the Masternode list and the last time
+    std::map<CNetAddr, int64_t> mWeAskedForPotentialMasternodeList;
 
 public:
     // Keep track of all broadcasts I've seen
@@ -83,6 +91,7 @@ public:
     {
         LOCK(cs);
         READWRITE(vMasternodes);
+        READWRITE(vPotentialMasternodes);
         READWRITE(mAskedUsForMasternodeList);
         READWRITE(mWeAskedForMasternodeList);
         READWRITE(mWeAskedForMasternodeListEntry);
@@ -153,9 +162,21 @@ public:
     std::string ToString() const;
 
     void Remove(CTxIn vin);
+    void RemovePotential(CTxIn vin);
+    void RemoveFromVector(std::vector<CMasternode>& vec, CTxIn vin);
 
     /// Update masternode list and maps using provided CMasternodeBroadcast
     void UpdateMasternodeList(CMasternodeBroadcast mnb);
+
+    bool CheckConsensus(CMasternode& mn);
+
+    int ConsensusRequired();
+
+    int MaxMasternodeCount();
+
+    int PotentialMasternodeCount() { return vPotentialMasternodes.size(); }
+    void RemoveInactive(std::vector<CMasternode>& vec,
+		        bool forceExpiredRemoval);
 };
 
 #endif

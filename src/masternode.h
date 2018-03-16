@@ -114,6 +114,7 @@ private:
 public:
     enum state {
         MASTERNODE_PRE_ENABLED,
+	MASTERNODE_POTENTIAL,
         MASTERNODE_ENABLED,
         MASTERNODE_EXPIRED,
         MASTERNODE_OUTPOINT_SPENT,
@@ -143,6 +144,7 @@ public:
     int nScanningErrorCount;
     int nLastScanningErrorBlockHeight;
     CMasternodePing lastPing;
+    std::vector<CNetAddr> vSeenByNodes;
 
     int64_t nLastDsee;  // temporary, do not save. Remove after migration to v12
     int64_t nLastDseep; // temporary, do not save. Remove after migration to v12
@@ -216,7 +218,10 @@ public:
         READWRITE(nLastDsq);
         READWRITE(nScanningErrorCount);
         READWRITE(nLastScanningErrorBlockHeight);
+	READWRITE(vSeenByNodes);
     }
+
+    void UpdateSeenNodes(std::vector<CNetAddr>& seenNodes);
 
     int64_t SecondsSincePayment();
 
@@ -254,6 +259,16 @@ public:
         return activeState == MASTERNODE_ENABLED;
     }
 
+    bool IsPotential()
+    {
+	return activeState == MASTERNODE_POTENTIAL;
+    }
+
+    int SeenByNodes()
+    {
+	return vSeenByNodes.size();
+    }
+
     int GetMasternodeInputAge()
     {
         if (chainActive.Tip() == NULL) return 0;
@@ -273,6 +288,7 @@ public:
         std::string strStatus = "ACTIVE";
 
         if (activeState == CMasternode::MASTERNODE_ENABLED) strStatus = "ENABLED";
+        if (activeState == CMasternode::MASTERNODE_POTENTIAL) strStatus = "POTENTIAL";
         if (activeState == CMasternode::MASTERNODE_EXPIRED) strStatus = "EXPIRED";
         if (activeState == CMasternode::MASTERNODE_VIN_SPENT) strStatus = "VIN_SPENT";
         if (activeState == CMasternode::MASTERNODE_REMOVE) strStatus = "REMOVE";
