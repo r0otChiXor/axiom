@@ -100,6 +100,7 @@ void CMasternodeSync::AddedMasternodeList(uint256 hash)
 
 void CMasternodeSync::AddedMasternodePotentialList(uint256 hash, std::vector<CNetAddr>& seenNodes)
 {
+    LogPrintf("AddedMasternodePotentialList\n");
     if (mnodeman.mapSeenMasternodeBroadcast.count(hash)) {
         if (mapSeenSyncMNPB[hash] < MASTERNODE_SYNC_THRESHOLD) {
             lastMasternodePotentialList = GetTime();
@@ -222,6 +223,7 @@ void CMasternodeSync::ProcessMessage(CNode* pfrom, std::string& strCommand, CDat
             break;
         case (MASTERNODE_SYNC_POTENTIAL):
             if (nItemID != RequestedMasternodeAssets) return;
+	    LogPrintf("ProcessMessage - Potential\n");
             sumMasternodePotentialList += nCount;
             countMasternodePotentialList++;
             break;
@@ -360,7 +362,7 @@ void CMasternodeSync::Process()
             }
 
             if (RequestedMasternodeAssets == MASTERNODE_SYNC_POTENTIAL) {
-                LogPrint("masternode", "CMasternodeSync::Process() - lastMasternodePotentialList %lld (GetTime() - MASTERNODE_SYNC_TIMEOUT) %lld\n", lastMasternodePotentialList, GetTime() - MASTERNODE_SYNC_TIMEOUT);
+                LogPrintf("CMasternodeSync::Process() - lastMasternodePotentialList %lld (GetTime() - MASTERNODE_SYNC_TIMEOUT) %lld\n", lastMasternodePotentialList, GetTime() - MASTERNODE_SYNC_TIMEOUT);
                 if (lastMasternodePotentialList > 0 && lastMasternodePotentialList < GetTime() - MASTERNODE_SYNC_TIMEOUT * 2 && RequestedMasternodeAttempt >= MASTERNODE_SYNC_THRESHOLD) { //hasn't received a new item in the last five seconds, so we'll move to the
                     GetNextAsset();
                     return;
@@ -386,8 +388,7 @@ void CMasternodeSync::Process()
 
                 if (RequestedMasternodeAttempt >= MASTERNODE_SYNC_THRESHOLD * 3) return;
 
-		// TODO: send the potential masternode data
-                //mnodeman.DsegUpdate(pnode);
+                mnodeman.DsegpUpdate(pnode);
                 RequestedMasternodeAttempt++;
                 return;
             }

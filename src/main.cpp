@@ -2890,7 +2890,7 @@ bool RecalculateCSTLSupply(int nHeightStart)
         pindex->nMoneySupply = nSupplyPrev + nValueOut - nValueIn;
         LogPrintf("MoneySupply @ height %d: %s (prev %s)\n", pindex->nHeight,
                   FormatMoney(pindex->nMoneySupply),
-		  FormatMoney(nSupplyPrev));
+                  FormatMoney(nSupplyPrev));
         nSupplyPrev = pindex->nMoneySupply;
 
         // Add fraudulent funds to the supply and remove any recovered funds.
@@ -3181,7 +3181,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     pindex->nMint = pindex->nMoneySupply - nMoneySupplyPrev + nFees;
     LogPrintf("MoneySupply @ height %d: %s (prev %s), mint: %s\n",
               pindex->nHeight, FormatMoney(pindex->nMoneySupply),
-	      FormatMoney(nMoneySupplyPrev), FormatMoney(pindex->nMint));
+              FormatMoney(nMoneySupplyPrev), FormatMoney(pindex->nMint));
 
 //    LogPrintf("XX69----------> ConnectBlock(): nValueOut: %s, nValueIn: %s, nFees: %s, nMint: %s zCSTLSpent: %s\n",
 //              FormatMoney(nValueOut), FormatMoney(nValueIn),
@@ -5395,8 +5395,9 @@ bool static AlreadyHave(const CInv& inv)
         return false;
     case MSG_MASTERNODE_POTENTIAL_ANNOUNCE:
         if (mnodeman.mapSeenMasternodeBroadcast.count(inv.hash)) {
-	    std::vector<CNetAddr> myaddr;
-	    myaddr.push_back(activeMasternode.service);
+	    LogPrintf("AlreadyHave - potential\n");
+            std::vector<CNetAddr> myaddr;
+            myaddr.push_back(activeMasternode.service);
             masternodeSync.AddedMasternodePotentialList(inv.hash, myaddr);
             return true;
         }
@@ -5594,12 +5595,13 @@ void static ProcessGetData(CNode* pfrom)
 
                 if (!pushed && inv.type == MSG_MASTERNODE_POTENTIAL_ANNOUNCE) {
                     if (mnodeman.mapSeenMasternodeBroadcast.count(inv.hash)) {
-			CMasternodeBroadcast mnp = mnodeman.mapSeenMasternodeBroadcast[inv.hash];
-			CMasternode mn(mnp);
+			LogPrintf("ProcessGetData - potential\n");
+                        CMasternodeBroadcast mnp = mnodeman.mapSeenMasternodeBroadcast[inv.hash];
+                        CMasternode mn(mnp);
                         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
                         ss.reserve(1000 + 8 * mn.vSeenByNodes.size());
                         ss << mnp;
-			ss << mn.vSeenByNodes;
+                        ss << mn.vSeenByNodes;
                         pfrom->PushMessage("mnpb", ss);
                         pushed = true;
                     }

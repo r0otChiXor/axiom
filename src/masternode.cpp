@@ -233,9 +233,14 @@ void CMasternode::Check(bool forceCheck)
     {
 	// Check number of nodes seen vs required
         if (!mnodeman.CheckConsensus(*this)) {
-	    // if not successful, done here
-	    return;
+	    LogPrintf("No consensus yet, still potential\n");
+	} else {
+	    LogPrintf("Consensus met, moving to active list\n");
+	    mnodeman.RemovePotential(vin);
+            activeState = MASTERNODE_ENABLED; // OK
+	    mnodeman.Add(*this);
 	}
+	return;
     }
 
     activeState = MASTERNODE_ENABLED; // OK
@@ -341,6 +346,7 @@ bool CMasternode::IsValidNetAddr()
 
 void CMasternode::UpdateSeenNodes(std::vector<CNetAddr>& seenNodes)
 {
+    LogPrintf("UpdateSeenNodes\n");
     std::vector<CNetAddr> temp;
     std::sort(vSeenByNodes.begin(), vSeenByNodes.end());
     std::sort(seenNodes.begin(), seenNodes.end());

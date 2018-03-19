@@ -454,6 +454,28 @@ void CMasternodeMan::DsegUpdate(CNode* pnode)
     mWeAskedForMasternodeList[pnode->addr] = askAgain;
 }
 
+void CMasternodeMan::DsegpUpdate(CNode* pnode)
+{
+    LOCK(cs);
+
+    LogPrintf("DsegpUpdate\n");
+    if (Params().NetworkID() == CBaseChainParams::MAIN) {
+        if (!(pnode->addr.IsRFC1918() || pnode->addr.IsLocal())) {
+            std::map<CNetAddr, int64_t>::iterator it = mWeAskedForPotentialMasternodeList.find(pnode->addr);
+            if (it != mWeAskedForPotentialMasternodeList.end()) {
+                if (GetTime() < (*it).second) {
+                    LogPrint("masternode", "dsegp - we already asked peer %i for the list; skipping...\n", pnode->GetId());
+                    return;
+                }
+            }
+        }
+    }
+
+    pnode->PushMessage("dsegp", CTxIn());
+    int64_t askAgain = GetTime() + MASTERNODES_DSEGP_SECONDS;
+    mWeAskedForPotentialMasternodeList[pnode->addr] = askAgain;
+}
+
 CMasternode* CMasternodeMan::Find(const CScript& payee)
 {
     LOCK(cs);
@@ -754,7 +776,6 @@ void CMasternodeMan::ProcessMasternodeConnections()
     }
 }
 
-// TODO:  update for Potential
 void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStream& vRecv)
 {
     if (fLiteMode) return; //disable all Obfuscation/Masternode related functionality
@@ -804,6 +825,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
     }
 
     else if (strCommand == "mnpb") { // Potential Masternode Broadcast
+	LogPrintf("ProcessMessage - mnpb\n");
         CMasternodeBroadcast mnb;
 	std::vector<CNetAddr> seenNodes;
         vRecv >> mnb;
@@ -926,6 +948,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
         }
     } else if (strCommand == "dsegp") { //Get Potential Masternode list or specific entry
 
+	LogPrintf("ProcessMessage - dsegp\n");
         CTxIn vin;
         vRecv >> vin;
 
@@ -1277,7 +1300,7 @@ void CMasternodeMan::RemoveFromVector(std::vector<CMasternode>& vec, CTxIn vin)
     vector<CMasternode>::iterator it = vec.begin();
     while (it != vec.end()) {
         if ((*it).vin == vin) {
-            LogPrint("masternode", "CMasternodeMan: Removing Masternode %s - %i now\n", (*it).vin.prevout.hash.ToString(), size() - 1);
+            LogPrintf("CMasternodeMan: Removing Masternode %s - %i now\n", (*it).vin.prevout.hash.ToString(), size() - 1);
             vec.erase(it);
             break;
         }
@@ -1304,6 +1327,28 @@ void CMasternodeMan::UpdateMasternodeList(CMasternodeBroadcast mnb)
     }
 }
 
+void CMasternodeMan::UpdateMasternodePotentialList(CMasternodeBroadcast mnb)
+{
+    LOCK(cs);
+    mapSeenMasternodePing.insert(std::make_pair(mnb.lastPing.GetHash(), mnb.lastPing));
+    mapSeenMasternodeBroadcast.insert(std::make_pair(mnb.GetHash(), mnb));
+
+    LogPrintf("CMasternodeMan::UpdateMasternodePotentialList -- masternode=%s\n", mnb.vin.prevout.ToStringShort());
+
+    std::vector<CNetAddr> myaddr;
+    myaddr.push_back(activeMasternode.service);
+
+    CMasternode* pmn = Find(mnb.vin);
+    if (pmn == NULL) {
+        CMasternode mn(mnb);
+        if (Add(mn)) {
+            masternodeSync.AddedMasternodePotentialList(mnb.GetHash(), myaddr);
+        }
+    } else if (pmn->UpdateFromNewBroadcast(mnb)) {
+        masternodeSync.AddedMasternodePotentialList(mnb.GetHash(), myaddr);
+    }
+}
+
 std::string CMasternodeMan::ToString() const
 {
     std::ostringstream info;
@@ -1326,9 +1371,12 @@ bool CMasternodeMan::CheckConsensus(CMasternode &mn)
     int seenBy = mn.vSeenByNodes.size();
     int needed = ConsensusRequired();
 
-    if (needed < 0)
+    if (needed < 0) {
+	LogPrintf("At cap.  No consensus needed\n");
         return false;
+    }
 
+    LogPrintf("CheckConsensus - seenBy: %d, needed: %d\n", seenBy, needed);
     return (seenBy >= needed);
 }
 
@@ -1358,6 +1406,7 @@ int CMasternodeMan::MaxMasternodeCount()
     int max = Params().MasternodeMaxBase() + 
 	      nIntervals * Params().MasternodeMaxIncrement();
 
+    LogPrintf("MaxMasternodeCount: %d\n", max);
     return max;
 }
 

@@ -124,6 +124,7 @@ public:
     void CountNetworks(int protocolVersion, int& ipv4, int& ipv6, int& onion);
 
     void DsegUpdate(CNode* pnode);
+    void DsegpUpdate(CNode* pnode);
 
     /// Find an entry
     CMasternode* Find(const CScript& payee);
@@ -167,6 +168,7 @@ public:
 
     /// Update masternode list and maps using provided CMasternodeBroadcast
     void UpdateMasternodeList(CMasternodeBroadcast mnb);
+    void UpdateMasternodePotentialList(CMasternodeBroadcast mnb);
 
     bool CheckConsensus(CMasternode& mn);
 
