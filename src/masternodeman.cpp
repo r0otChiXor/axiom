@@ -255,7 +255,7 @@ void CMasternodeMan::RemoveInactive(std::vector<CMasternode>& vec,
 {
     //remove inactive and outdated
     vector<CMasternode>::iterator it = vec.begin();
-    while (it != vMasternodes.end()) {
+    while (it != vec.end()) {
         if ((*it).activeState == CMasternode::MASTERNODE_REMOVE ||
             (*it).activeState == CMasternode::MASTERNODE_VIN_SPENT ||
             (forceExpiredRemoval && (*it).activeState == CMasternode::MASTERNODE_EXPIRED) ||
