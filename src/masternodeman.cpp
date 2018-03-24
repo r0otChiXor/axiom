@@ -249,8 +249,8 @@ void CMasternodeMan::Check()
     }
 
     LogPrintf("Checking vPotentialMasternodes\n");
-    BOOST_FOREACH (CMasternode& mn, vPotentialMasternodes) {
-        mn.Check();
+    BOOST_FOREACH (CMasternode& mnp, vPotentialMasternodes) {
+        mnp.Check();
     }
 }
 
