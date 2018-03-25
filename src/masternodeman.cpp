@@ -244,12 +244,12 @@ void CMasternodeMan::Check()
     LOCK(cs);
 
     LogPrintf("Checking vMasternodes\n");
-    BOOST_FOREACH (CMasternode& mn, vMasternodes) {
+    BOOST_FOREACH (CMasternode mn, vMasternodes) {
         mn.Check();
     }
 
     LogPrintf("Checking vPotentialMasternodes\n");
-    BOOST_FOREACH (CMasternode& mnp, vPotentialMasternodes) {
+    BOOST_FOREACH (CMasternode mnp, vPotentialMasternodes) {
         mnp.Check();
     }
 }
