@@ -244,13 +244,17 @@ void CMasternodeMan::Check()
     LOCK(cs);
 
     LogPrintf("Checking vMasternodes\n");
-    BOOST_FOREACH (CMasternode mn, vMasternodes) {
-        mn.Check();
+    if (vMasternodes.size()) {
+        BOOST_FOREACH (CMasternode mn, vMasternodes) {
+            mn.Check();
+        }
     }
 
     LogPrintf("Checking vPotentialMasternodes\n");
-    BOOST_FOREACH (CMasternode mnp, vPotentialMasternodes) {
-        mnp.Check();
+    if (vPotentialMasternodes.size()) {
+        BOOST_FOREACH (CMasternode mnp, vPotentialMasternodes) {
+            mnp.Check();
+	}
     }
 }
 
@@ -264,7 +268,7 @@ void CMasternodeMan::RemoveInactive(std::vector<CMasternode>& vec,
             (*it).activeState == CMasternode::MASTERNODE_VIN_SPENT ||
             (forceExpiredRemoval && (*it).activeState == CMasternode::MASTERNODE_EXPIRED) ||
             (*it).protocolVersion < masternodePayments.GetMinMasternodePaymentsProto()) {
-            LogPrint("masternode", "CMasternodeMan: Removing inactive Masternode %s - %i now\n", (*it).vin.prevout.hash.ToString(), vec.size() - 1);
+            LogPrintf("CMasternodeMan: Removing inactive Masternode %s - %i now\n", (*it).vin.prevout.hash.ToString(), vec.size() - 1);
 
             //erase all of the broadcasts we've seen from this vin
             // -- if we missed a few pings and the node was removed, this will allow is to get it back without them
@@ -1307,7 +1311,7 @@ void CMasternodeMan::RemoveFromVector(std::vector<CMasternode>& vec, CTxIn vin)
     while (it != vec.end()) {
         if ((*it).vin == vin) {
             LogPrintf("CMasternodeMan: Removing Masternode %s - %i now\n", (*it).vin.prevout.hash.ToString(), vec.size() - 1);
-            vec.erase(it);
+            it = vec.erase(it);
             break;
         }
         ++it;
