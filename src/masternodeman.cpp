@@ -243,19 +243,14 @@ void CMasternodeMan::Check()
 {
     LOCK(cs);
 
-    LogPrintf("Checking vMasternodes\n");
-    if (vMasternodes.size()) {
-        BOOST_FOREACH (CMasternode mn, vMasternodes) {
-            mn.Check();
-        }
+    LogPrintf("Checking vMasternodes : %d\n", vMasternodes.size());
+    for (auto mn : vMasternodes) {
+        mn.Check();
     }
 
     LogPrintf("Checking vPotentialMasternodes : %d\n", vPotentialMasternodes.size());
-    sleep(1);
-    if (vPotentialMasternodes.size()) {
-        BOOST_FOREACH (CMasternode mnp, vPotentialMasternodes) {
-            mnp.Check();
-	}
+    for (auto mnp : vPotentialMasternodes) {
+        mnp.Check();
     }
 }
 
