@@ -250,7 +250,8 @@ void CMasternodeMan::Check()
         }
     }
 
-    LogPrintf("Checking vPotentialMasternodes\n");
+    LogPrintf("Checking vPotentialMasternodes : %d\n", vPotentialMasternodes.size());
+    sleep(1);
     if (vPotentialMasternodes.size()) {
         BOOST_FOREACH (CMasternode mnp, vPotentialMasternodes) {
             mnp.Check();
