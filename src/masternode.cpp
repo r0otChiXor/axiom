@@ -238,7 +238,8 @@ void CMasternode::Check(bool forceCheck)
 	    LogPrintf("Consensus met, moving to active list\n");
 	    mnodeman.RemovePotential(vin);
             activeState = MASTERNODE_ENABLED; // OK
-	    mnodeman.Add(*this);
+            CMasternode mn(*this);
+            mnodeman.Add(mn);
 	}
 	return;
     }
