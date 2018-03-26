@@ -1315,8 +1315,9 @@ CMasternode CMasternodeMan::RemoveFromVector(std::vector<CMasternode>& vec,
     while (it != vec.end()) {
         if ((*it).vin == vin) {
             LogPrintf("CMasternodeMan: Removing Masternode %s - %i now\n", (*it).vin.prevout.hash.ToString(), vec.size() - 1);
+	    CMasternode mn(*it);
             it = vec.erase(it);
-            return CMasternode(*it);
+            return mn;
         }
         ++it;
     }
