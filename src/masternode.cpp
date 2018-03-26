@@ -73,7 +73,7 @@ CMasternode::CMasternode()
     cacheInputAgeBlock = 0;
     unitTest = false;
     allowFreeTx = true;
-    nActiveState = MASTERNODE_POTENTIAL,
+    nActiveState = MASTERNODE_POTENTIAL;
     protocolVersion = PROTOCOL_VERSION;
     nLastDsq = 0;
     nScanningErrorCount = 0;
@@ -98,7 +98,7 @@ CMasternode::CMasternode(const CMasternode& other)
     cacheInputAgeBlock = other.cacheInputAgeBlock;
     unitTest = other.unitTest;
     allowFreeTx = other.allowFreeTx;
-    nActiveState = MASTERNODE_POTENTIAL,
+    nActiveState = MASTERNODE_POTENTIAL;
     protocolVersion = other.protocolVersion;
     nLastDsq = other.nLastDsq;
     nScanningErrorCount = other.nScanningErrorCount;
@@ -123,7 +123,7 @@ CMasternode::CMasternode(const CMasternodeBroadcast& mnb)
     cacheInputAgeBlock = 0;
     unitTest = false;
     allowFreeTx = true;
-    nActiveState = MASTERNODE_POTENTIAL,
+    nActiveState = MASTERNODE_POTENTIAL;
     protocolVersion = mnb.protocolVersion;
     nLastDsq = mnb.nLastDsq;
     nScanningErrorCount = 0;
@@ -233,9 +233,8 @@ void CMasternode::Check(bool forceCheck)
 	    LogPrintf("No consensus yet, still potential\n");
 	} else {
 	    LogPrintf("Consensus met, moving to active list\n");
-	    mnodeman.RemovePotential(vin);
-            activeState = MASTERNODE_ENABLED; // OK
-            CMasternode mn(*this);
+	    CMasternode mn = mnodeman.RemovePotential(vin);
+            mn.activeState = MASTERNODE_ENABLED; // OK
             mnodeman.Add(mn);
 	}
 	return;

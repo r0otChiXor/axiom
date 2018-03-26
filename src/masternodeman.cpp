@@ -1296,17 +1296,18 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
      */
 }
 
-void CMasternodeMan::Remove(CTxIn vin)
+CMasternode CMasternodeMan::Remove(CTxIn vin)
 {
-    RemoveFromVector(vMasternodes, vin);
+    return RemoveFromVector(vMasternodes, vin);
 }
 
-void CMasternodeMan::RemovePotential(CTxIn vin)
+CMasternode CMasternodeMan::RemovePotential(CTxIn vin)
 {
-    RemoveFromVector(vPotentialMasternodes, vin);
+    return RemoveFromVector(vPotentialMasternodes, vin);
 }
 
-void CMasternodeMan::RemoveFromVector(std::vector<CMasternode>& vec, CTxIn vin)
+CMasternode CMasternodeMan::RemoveFromVector(std::vector<CMasternode>& vec,
+                                              CTxIn vin)
 {
     LOCK(cs);
 
@@ -1315,10 +1316,11 @@ void CMasternodeMan::RemoveFromVector(std::vector<CMasternode>& vec, CTxIn vin)
         if ((*it).vin == vin) {
             LogPrintf("CMasternodeMan: Removing Masternode %s - %i now\n", (*it).vin.prevout.hash.ToString(), vec.size() - 1);
             it = vec.erase(it);
-            break;
+            return CMasternode(*it);
         }
         ++it;
     }
+    return CMasternode();
 }
 
 void CMasternodeMan::UpdateMasternodeList(CMasternodeBroadcast mnb)

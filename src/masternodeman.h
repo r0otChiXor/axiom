@@ -165,9 +165,9 @@ public:
 
     std::string ToString() const;
 
-    void Remove(CTxIn vin);
-    void RemovePotential(CTxIn vin);
-    void RemoveFromVector(std::vector<CMasternode>& vec, CTxIn vin);
+    CMasternode Remove(CTxIn vin);
+    CMasternode RemovePotential(CTxIn vin);
+    CMasternode RemoveFromVector(std::vector<CMasternode>& vec, CTxIn vin);
 
     /// Update masternode list and maps using provided CMasternodeBroadcast
     void UpdateMasternodeList(CMasternodeBroadcast mnb);
