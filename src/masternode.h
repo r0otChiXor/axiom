@@ -144,7 +144,6 @@ public:
     int nScanningErrorCount;
     int nLastScanningErrorBlockHeight;
     CMasternodePing lastPing;
-    std::vector<CNetAddr> vSeenByNodes;
 
     int64_t nLastDsee;  // temporary, do not save. Remove after migration to v12
     int64_t nLastDseep; // temporary, do not save. Remove after migration to v12
@@ -218,10 +217,7 @@ public:
         READWRITE(nLastDsq);
         READWRITE(nScanningErrorCount);
         READWRITE(nLastScanningErrorBlockHeight);
-	READWRITE(vSeenByNodes);
     }
-
-    void UpdateSeenNodes(std::vector<CNetAddr>& seenNodes);
 
     int64_t SecondsSincePayment();
 
@@ -262,11 +258,6 @@ public:
     bool IsPotential()
     {
 	return activeState == MASTERNODE_POTENTIAL;
-    }
-
-    int SeenByNodes()
-    {
-	return vSeenByNodes.size();
     }
 
     int GetMasternodeInputAge()

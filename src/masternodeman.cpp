@@ -1381,7 +1381,8 @@ std::string CMasternodeMan::ToString() const
 
 bool CMasternodeMan::CheckConsensus(CMasternode &mn)
 {
-    int seenBy = mn.vSeenByNodes.size();
+    auto search = SeenByNodes(mn.vin.prevout.GetHash());
+    int seenBy = search.size();
     int needed = ConsensusRequired();
 
     if (needed < 0) {
@@ -1421,5 +1422,32 @@ int CMasternodeMan::MaxMasternodeCount()
 
     LogPrintf("MaxMasternodeCount: %d\n", max);
     return max;
+}
+
+std::vector<CNetAddr>& CMasternodeMan::SeenByNodes(const uint256& hash)
+{
+    auto search = mMasternodesSeen.find(hash);
+    std::vector<CNetAddr> nodelist;
+
+    if (search == mMasternodesSeen.end()) {
+	mMasternodesSeen[hash] = nodelist;
+	search = mMasternodesSeen.find(hash);
+    }
+
+    return search->second;
+}
+
+void CMasternodeMan::UpdateSeenByNodes(const uint256& hash,
+                                       std::vector<CNetAddr>& seenNodes)
+{
+    LogPrintf("UpdateSeenNodes\n");
+    std::vector<CNetAddr> temp;
+    std::vector<CNetAddr> search = SeenByNodes(hash);
+
+    std::sort(search.begin(), search.end());
+    std::sort(seenNodes.begin(), seenNodes.end());
+    std::set_union(search.begin(), search.end(), seenNodes.begin(),
+		   seenNodes.end(), temp.begin());
+    std::copy(temp.begin(), temp.end(), search.begin());
 }
 

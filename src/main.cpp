@@ -5599,9 +5599,10 @@ void static ProcessGetData(CNode* pfrom)
                         CMasternodeBroadcast mnp = mnodeman.mapSeenMasternodeBroadcast[inv.hash];
                         CMasternode mn(mnp);
                         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
-                        ss.reserve(1000 + 8 * mn.vSeenByNodes.size());
+			std::vector<CNetAddr> nodelist = mnodeman.SeenByNodes(inv.hash);
+                        ss.reserve(1000 + 8 * nodelist.size());
                         ss << mnp;
-                        ss << mn.vSeenByNodes;
+                        ss << nodelist;
                         pfrom->PushMessage("mnpb", ss);
                         pushed = true;
                     }

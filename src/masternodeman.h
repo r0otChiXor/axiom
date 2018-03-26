@@ -63,6 +63,9 @@ private:
     std::vector<CMasternode> vMasternodes;
     // vector to hold all potential MNs
     std::vector<CMasternode> vPotentialMasternodes;
+    // map to hold vectorss of nodes that have seen each masternode
+    std::map<uint256, std::vector<CNetAddr> > mMasternodesSeen;
+
     // who's asked for the Masternode list and the last time
     std::map<CNetAddr, int64_t> mAskedUsForMasternodeList;
     // who we asked for the Masternode list and the last time
@@ -179,6 +182,9 @@ public:
     int PotentialMasternodeCount() { return vPotentialMasternodes.size(); }
     void RemoveInactive(std::vector<CMasternode>& vec,
 		        bool forceExpiredRemoval);
+    void UpdateSeenByNodes(const uint256& hash,
+		           std::vector<CNetAddr>& seenNodes);
+    std::vector<CNetAddr>& SeenByNodes(const uint256& hash);
 };
 
 #endif

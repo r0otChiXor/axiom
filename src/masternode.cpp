@@ -79,7 +79,6 @@ CMasternode::CMasternode()
     nScanningErrorCount = 0;
     nLastScanningErrorBlockHeight = 0;
     lastTimeChecked = 0;
-    vSeenByNodes.clear();
     nLastDsee = 0;  // temporary, do not save. Remove after migration to v12
     nLastDseep = 0; // temporary, do not save. Remove after migration to v12
 }
@@ -105,7 +104,6 @@ CMasternode::CMasternode(const CMasternode& other)
     nScanningErrorCount = other.nScanningErrorCount;
     nLastScanningErrorBlockHeight = other.nLastScanningErrorBlockHeight;
     lastTimeChecked = 0;
-    vSeenByNodes = other.vSeenByNodes;
     nLastDsee = other.nLastDsee;   // temporary, do not save. Remove after migration to v12
     nLastDseep = other.nLastDseep; // temporary, do not save. Remove after migration to v12
 }
@@ -131,7 +129,6 @@ CMasternode::CMasternode(const CMasternodeBroadcast& mnb)
     nScanningErrorCount = 0;
     nLastScanningErrorBlockHeight = 0;
     lastTimeChecked = 0;
-    vSeenByNodes.clear();
     nLastDsee = 0;  // temporary, do not save. Remove after migration to v12
     nLastDseep = 0; // temporary, do not save. Remove after migration to v12
 }
@@ -343,17 +340,6 @@ bool CMasternode::IsValidNetAddr()
     // should probably be a bit smarter if one day we start to implement tests for this
     return Params().NetworkID() == CBaseChainParams::REGTEST ||
            (IsReachable(addr) && addr.IsRoutable());
-}
-
-void CMasternode::UpdateSeenNodes(std::vector<CNetAddr>& seenNodes)
-{
-    LogPrintf("UpdateSeenNodes\n");
-    std::vector<CNetAddr> temp;
-    std::sort(vSeenByNodes.begin(), vSeenByNodes.end());
-    std::sort(seenNodes.begin(), seenNodes.end());
-    std::set_union(vSeenByNodes.begin(), vSeenByNodes.end(), seenNodes.begin(),
-		   seenNodes.end(), temp.begin());
-    std::copy(temp.begin(), temp.end(), vSeenByNodes.begin());
 }
 
 CMasternodeBroadcast::CMasternodeBroadcast()

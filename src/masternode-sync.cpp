@@ -112,8 +112,7 @@ void CMasternodeSync::AddedMasternodePotentialList(uint256 hash, std::vector<CNe
     }
 
     CMasternodeBroadcast mnb = mnodeman.mapSeenMasternodeBroadcast[hash];
-    CMasternode mn(mnb);
-    mn.UpdateSeenNodes(seenNodes);
+    mnodeman.UpdateSeenByNodes(hash, seenNodes);
 }
 
 void CMasternodeSync::AddedMasternodeWinner(uint256 hash)
