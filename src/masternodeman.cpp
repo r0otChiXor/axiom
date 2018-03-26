@@ -207,20 +207,19 @@ bool CMasternodeMan::Add(CMasternode& mn)
     if (!mn.IsEnabled() && !mn.IsPotential())
         return false;
 
-    CMasternode* pmn = Find(mn.vin);
-    if (pmn == NULL) {
-	std::vector<CMasternode>* pVec;
-	if (mn.IsEnabled()) {
-	    pVec = &vMasternodes;
-	} else {
-	    pVec = &vPotentialMasternodes;
-	}
-        LogPrintf("CMasternodeMan: Adding new Masternode %s - %i now\n", mn.vin.prevout.hash.ToString(), pVec->size() + 1);
-	pVec->push_back(mn);
-        return true;
+    if (Find(mn.vin)) {
+	return false;
     }
 
-    return false;
+    if (mn.IsEnabled()) {
+        LogPrintf("CMasternodeMan: Adding new Masternode %s - %i now\n", mn.vin.prevout.hash.ToString(), vMasternodes.size() + 1);
+        vMasternodes.push_back(mn);
+    } else {
+        LogPrintf("CMasternodeMan: Adding new Potential Masternode %s - %i now\n", mn.vin.prevout.hash.ToString(), vPotentialMasternodes.size() + 1);
+        vPotentialMasternodes.push_back(mn);
+    }
+
+    return true;
 }
 
 void CMasternodeMan::AskForMN(CNode* pnode, CTxIn& vin)
