@@ -215,16 +215,8 @@ bool CMasternodeMan::Add(CMasternode& mn)
         LogPrintf("CMasternodeMan: Adding new Masternode %s - %i now\n", mn.vin.prevout.hash.ToString(), vMasternodes.size() + 1);
         vMasternodes.push_back(mn);
     } else {
-        for (auto mnp : vPotentialMasternodes) {
-            mnp.Check();
-        }
-	
         LogPrintf("CMasternodeMan: Adding new Potential Masternode %s - %i now\n", mn.vin.prevout.hash.ToString(), vPotentialMasternodes.size() + 1);
         vPotentialMasternodes.push_back(mn);
-
-        for (auto mnp : vPotentialMasternodes) {
-            mnp.Check();
-        }
     }
 
     return true;
