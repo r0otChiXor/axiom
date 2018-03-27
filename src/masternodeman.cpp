@@ -1442,7 +1442,7 @@ void CMasternodeMan::UpdateSeenByNodes(const uint256& hash,
     std::sort(search.begin(), search.end());
     std::sort(seenNodes.begin(), seenNodes.end());
     std::set_union(search.begin(), search.end(), seenNodes.begin(),
-		   seenNodes.end(), temp.begin());
-    std::copy(temp.begin(), temp.end(), search.begin());
+		   seenNodes.end(), std::back_inserter(temp));
+    mMasternodesSeen[hash] = temp;
 }
 
