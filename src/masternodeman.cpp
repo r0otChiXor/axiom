@@ -248,12 +248,32 @@ void CMasternodeMan::Check()
     }
 
     LogPrintf("Checking vPotentialMasternodes : %d\n", vPotentialMasternodes.size());
-    for (auto it = vPotentialMasternodes.begin();
-         it != vPotentialMasternodes.end(); ) {
-	auto next = it;
-	++next;
-        (*it).Check();
-	it = next;
+    // Clear all visited bits
+    for (auto mn : vPotentialMasternodes) {
+	mn.SetVisited(false);
+    }
+
+    // Loop until all visited bits are set
+    bool done = false;
+    while (!done) {
+	// iterate through and check nodues until the first one that gets
+	// moved to the active list.  When one gets moved, stop iterating
+	// so we don't mess up the iteration
+        for (auto mn : vPotentialMasternodes) {
+	    if (!mn.IsVisited()) {
+		if (!mn.Check()) {
+		    break;
+		}
+
+		mn.SetVisited(true);
+	    }
+	}
+
+	// Check if we've visted all nodes in the list
+	done = true;
+	for (auto mn : vPotentialMasternodes) {
+	    done &= mn.IsVisited();
+	}
     }
 }
 

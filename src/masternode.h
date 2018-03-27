@@ -144,6 +144,7 @@ public:
     int nScanningErrorCount;
     int nLastScanningErrorBlockHeight;
     CMasternodePing lastPing;
+    bool visited;
 
     int64_t nLastDsee;  // temporary, do not save. Remove after migration to v12
     int64_t nLastDseep; // temporary, do not save. Remove after migration to v12
@@ -230,7 +231,7 @@ public:
         return n;
     }
 
-    void Check(bool forceCheck = false);
+    bool Check(bool forceCheck = false);
 
     bool IsBroadcastedWithin(int seconds)
     {
@@ -290,6 +291,9 @@ public:
 
     int64_t GetLastPaid();
     bool IsValidNetAddr();
+
+    bool IsVisited() { return visited; };
+    void SetVisited(bool value) { visited = value; };
 };
 
 

@@ -79,6 +79,7 @@ CMasternode::CMasternode()
     nScanningErrorCount = 0;
     nLastScanningErrorBlockHeight = 0;
     lastTimeChecked = 0;
+    visited = false;
     nLastDsee = 0;  // temporary, do not save. Remove after migration to v12
     nLastDseep = 0; // temporary, do not save. Remove after migration to v12
 }
@@ -104,6 +105,7 @@ CMasternode::CMasternode(const CMasternode& other)
     nScanningErrorCount = other.nScanningErrorCount;
     nLastScanningErrorBlockHeight = other.nLastScanningErrorBlockHeight;
     lastTimeChecked = 0;
+    visited = other.visited;
     nLastDsee = other.nLastDsee;   // temporary, do not save. Remove after migration to v12
     nLastDseep = other.nLastDseep; // temporary, do not save. Remove after migration to v12
 }
@@ -129,6 +131,7 @@ CMasternode::CMasternode(const CMasternodeBroadcast& mnb)
     nScanningErrorCount = 0;
     nLastScanningErrorBlockHeight = 0;
     lastTimeChecked = 0;
+    visited = false;
     nLastDsee = 0;  // temporary, do not save. Remove after migration to v12
     nLastDseep = 0; // temporary, do not save. Remove after migration to v12
 }
@@ -187,25 +190,31 @@ uint256 CMasternode::CalculateScore(int mod, int64_t nBlockHeight)
     return r;
 }
 
-void CMasternode::Check(bool forceCheck)
+bool CMasternode::Check(bool forceCheck)
 {
-    if (ShutdownRequested()) return;
+    if (ShutdownRequested()) {
+	return true;
+    }
 
-    if (!forceCheck && (GetTime() - lastTimeChecked < MASTERNODE_CHECK_SECONDS)) return;
+    if (!forceCheck && (GetTime() - lastTimeChecked < MASTERNODE_CHECK_SECONDS)) {
+	return true;
+    }
+
     lastTimeChecked = GetTime();
 
-
     //once spent, stop doing the checks
-    if (activeState == MASTERNODE_VIN_SPENT) return;
+    if (activeState == MASTERNODE_VIN_SPENT) {
+	return true;
+    }
 
     if (!IsPingedWithin(MASTERNODE_REMOVAL_SECONDS)) {
         activeState = MASTERNODE_REMOVE;
-        return;
+        return true;
     }
 
     if (!IsPingedWithin(MASTERNODE_EXPIRATION_SECONDS)) {
         activeState = MASTERNODE_EXPIRED;
-        return;
+        return true;
     }
 
     if (!unitTest) {
@@ -217,11 +226,13 @@ void CMasternode::Check(bool forceCheck)
 
         {
             TRY_LOCK(cs_main, lockMain);
-            if (!lockMain) return;
+            if (!lockMain) {
+		return true;
+	    }
 
             if (!AcceptableInputs(mempool, state, CTransaction(tx), false, NULL)) {
                 activeState = MASTERNODE_VIN_SPENT;
-                return;
+                return true;
             }
         }
     }
@@ -231,16 +242,18 @@ void CMasternode::Check(bool forceCheck)
 	// Check number of nodes seen vs required
         if (!mnodeman.CheckConsensus(*this)) {
 	    LogPrintf("No consensus yet, still potential\n");
+	    return true;
 	} else {
 	    LogPrintf("Consensus met, moving to active list\n");
 	    CMasternode mn = mnodeman.RemovePotential(vin);
             mn.activeState = MASTERNODE_ENABLED; // OK
             mnodeman.Add(mn);
+	    return false;
 	}
-	return;
     }
 
     activeState = MASTERNODE_ENABLED; // OK
+    return true;
 }
 
 int64_t CMasternode::SecondsSincePayment()
