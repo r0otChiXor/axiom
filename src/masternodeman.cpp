@@ -248,8 +248,12 @@ void CMasternodeMan::Check()
     }
 
     LogPrintf("Checking vPotentialMasternodes : %d\n", vPotentialMasternodes.size());
-    for (auto mnp : vPotentialMasternodes) {
-        mnp.Check();
+    for (auto it = vPotentialMasternodes.begin();
+         it != vPotentialMasternodes.end(); ) {
+	auto next = it;
+	++next;
+        (*it).Check();
+	it = next;
     }
 }
 
