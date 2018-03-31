@@ -5396,9 +5396,7 @@ bool static AlreadyHave(const CInv& inv)
     case MSG_MASTERNODE_POTENTIAL_ANNOUNCE:
         if (mnodeman.mapSeenMasternodeBroadcast.count(inv.hash)) {
 	    LogPrintf("AlreadyHave - potential\n");
-            std::vector<CNetAddr> myaddr;
-            myaddr.push_back(activeMasternode.service);
-            masternodeSync.AddedMasternodePotentialList(inv.hash, myaddr);
+	    activeMasternode.AddSeenMasternode(inv.hash);
             return true;
         }
         return false;

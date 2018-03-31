@@ -19,7 +19,8 @@
 #define ACTIVE_MASTERNODE_SYNC_IN_PROCESS 1
 #define ACTIVE_MASTERNODE_INPUT_TOO_NEW 2
 #define ACTIVE_MASTERNODE_NOT_CAPABLE 3
-#define ACTIVE_MASTERNODE_STARTED 4
+#define ACTIVE_MASTERNODE_POTENTIAL 4
+#define ACTIVE_MASTERNODE_STARTED 5
 
 // Responsible for activating the Masternode and pinging the network
 class CActiveMasternode
@@ -68,6 +69,9 @@ public:
 
     /// Enable cold wallet mode (run a Masternode with no funds)
     bool EnableHotColdMasterNode(CTxIn& vin, CService& addr);
+
+    void AddSeenMasternode(const uint256& hash);
+    void AddSeenAllMasternodes(void);
 };
 
 #endif

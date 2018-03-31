@@ -215,8 +215,10 @@ bool CMasternodeMan::Add(CMasternode& mn)
         LogPrintf("CMasternodeMan: Adding new Masternode %s - %i now\n", mn.vin.prevout.hash.ToString(), vMasternodes.size() + 1);
         vMasternodes.push_back(mn);
     } else {
-        LogPrintf("CMasternodeMan: Adding new Potential Masternode %s - %i now\n", mn.vin.prevout.hash.ToString(), vPotentialMasternodes.size() + 1);
+	uint256 hash = mn.vin.prevout.hash;
+        LogPrintf("CMasternodeMan: Adding new Potential Masternode %s - %i now\n", hash.ToString(), vPotentialMasternodes.size() + 1);
         vPotentialMasternodes.push_back(mn);
+	activeMasternode.AddSeenMasternode(hash);
     }
 
     return true;
@@ -538,6 +540,16 @@ CMasternode* CMasternodeMan::Find(const CTxIn& vin)
     return NULL;
 }
 
+CMasternode* CMasternodeMan::FindActive(const CTxIn& vin)
+{
+    LOCK(cs);
+
+    BOOST_FOREACH (CMasternode& mn, vMasternodes) {
+        if (mn.vin.prevout == vin.prevout)
+            return &mn;
+    }
+    return NULL;
+}
 
 CMasternode* CMasternodeMan::Find(const CPubKey& pubKeyMasternode)
 {
@@ -1007,7 +1019,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
             if (mn.addr.IsRFC1918()) continue; //local network
 
             if (mn.IsPotential()) {
-                LogPrint("masternode", "dsegp - Sending Potential Masternode entry - %s \n", mn.vin.prevout.hash.ToString());
+                LogPrintf("dsegp - Sending Potential Masternode entry - %s \n", mn.vin.prevout.hash.ToString());
                 if (vin == CTxIn() || vin == mn.vin) {
                     CMasternodeBroadcast mnb = CMasternodeBroadcast(mn);
                     uint256 hash = mnb.GetHash();
@@ -1017,7 +1029,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
                     if (!mapSeenMasternodeBroadcast.count(hash)) mapSeenMasternodeBroadcast.insert(make_pair(hash, mnb));
 
                     if (vin == mn.vin) {
-                        LogPrint("masternode", "dsegp - Sent 1 Potential Masternode entry to peer %i\n", pfrom->GetId());
+                        LogPrintf("dsegp - Sent 1 Potential Masternode entry to peer %i\n", pfrom->GetId());
                         return;
                     }
                 }
@@ -1456,6 +1468,21 @@ std::vector<CNetAddr>& CMasternodeMan::SeenByNodes(const uint256& hash)
     return search->second;
 }
 
+
+void CMasternodeMan::RemoveSeenByNodes(const uint256& hash,
+                                       std::vector<CNetAddr>& seenNodes)
+{
+    LogPrintf("RemoveSeenByNodes\n");
+    std::vector<CNetAddr> temp;
+    std::vector<CNetAddr> search = SeenByNodes(hash);
+
+    std::sort(search.begin(), search.end());
+    std::sort(seenNodes.begin(), seenNodes.end());
+    std::set_difference(search.begin(), search.end(), seenNodes.begin(),
+		        seenNodes.end(), std::back_inserter(temp));
+    mMasternodesSeen[hash] = temp;
+}
+
 void CMasternodeMan::UpdateSeenByNodes(const uint256& hash,
                                        std::vector<CNetAddr>& seenNodes)
 {
@@ -1468,5 +1495,19 @@ void CMasternodeMan::UpdateSeenByNodes(const uint256& hash,
     std::set_union(search.begin(), search.end(), seenNodes.begin(),
 		   seenNodes.end(), std::back_inserter(temp));
     mMasternodesSeen[hash] = temp;
+}
+
+void CMasternodeMan::RemoveAllSeenByNodes(std::vector<CNetAddr>& seenNodes)
+{
+    for (auto it = mMasternodesSeen.begin(); it != mMasternodesSeen.end(); ++it) {
+	RemoveSeenByNodes(it->first, seenNodes);
+    }
+}
+
+void CMasternodeMan::UpdateAllSeenByNodes(std::vector<CNetAddr>& seenNodes)
+{
+    for (auto it = mMasternodesSeen.begin(); it != mMasternodesSeen.end(); ++it) {
+	UpdateSeenByNodes(it->first, seenNodes);
+    }
 }
 

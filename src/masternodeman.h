@@ -182,9 +182,15 @@ public:
     int PotentialMasternodeCount() { return vPotentialMasternodes.size(); }
     void RemoveInactive(std::vector<CMasternode>& vec,
 		        bool forceExpiredRemoval);
+    void RemoveSeenByNodes(const uint256& hash,
+                           std::vector<CNetAddr>& seenNodes);
     void UpdateSeenByNodes(const uint256& hash,
 		           std::vector<CNetAddr>& seenNodes);
+    void RemoveAllSeenByNodes(std::vector<CNetAddr>& seenNodes);
+    void UpdateAllSeenByNodes(std::vector<CNetAddr>& seenNodes);
     std::vector<CNetAddr>& SeenByNodes(const uint256& hash);
+    CMasternode* FindActive(const CTxIn& vin);
+
 };
 
 #endif

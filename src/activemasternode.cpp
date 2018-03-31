@@ -41,7 +41,8 @@ void CActiveMasternode::ManageStatus()
         }
     }
 
-    if (status != ACTIVE_MASTERNODE_STARTED) {
+    if (status != ACTIVE_MASTERNODE_STARTED &&
+        status != ACTIVE_MASTERNODE_POTENTIAL) {
         // Set defaults
         status = ACTIVE_MASTERNODE_NOT_CAPABLE;
         notCapableReason = "";
@@ -114,8 +115,14 @@ void CActiveMasternode::ManageStatus()
             }
 
             LogPrintf("CActiveMasternode::ManageStatus() - Is capable master node!\n");
-            status = ACTIVE_MASTERNODE_STARTED;
-
+            status = ACTIVE_MASTERNODE_POTENTIAL;
+	    return;
+	} else if (status == ACTIVE_MASTERNODE_POTENTIAL) {
+	    if (mnodeman.FindActive(vin)) {
+		LogPrintf("Local masternode now active!\n");
+		status = ACTIVE_MASTERNODE_STARTED;
+                AddSeenAllMasternodes();
+	    }
             return;
         } else {
             notCapableReason = "Could not find suitable coins!";
@@ -141,6 +148,8 @@ std::string CActiveMasternode::GetStatus()
         return strprintf("Masternode input must have at least %d confirmations", MASTERNODE_MIN_CONFIRMATIONS);
     case ACTIVE_MASTERNODE_NOT_CAPABLE:
         return "Not capable masternode: " + notCapableReason;
+    case ACTIVE_MASTERNODE_POTENTIAL:
+        return "Masternode successfully registered - is a potential node";
     case ACTIVE_MASTERNODE_STARTED:
         return "Masternode successfully started";
     default:
@@ -470,7 +479,7 @@ bool CActiveMasternode::EnableHotColdMasterNode(CTxIn& newVin, CService& newServ
 {
     if (!fMasterNode) return false;
 
-    status = ACTIVE_MASTERNODE_STARTED;
+    status = ACTIVE_MASTERNODE_POTENTIAL;
 
     //The values below are needed for signing mnping messages going forward
     vin = newVin;
@@ -479,4 +488,26 @@ bool CActiveMasternode::EnableHotColdMasterNode(CTxIn& newVin, CService& newServ
     LogPrintf("CActiveMasternode::EnableHotColdMasterNode() - Enabled! You may shut down the cold daemon.\n");
 
     return true;
+}
+
+void CActiveMasternode::AddSeenMasternode(const uint256& hash)
+{
+    std::vector<CNetAddr> myaddr;
+    myaddr.push_back(service);
+    if (status == ACTIVE_MASTERNODE_STARTED) {
+        mnodeman.UpdateSeenByNodes(hash, myaddr);
+    } else if (status != ACTIVE_MASTERNODE_POTENTIAL) {
+        mnodeman.RemoveSeenByNodes(hash, myaddr);
+    }
+}
+
+void CActiveMasternode::AddSeenAllMasternodes(void)
+{
+    std::vector<CNetAddr> myaddr;
+    myaddr.push_back(service);
+    if (status == ACTIVE_MASTERNODE_STARTED) {
+        mnodeman.UpdateAllSeenByNodes(myaddr);
+    } else if (status != ACTIVE_MASTERNODE_POTENTIAL) {
+        mnodeman.RemoveAllSeenByNodes(myaddr);
+    }
 }
