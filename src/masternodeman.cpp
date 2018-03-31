@@ -327,6 +327,9 @@ void CMasternodeMan::CheckAndRemove(bool forceExpiredRemoval)
 
     LOCK(cs);
 
+    int64_t now = GetTime();
+    int64_t pingExpiry = now - (MASTERNODE_REMOVAL_SECONDS * 2);
+
     //remove inactive and outdated
     LogPrintf("Pruning vMasternodes\n");
     RemoveInactive(vMasternodes, forceExpiredRemoval);
@@ -334,53 +337,54 @@ void CMasternodeMan::CheckAndRemove(bool forceExpiredRemoval)
     RemoveInactive(vPotentialMasternodes, forceExpiredRemoval);
 
     // check who's asked for the Masternode list
-    map<CNetAddr, int64_t>::iterator it1 = mAskedUsForMasternodeList.begin();
-    while (it1 != mAskedUsForMasternodeList.end()) {
-        if ((*it1).second < GetTime()) {
-            mAskedUsForMasternodeList.erase(it1++);
+    for (auto it = mAskedUsForMasternodeList.begin();
+         it != mAskedUsForMasternodeList.end(); ) {
+        if (it->second < now) {
+            it = mAskedUsForMasternodeList.erase(it);
         } else {
-            ++it1;
+            ++it;
         }
     }
 
     // check who we asked for the Masternode list
-    it1 = mWeAskedForMasternodeList.begin();
-    while (it1 != mWeAskedForMasternodeList.end()) {
-        if ((*it1).second < GetTime()) {
-            mWeAskedForMasternodeList.erase(it1++);
+    for (auto it = mWeAskedForMasternodeList.begin();
+         it != mWeAskedForMasternodeList.end(); ) {
+        if (it->second < now) {
+            it = mWeAskedForMasternodeList.erase(it);
         } else {
-            ++it1;
+            ++it;
         }
     }
 
     // check which Masternodes we've asked for
-    map<COutPoint, int64_t>::iterator it2 = mWeAskedForMasternodeListEntry.begin();
-    while (it2 != mWeAskedForMasternodeListEntry.end()) {
-        if ((*it2).second < GetTime()) {
-            mWeAskedForMasternodeListEntry.erase(it2++);
+    for (auto it = mWeAskedForMasternodeListEntry.begin();
+         it != mWeAskedForMasternodeListEntry.end(); ) {
+        if (it->second < now) {
+            it = mWeAskedForMasternodeListEntry.erase(it);
         } else {
-            ++it2;
+            ++it;
         }
     }
 
     // remove expired mapSeenMasternodeBroadcast
-    map<uint256, CMasternodeBroadcast>::iterator it3 = mapSeenMasternodeBroadcast.begin();
-    while (it3 != mapSeenMasternodeBroadcast.end()) {
-        if ((*it3).second.lastPing.sigTime < GetTime() - (MASTERNODE_REMOVAL_SECONDS * 2)) {
-            mapSeenMasternodeBroadcast.erase(it3++);
-            masternodeSync.mapSeenSyncMNB.erase((*it3).second.GetHash());
+    for (auto it = mapSeenMasternodeBroadcast.begin();
+         it != mapSeenMasternodeBroadcast.end(); ) {
+        if (it->second.lastPing.sigTime < pingExpiry) {
+	    uint256 hash = it->second.GetHash();
+            it = mapSeenMasternodeBroadcast.erase(it);
+            masternodeSync.mapSeenSyncMNB.erase(hash);
         } else {
-            ++it3;
+            ++it;
         }
     }
 
     // remove expired mapSeenMasternodePing
-    map<uint256, CMasternodePing>::iterator it4 = mapSeenMasternodePing.begin();
-    while (it4 != mapSeenMasternodePing.end()) {
-        if ((*it4).second.sigTime < GetTime() - (MASTERNODE_REMOVAL_SECONDS * 2)) {
-            mapSeenMasternodePing.erase(it4++);
+    for (auto it = mapSeenMasternodePing.begin();
+         it != mapSeenMasternodePing.end(); ) {
+        if (it->second.sigTime < pingExpiry) {
+            it = mapSeenMasternodePing.erase(it);
         } else {
-            ++it4;
+            ++it;
         }
     }
 }
