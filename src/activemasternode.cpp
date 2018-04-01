@@ -104,13 +104,13 @@ void CActiveMasternode::ManageStatus()
 
             if (!obfuScationSigner.SetKey(strMasterNodePrivKey, errorMessage, keyMasternode, pubKeyMasternode)) {
                 notCapableReason = "Error upon calling SetKey: " + errorMessage;
-                LogPrintf("Register::ManageStatus() - %s\n", notCapableReason);
+                LogPrintf("CActiveMasternode::ManageStatus() - %s\n", notCapableReason);
                 return;
             }
 
             if (!Register(vin, service, keyCollateralAddress, pubKeyCollateralAddress, keyMasternode, pubKeyMasternode, errorMessage)) {
                 notCapableReason = "Error on Register: " + errorMessage;
-                LogPrintf("Register::ManageStatus() - %s\n", notCapableReason);
+                LogPrintf("CActiveMasternode::ManageStatus() - %s\n", notCapableReason);
                 return;
             }
 
@@ -497,6 +497,7 @@ void CActiveMasternode::AddSeenMasternode(const uint256& hash)
     if (status == ACTIVE_MASTERNODE_STARTED) {
         mnodeman.UpdateSeenByNodes(hash, myaddr);
     } else if (status != ACTIVE_MASTERNODE_POTENTIAL) {
+	LogPrintf("Status: %s\n", GetStatus());
         mnodeman.RemoveSeenByNodes(hash, myaddr);
     }
 }
@@ -508,6 +509,7 @@ void CActiveMasternode::AddSeenAllMasternodes(void)
     if (status == ACTIVE_MASTERNODE_STARTED) {
         mnodeman.UpdateAllSeenByNodes(myaddr);
     } else if (status != ACTIVE_MASTERNODE_POTENTIAL) {
+	LogPrintf("Status: %s\n", GetStatus());
         mnodeman.RemoveAllSeenByNodes(myaddr);
     }
 }
