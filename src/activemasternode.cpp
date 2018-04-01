@@ -41,8 +41,16 @@ void CActiveMasternode::ManageStatus()
         }
     }
 
-    if (status != ACTIVE_MASTERNODE_STARTED &&
-        status != ACTIVE_MASTERNODE_POTENTIAL) {
+    if (status == ACTIVE_MASTERNODE_POTENTIAL) {
+        if (mnodeman.FindActive(vin)) {
+            LogPrintf("Local masternode now active!\n");
+            status = ACTIVE_MASTERNODE_STARTED;
+            AddSeenAllMasternodes();
+        }
+        return;
+    }
+
+    if (status != ACTIVE_MASTERNODE_STARTED) {
         // Set defaults
         status = ACTIVE_MASTERNODE_NOT_CAPABLE;
         notCapableReason = "";
@@ -117,14 +125,7 @@ void CActiveMasternode::ManageStatus()
             LogPrintf("CActiveMasternode::ManageStatus() - Is capable master node!\n");
             status = ACTIVE_MASTERNODE_POTENTIAL;
 	    return;
-	} else if (status == ACTIVE_MASTERNODE_POTENTIAL) {
-	    if (mnodeman.FindActive(vin)) {
-		LogPrintf("Local masternode now active!\n");
-		status = ACTIVE_MASTERNODE_STARTED;
-                AddSeenAllMasternodes();
-	    }
-            return;
-        } else {
+        } else if (status != ACTIVE_MASTERNODE_POTENTIAL) {
             notCapableReason = "Could not find suitable coins!";
             LogPrintf("CActiveMasternode::ManageStatus() - %s\n", notCapableReason);
             return;

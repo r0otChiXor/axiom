@@ -218,8 +218,8 @@ bool CMasternodeMan::Add(CMasternode& mn)
 	uint256 hash = mn.vin.prevout.hash;
         LogPrintf("CMasternodeMan: Adding new Potential Masternode %s - %i now\n", hash.ToString(), vPotentialMasternodes.size() + 1);
         vPotentialMasternodes.push_back(mn);
-	activeMasternode.AddSeenMasternode(hash);
     }
+    activeMasternode.ManageStatus();
 
     return true;
 }
