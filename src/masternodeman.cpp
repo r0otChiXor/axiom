@@ -1503,6 +1503,7 @@ void CMasternodeMan::UpdateSeenByNodes(const uint256& hash,
 
 void CMasternodeMan::RemoveAllSeenByNodes(std::vector<CNetAddr>& seenNodes)
 {
+    LogPrintf("RemoveAllSeenByNodes\n");
     for (auto it = mMasternodesSeen.begin(); it != mMasternodesSeen.end(); ++it) {
 	RemoveSeenByNodes(it->first, seenNodes);
     }
@@ -1510,6 +1511,7 @@ void CMasternodeMan::RemoveAllSeenByNodes(std::vector<CNetAddr>& seenNodes)
 
 void CMasternodeMan::UpdateAllSeenByNodes(std::vector<CNetAddr>& seenNodes)
 {
+    LogPrintf("UpdateAllSeenNodes\n");
     for (auto it = mMasternodesSeen.begin(); it != mMasternodesSeen.end(); ++it) {
 	UpdateSeenByNodes(it->first, seenNodes);
     }

@@ -361,7 +361,7 @@ void CMasternodeSync::Process()
             }
 
             if (RequestedMasternodeAssets == MASTERNODE_SYNC_POTENTIAL) {
-                LogPrintf("CMasternodeSync::Process() - lastMasternodePotentialList %lld (GetTime() - MASTERNODE_SYNC_TIMEOUT) %lld\n", lastMasternodePotentialList, GetTime() - MASTERNODE_SYNC_TIMEOUT);
+                LogPrint("masternode", "CMasternodeSync::Process() - lastMasternodePotentialList %lld (GetTime() - MASTERNODE_SYNC_TIMEOUT) %lld\n", lastMasternodePotentialList, GetTime() - MASTERNODE_SYNC_TIMEOUT);
                 if (lastMasternodePotentialList > 0 && lastMasternodePotentialList < GetTime() - MASTERNODE_SYNC_TIMEOUT * 2 && RequestedMasternodeAttempt >= MASTERNODE_SYNC_THRESHOLD) { //hasn't received a new item in the last five seconds, so we'll move to the
                     GetNextAsset();
                     return;
