@@ -42,7 +42,9 @@ void CActiveMasternode::ManageStatus()
     }
 
     if (status == ACTIVE_MASTERNODE_POTENTIAL) {
-        if (mnodeman.FindActive(vin)) {
+        CMasternode* pmn;
+        pmn = mnodeman.Find(pubKeyMasternode);
+        if (pmn != NULL && mnodeman.FindActive(pmn->vin)) {
             LogPrintf("Local masternode now active!\n");
             status = ACTIVE_MASTERNODE_STARTED;
             AddSeenAllMasternodes();
