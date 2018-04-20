@@ -146,11 +146,14 @@ volatile bool fReopenDebugLog = false;
 static CCriticalSection** ppmutexOpenSSL;
 void locking_callback(int mode, int i, const char* file, int line)
 {
+    bool oldDebug = fDebug;
+    fDebug = false;
     if (mode & CRYPTO_LOCK) {
         ENTER_CRITICAL_SECTION(*ppmutexOpenSSL[i]);
     } else {
         LEAVE_CRITICAL_SECTION(*ppmutexOpenSSL[i]);
     }
+    fDebug = oldDebug;
 }
 
 // Init
