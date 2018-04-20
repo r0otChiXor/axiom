@@ -257,7 +257,9 @@ void CMasternodeMan::Check()
 
     // Loop until all visited bits are set
     bool done = false;
+    int count = 0;
     while (!done) {
+	LogPrintf("Count: %d\n", ++count);
 	// iterate through and check nodues until the first one that gets
 	// moved to the active list.  When one gets moved, stop iterating
 	// so we don't mess up the iteration
@@ -276,6 +278,7 @@ void CMasternodeMan::Check()
 	    done &= mn.IsVisited();
 	}
     }
+    LogPrintf("Done Check\n");
 }
 
 void CMasternodeMan::RemoveInactive(std::vector<CMasternode>& vec,
