@@ -263,11 +263,10 @@ void CMasternodeMan::Check()
 	// so we don't mess up the iteration
         for (auto mn : vPotentialMasternodes) {
 	    if (!mn.IsVisited()) {
+		mn.SetVisited(true);
 		if (!mn.Check()) {
 		    break;
 		}
-
-		mn.SetVisited(true);
 	    }
 	}
 
