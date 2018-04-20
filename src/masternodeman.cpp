@@ -275,7 +275,9 @@ void CMasternodeMan::Check()
 	// Check if we've visted all nodes in the list
 	done = true;
 	for (auto mn : vPotentialMasternodes) {
-	    done &= mn.IsVisited();
+	    if (!mn.IsVisited()) {
+                done = false;
+	    }
 	}
     }
     LogPrintf("Done Check\n");
