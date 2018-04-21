@@ -269,6 +269,7 @@ void CMasternodeMan::Check()
 	    if (!mn.IsVisited()) {
 		mn.SetVisited(true);
 		bool deleted = !mn.Check();
+	        LogPrintf(" visited: %d: ", mn.IsVisited());
 		LogPrintf(" Deleted: %d\n", deleted);
 		if (deleted) {
 		    break;
