@@ -257,41 +257,28 @@ void CMasternodeMan::Check()
 
     // Loop until all visited bits are set
     volatile bool done = false;
-    int count = 0;
     while (!done) {
-	LogPrintf("Count: %d\n", ++count);
 	// iterate through and check nodues until the first one that gets
 	// moved to the active list.  When one gets moved, stop iterating
 	// so we don't mess up the iteration
-	int index = 0;
         for (auto& mn : vPotentialMasternodes) {
-	    LogPrintf("Index %d: visited: %d", index++, mn.IsVisited());
 	    if (!mn.IsVisited()) {
 		mn.SetVisited(true);
-		bool deleted = !mn.Check();
-	        LogPrintf(" visited: %d: ", mn.IsVisited());
-		LogPrintf(" Deleted: %d\n", deleted);
-		if (deleted) {
+		if (!mn.Check()) {
 		    break;
 		}
-	    } else {
-		LogPrintf("\n");
 	    }
 	}
 
 	// Check if we've visted all nodes in the list
 	done = true;
-	index = 0;
 	for (auto& mn : vPotentialMasternodes) {
-	    LogPrintf("Index %d: visited: %d\n", index++, mn.IsVisited());
 	    if (!mn.IsVisited()) {
                 done = false;
 		break;
 	    }
 	}
-	LogPrintf("done: %d\n", done);
     }
-    LogPrintf("Done Check\n");
 }
 
 void CMasternodeMan::RemoveInactive(std::vector<CMasternode>& vec,
