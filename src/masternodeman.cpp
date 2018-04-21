@@ -251,7 +251,7 @@ void CMasternodeMan::Check()
 
     LogPrintf("Checking vPotentialMasternodes : %d\n", vPotentialMasternodes.size());
     // Clear all visited bits
-    for (auto mn : vPotentialMasternodes) {
+    for (auto& mn : vPotentialMasternodes) {
 	mn.SetVisited(false);
     }
 
@@ -264,7 +264,7 @@ void CMasternodeMan::Check()
 	// moved to the active list.  When one gets moved, stop iterating
 	// so we don't mess up the iteration
 	int index = 0;
-        for (auto mn : vPotentialMasternodes) {
+        for (auto& mn : vPotentialMasternodes) {
 	    LogPrintf("Index %d: visited: %d", index++, mn.IsVisited());
 	    if (!mn.IsVisited()) {
 		mn.SetVisited(true);
@@ -282,7 +282,7 @@ void CMasternodeMan::Check()
 	// Check if we've visted all nodes in the list
 	done = true;
 	index = 0;
-	for (auto mn : vPotentialMasternodes) {
+	for (auto& mn : vPotentialMasternodes) {
 	    LogPrintf("Index %d: visited: %d\n", index++, mn.IsVisited());
 	    if (!mn.IsVisited()) {
                 done = false;
