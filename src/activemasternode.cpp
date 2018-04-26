@@ -194,12 +194,17 @@ bool CActiveMasternode::SendMasternodePing(std::string& errorMessage)
         pmn->lastPing = mnp;
         mnodeman.mapSeenMasternodePing.insert(make_pair(mnp.GetHash(), mnp));
 
-        //mnodeman.mapSeenMasternodeBroadcast.lastPing is probably outdated, so we'll update it
+        // mnodeman.mapSeenMasternodeBroadcast.lastPing is probably outdated,
+	//so we'll update it
         CMasternodeBroadcast mnb(*pmn);
         uint256 hash = mnb.GetHash();
-        if (mnodeman.mapSeenMasternodeBroadcast.count(hash)) mnodeman.mapSeenMasternodeBroadcast[hash].lastPing = mnp;
+        if (mnodeman.mapSeenMasternodeBroadcast.count(hash))
+	    mnodeman.mapSeenMasternodeBroadcast[hash].lastPing = mnp;
 
         mnp.Relay();
+
+	/* Add the potential node map */
+	std::vector<CNetAddr> nodelist = mnodeman.SeenByNodes(hash);
 
         /*
          * IT'S SAFE TO REMOVE THIS IN FURTHER VERSIONS
@@ -226,8 +231,10 @@ bool CActiveMasternode::SendMasternodePing(std::string& errorMessage)
 
         LogPrint("masternode", "dseep - relaying from active mn, %s \n", vin.ToString().c_str());
         LOCK(cs_vNodes);
-        BOOST_FOREACH (CNode* pnode, vNodes)
+        BOOST_FOREACH (CNode* pnode, vNodes) {
             pnode->PushMessage("dseep", vin, vchMasterNodeSignature, masterNodeSignatureTime, false);
+            pnode->PushInventory(CInv(MSG_MASTERNODE_POTENTIAL_REQ, hash));
+	}
 
         /*
          * END OF "REMOVE"

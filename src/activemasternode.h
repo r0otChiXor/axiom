@@ -31,6 +31,7 @@ private:
 
     /// Ping Masternode
     bool SendMasternodePing(std::string& errorMessage);
+    bool SendMasternodePotentialPing(std::string& errorMessage);
 
     /// Register any Masternode
     bool Register(CTxIn vin, CService service, CKey key, CPubKey pubKey, CKey keyMasternode, CPubKey pubKeyMasternode, std::string& errorMessage);
