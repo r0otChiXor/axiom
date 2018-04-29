@@ -30,14 +30,18 @@ void CActiveMasternode::ManageStatus()
         return;
     }
 
-    if (status == ACTIVE_MASTERNODE_SYNC_IN_PROCESS) status = ACTIVE_MASTERNODE_INITIAL;
+    if (status == ACTIVE_MASTERNODE_SYNC_IN_PROCESS) {
+        status = ACTIVE_MASTERNODE_INITIAL;
+    }
 
     if (status == ACTIVE_MASTERNODE_INITIAL) {
         CMasternode* pmn;
         pmn = mnodeman.Find(pubKeyMasternode);
         if (pmn != NULL) {
             pmn->Check();
-            if (pmn->IsEnabled() && pmn->protocolVersion == PROTOCOL_VERSION) EnableHotColdMasterNode(pmn->vin, pmn->addr);
+            if (pmn->IsEnabled() && pmn->protocolVersion == PROTOCOL_VERSION) {
+                EnableHotColdMasterNode(pmn->vin, pmn->addr);
+	    }
         }
     }
 
@@ -48,6 +52,7 @@ void CActiveMasternode::ManageStatus()
             LogPrintf("Local masternode now active!\n");
             status = ACTIVE_MASTERNODE_STARTED;
             AddSeenAllMasternodes();
+	    mpn->sigTime = 0;
         }
         return;
     }
@@ -69,19 +74,18 @@ void CActiveMasternode::ManageStatus()
             return;
         }
 
-        if (strMasterNodeAddr.empty()) {
-            if (!GetLocal(service)) {
-                notCapableReason = "Can't detect external address. Please use the masternodeaddr configuration option.";
-                LogPrintf("CActiveMasternode::ManageStatus() - not capable: %s\n", notCapableReason);
-                return;
-            }
-        } else {
-            service = CService(strMasterNodeAddr);
+        if (strMasterNodeAddr.empty() && !GetLocal(service)) {
+            notCapableReason = "Can't detect external address. Please use the masternodeaddr configuration option.";
+            LogPrintf("CActiveMasternode::ManageStatus() - not capable: %s\n", notCapableReason);
+            return;
         }
 
+        service = CService(strMasterNodeAddr);
+
         // The service needs the correct default port to work properly
-        if(!CMasternodeBroadcast::CheckDefaultPort(strMasterNodeAddr, errorMessage, "CActiveMasternode::ManageStatus()"))
+        if(!CMasternodeBroadcast::CheckDefaultPort(strMasterNodeAddr, errorMessage, "CActiveMasternode::ManageStatus()")) {
             return;
+	}
 
         LogPrintf("CActiveMasternode::ManageStatus() - Checking inbound connection to '%s'\n", service.ToString());
 
@@ -127,7 +131,9 @@ void CActiveMasternode::ManageStatus()
             LogPrintf("CActiveMasternode::ManageStatus() - Is capable master node!\n");
             status = ACTIVE_MASTERNODE_POTENTIAL;
 	    return;
-        } else if (status != ACTIVE_MASTERNODE_POTENTIAL) {
+        }
+	
+	if (status != ACTIVE_MASTERNODE_POTENTIAL) {
             notCapableReason = "Could not find suitable coins!";
             LogPrintf("CActiveMasternode::ManageStatus() - %s\n", notCapableReason);
             return;
