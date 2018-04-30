@@ -52,7 +52,7 @@ void CActiveMasternode::ManageStatus()
             LogPrintf("Local masternode now active!\n");
             status = ACTIVE_MASTERNODE_STARTED;
             AddSeenAllMasternodes();
-	    mpn->sigTime = 0;
+	    pmn->sigTime = 0;
         }
         return;
     }
