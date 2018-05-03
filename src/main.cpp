@@ -5484,6 +5484,8 @@ void static ProcessGetData(CNode* pfrom)
                     }
                 }
             } else if (inv.IsKnownType()) {
+		LogPrintf("inv type: %d\n", inv.type);
+
                 // Send stream from relay memory
                 bool pushed = false;
                 {
@@ -5592,9 +5594,7 @@ void static ProcessGetData(CNode* pfrom)
                 }
 
                 if (!pushed && inv.type == MSG_MASTERNODE_POTENTIAL_REQ) {
-                    if (mnodeman.mapSeenMasternodeBroadcast.count(inv.hash)) {
-		        pfrom->PushInventory(CInv(MSG_MASTERNODE_POTENTIAL_ANNOUNCE, inv.hash));
-		    }
+		    pfrom->PushInventory(CInv(MSG_MASTERNODE_POTENTIAL_ANNOUNCE, inv.hash));
 		}
 
                 if (!pushed && inv.type == MSG_MASTERNODE_POTENTIAL_ANNOUNCE) {

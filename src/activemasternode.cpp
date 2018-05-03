@@ -38,17 +38,18 @@ void CActiveMasternode::ManageStatus()
         CMasternode* pmn;
         pmn = mnodeman.Find(pubKeyMasternode);
         if (pmn != NULL) {
-            pmn->Check();
-            if (pmn->IsEnabled() && pmn->protocolVersion == PROTOCOL_VERSION) {
-                EnableHotColdMasterNode(pmn->vin, pmn->addr);
-	    }
+            status = ACTIVE_MASTERNODE_POTENTIAL;
         }
     }
 
     if (status == ACTIVE_MASTERNODE_POTENTIAL) {
         CMasternode* pmn;
         pmn = mnodeman.Find(pubKeyMasternode);
-        if (pmn != NULL && mnodeman.FindActive(pmn->vin)) {
+        if (pmn != NULL) {
+            pmn->Check();
+	    if (pmn->IsActive() && pmn->protocolVersion == PROTOCOL_VERSION) {
+                EnableHotColdMasterNode(pmn->vin, pmn->addr);
+	    }
             LogPrintf("Local masternode now active!\n");
             status = ACTIVE_MASTERNODE_STARTED;
             AddSeenAllMasternodes();
@@ -495,7 +496,7 @@ bool CActiveMasternode::EnableHotColdMasterNode(CTxIn& newVin, CService& newServ
 {
     if (!fMasterNode) return false;
 
-    status = ACTIVE_MASTERNODE_POTENTIAL;
+    status = ACTIVE_MASTERNODE_STARTED;
 
     //The values below are needed for signing mnping messages going forward
     vin = newVin;
