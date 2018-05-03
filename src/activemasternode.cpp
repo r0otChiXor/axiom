@@ -47,7 +47,7 @@ void CActiveMasternode::ManageStatus()
         pmn = mnodeman.Find(pubKeyMasternode);
         if (pmn != NULL) {
             pmn->Check();
-	    if (pmn->IsActive() && pmn->protocolVersion == PROTOCOL_VERSION) {
+	    if (pmn->IsEnabled() && pmn->protocolVersion == PROTOCOL_VERSION) {
                 EnableHotColdMasterNode(pmn->vin, pmn->addr);
 	    }
             LogPrintf("Local masternode now active!\n");
