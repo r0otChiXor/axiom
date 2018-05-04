@@ -5593,7 +5593,8 @@ void static ProcessGetData(CNode* pfrom)
                     }
                 }
 
-                if (!pushed && inv.type == MSG_MASTERNODE_POTENTIAL_REQ) {
+                if (inv.type == MSG_MASTERNODE_POTENTIAL_REQ) {
+		    LogPrintf("Sending POTENTIAL_ANNOUNCE\n");
 		    pfrom->PushInventory(CInv(MSG_MASTERNODE_POTENTIAL_ANNOUNCE, inv.hash));
 		}
 
@@ -5890,7 +5891,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
             pfrom->AddInventoryKnown(inv);
 
             bool fAlreadyHave = AlreadyHave(inv);
-            LogPrint("net", "got inv: %s  %s peer=%d\n", inv.ToString(), fAlreadyHave ? "have" : "new", pfrom->id);
+            LogPrintf("got inv: %s  %s peer=%d\n", inv.ToString(), fAlreadyHave ? "have" : "new", pfrom->id);
 
             if (!fAlreadyHave && !fImporting && !fReindex && inv.type != MSG_BLOCK)
                 pfrom->AskFor(inv);
