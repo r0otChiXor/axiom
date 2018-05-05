@@ -363,11 +363,15 @@ void CMasternodeSync::Process()
             if (RequestedMasternodeAssets == MASTERNODE_SYNC_POTENTIAL) {
                 LogPrint("masternode", "CMasternodeSync::Process() - lastMasternodePotentialList %lld (GetTime() - MASTERNODE_SYNC_TIMEOUT) %lld\n", lastMasternodePotentialList, GetTime() - MASTERNODE_SYNC_TIMEOUT);
                 if (lastMasternodePotentialList > 0 && lastMasternodePotentialList < GetTime() - MASTERNODE_SYNC_TIMEOUT * 2 && RequestedMasternodeAttempt >= MASTERNODE_SYNC_THRESHOLD) { //hasn't received a new item in the last five seconds, so we'll move to the
+		    LogPrint("masternode", "GetNextAsset\n");
                     GetNextAsset();
                     return;
                 }
 
-                if (pnode->HasFulfilledRequest("mnpsync")) continue;
+                if (pnode->HasFulfilledRequest("mnpsync")) {
+		    LogPrint("masternode", "HasFulfilled mnpsync\n");
+		    continue;
+
                 pnode->FulfilledRequest("mnpsync");
 
                 // timeout
@@ -380,13 +384,19 @@ void CMasternodeSync::Process()
                         lastFailure = GetTime();
                         nCountFailures++;
                     } else {
+			LogPrint("masternode", "Timeout, GetNextAsset\n");
                         GetNextAsset();
                     }
                     return;
                 }
 
-                if (RequestedMasternodeAttempt >= MASTERNODE_SYNC_THRESHOLD * 3) return;
+                if (RequestedMasternodeAttempt >= MASTERNODE_SYNC_THRESHOLD * 3)
+		{
+		    LogPrint("masternode", "Too many attempts\n");
+	       	    return;
+		}
 
+		LogPrint("masternode", "Doing dsegpupdate\n");
                 mnodeman.DsegpUpdate(pnode);
                 RequestedMasternodeAttempt++;
                 return;

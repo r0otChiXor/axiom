@@ -4651,7 +4651,7 @@ bool ProcessNewBlock(CValidationState& state, CNode* pfrom, CBlock* pblock, CDis
         return error("%s : ActivateBestChain failed", __func__);
 
     if (!fLiteMode) {
-        if (masternodeSync.RequestedMasternodeAssets > MASTERNODE_SYNC_LIST) {
+        if (masternodeSync.RequestedMasternodeAssets > MASTERNODE_POTENTIAL_LIST) {
             obfuScationPool.NewBlock();
             masternodePayments.ProcessBlock(GetHeight() + 10);
             budget.NewBlock();
@@ -5393,6 +5393,8 @@ bool static AlreadyHave(const CInv& inv)
             return true;
         }
         return false;
+    case MSG_MASTERNODE_POTENTIAL_REQ:
+	return false;
     case MSG_MASTERNODE_POTENTIAL_ANNOUNCE:
         if (mnodeman.mapSeenMasternodeBroadcast.count(inv.hash)) {
 	    LogPrintf("AlreadyHave - potential\n");

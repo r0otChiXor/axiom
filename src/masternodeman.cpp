@@ -1022,23 +1022,20 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
         int nInvCount = 0;
 
         BOOST_FOREACH (CMasternode& mn, vPotentialMasternodes) {
-            if (mn.addr.IsRFC1918()) continue; //local network
+            if (mn.addr.IsRFC1918()) {
+	        continue; //local network
+	    }
 
             if (mn.IsPotential()) {
                 LogPrintf("dsegp - Sending Potential Masternode entry - %s \n", mn.vin.prevout.hash.ToString());
-                if (vin == CTxIn() || vin == mn.vin) {
-                    CMasternodeBroadcast mnb = CMasternodeBroadcast(mn);
-                    uint256 hash = mnb.GetHash();
-                    pfrom->PushInventory(CInv(MSG_MASTERNODE_POTENTIAL_ANNOUNCE, hash));
-                    nInvCount++;
+                CMasternodeBroadcast mnb = CMasternodeBroadcast(mn);
+                uint256 hash = mnb.GetHash();
+                pfrom->PushInventory(CInv(MSG_MASTERNODE_POTENTIAL_ANNOUNCE, hash));
+                nInvCount++;
 
-                    if (!mapSeenMasternodeBroadcast.count(hash)) mapSeenMasternodeBroadcast.insert(make_pair(hash, mnb));
-
-                    if (vin == mn.vin) {
-                        LogPrintf("dsegp - Sent 1 Potential Masternode entry to peer %i\n", pfrom->GetId());
-                        return;
-                    }
-                }
+                if (!mapSeenMasternodeBroadcast.count(hash)) {
+		     mapSeenMasternodeBroadcast.insert(make_pair(hash, mnb));
+		}
             }
         }
 
