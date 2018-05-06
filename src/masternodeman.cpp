@@ -999,50 +999,39 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
         CTxIn vin;
         vRecv >> vin;
 
-        if (vin == CTxIn()) { //only should ask for this once
-            //local network
-            bool isLocal = (pfrom->addr.IsRFC1918() || pfrom->addr.IsLocal());
-
-            if (!isLocal && Params().NetworkID() == CBaseChainParams::MAIN) {
-                std::map<CNetAddr, int64_t>::iterator i = mAskedUsForPotentialMasternodeList.find(pfrom->addr);
-                if (i != mAskedUsForPotentialMasternodeList.end()) {
-                    int64_t t = (*i).second;
-                    if (GetTime() < t) {
-                        Misbehaving(pfrom->GetId(), 34, "dsegp already asked");
-                        LogPrint("masternode","dsegp - peer already asked me for the list\n");
-                        return;
-                    }
-                }
-                int64_t askAgain = GetTime() + MASTERNODES_DSEGP_SECONDS;
-                mAskedUsForPotentialMasternodeList[pfrom->addr] = askAgain;
-            }
-        } //else, asking for a specific node which is ok
-
+        if (vin != CTxIn()) {
+	    LogPrintf("dsegp - vin: %s, hash %s\n", vin.ToString(), vin.prevout.hash.ToString());
+            pfrom->PushInventory(CInv(MSG_MASTERNODE_POTENTIAL_ANNOUNCE, vin.prevout.hash));
+	    return;
+	}
 
         int nInvCount = 0;
 
-        BOOST_FOREACH (CMasternode& mn, vPotentialMasternodes) {
-            if (mn.addr.IsRFC1918()) {
-	        continue; //local network
-	    }
+        //local network
+        bool isLocal = (pfrom->addr.IsRFC1918() || pfrom->addr.IsLocal());
 
-            if (mn.IsPotential()) {
-                LogPrintf("dsegp - Sending Potential Masternode entry - %s \n", mn.vin.prevout.hash.ToString());
-                CMasternodeBroadcast mnb = CMasternodeBroadcast(mn);
-                uint256 hash = mnb.GetHash();
-                pfrom->PushInventory(CInv(MSG_MASTERNODE_POTENTIAL_ANNOUNCE, hash));
-                nInvCount++;
-
-                if (!mapSeenMasternodeBroadcast.count(hash)) {
-		     mapSeenMasternodeBroadcast.insert(make_pair(hash, mnb));
-		}
+        if (!isLocal && Params().NetworkID() == CBaseChainParams::MAIN) {
+            auto i = mAskedUsForPotentialMasternodeList.find(pfrom->addr);
+            if (i != mAskedUsForPotentialMasternodeList.end()) {
+                int64_t t = i->second;
+                if (GetTime() < t) {
+                    Misbehaving(pfrom->GetId(), 34, "dsegp already asked");
+                    LogPrint("masternode","dsegp - peer already asked me for the list\n");
+                    return;
+                }
             }
+            int64_t askAgain = GetTime() + MASTERNODES_DSEGP_SECONDS;
+            mAskedUsForPotentialMasternodeList[pfrom->addr] = askAgain;
         }
 
-        if (vin == CTxIn()) {
-            pfrom->PushMessage("ssc", MASTERNODE_SYNC_POTENTIAL, nInvCount);
-            LogPrint("masternode", "dsegp - Sent %d Potential Masternode entries to peer %i\n", nInvCount, pfrom->GetId());
+        for (auto& it : mMasternodesSeen) {
+	    LogPrintf("dsegp - Sending Potential Masternode entry - hash %s \n", it.first.ToString());
+            pfrom->PushInventory(CInv(MSG_MASTERNODE_POTENTIAL_ANNOUNCE, it.first));
+            nInvCount++;
         }
+
+        pfrom->PushMessage("ssc", MASTERNODE_SYNC_POTENTIAL, nInvCount);
+        LogPrint("masternode", "dsegp - Sent %d Potential Masternode entries to peer %i\n", nInvCount, pfrom->GetId());
     }
 
     /*
@@ -1451,7 +1440,7 @@ int CMasternodeMan::MaxMasternodeCount()
     // 2 min blocks, get number of intervals
     int64_t nHeight = chainActive.Tip()->nHeight;
     int nIntervals = nHeight / Params().SubsidyHalvingInterval();
-    int max = Params().MasternodeMaxBase() + 
+    int max = Params().MasternodeMaxBase() +
 	      nIntervals * Params().MasternodeMaxIncrement();
 
     LogPrintf("MaxMasternodeCount: %d\n", max);
@@ -1515,4 +1504,3 @@ void CMasternodeMan::UpdateAllSeenByNodes(std::vector<CNetAddr>& seenNodes)
 	UpdateSeenByNodes(it->first, seenNodes);
     }
 }
-

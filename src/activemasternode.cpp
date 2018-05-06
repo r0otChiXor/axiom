@@ -239,8 +239,9 @@ bool CActiveMasternode::SendMasternodePing(std::string& errorMessage)
         LogPrint("masternode", "dseep - relaying from active mn, %s \n", vin.ToString().c_str());
         LOCK(cs_vNodes);
         BOOST_FOREACH (CNode* pnode, vNodes) {
+	    LogPrint("masternode", "Pushing dseep: hash %s\n", hash.ToString());
             pnode->PushMessage("dseep", vin, vchMasterNodeSignature, masterNodeSignatureTime, false);
-            pnode->PushInventory(CInv(MSG_MASTERNODE_POTENTIAL_REQ, hash));
+            pnode->PushInventory(CInv(MSG_MASTERNODE_POTENTIAL_ANNOUNCE, hash));
 	}
 
         /*

@@ -5393,14 +5393,7 @@ bool static AlreadyHave(const CInv& inv)
             return true;
         }
         return false;
-    case MSG_MASTERNODE_POTENTIAL_REQ:
-	return false;
     case MSG_MASTERNODE_POTENTIAL_ANNOUNCE:
-        if (mnodeman.mapSeenMasternodeBroadcast.count(inv.hash)) {
-	    LogPrintf("AlreadyHave - potential\n");
-	    activeMasternode.AddSeenMasternode(inv.hash);
-            return true;
-        }
         return false;
     case MSG_MASTERNODE_PING:
         return mnodeman.mapSeenMasternodePing.count(inv.hash);
@@ -5595,24 +5588,20 @@ void static ProcessGetData(CNode* pfrom)
                     }
                 }
 
-                if (inv.type == MSG_MASTERNODE_POTENTIAL_REQ) {
-		    LogPrintf("Sending POTENTIAL_ANNOUNCE\n");
-		    pfrom->PushInventory(CInv(MSG_MASTERNODE_POTENTIAL_ANNOUNCE, inv.hash));
-		}
-
                 if (!pushed && inv.type == MSG_MASTERNODE_POTENTIAL_ANNOUNCE) {
-                    if (mnodeman.mapSeenMasternodeBroadcast.count(inv.hash)) {
-			LogPrintf("ProcessGetData - potential\n");
-                        CMasternodeBroadcast mnp = mnodeman.mapSeenMasternodeBroadcast[inv.hash];
-                        CMasternode mn(mnp);
-                        CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
-			std::vector<CNetAddr> nodelist = mnodeman.SeenByNodes(inv.hash);
-                        ss.reserve(1000 + 8 * nodelist.size());
+		    LogPrintf("ProcessGetData - potential - %s\n", inv.hash.ToString());
+                    CMasternodeBroadcast mnp = mnodeman.mapSeenMasternodeBroadcast[inv.hash];
+                    CMasternode mn(mnp);
+                    CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+		    std::vector<CNetAddr> nodelist = mnodeman.SeenByNodes(inv.hash);
+		    int size = nodelist.size();
+		    if (size) {
+                        ss.reserve(1000 + 8 * size);
                         ss << mnp;
                         ss << nodelist;
                         pfrom->PushMessage("mnpb", ss);
                         pushed = true;
-                    }
+		    }
                 }
 
                 if (!pushed && inv.type == MSG_MASTERNODE_PING) {
