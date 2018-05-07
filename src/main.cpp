@@ -5595,6 +5595,7 @@ void static ProcessGetData(CNode* pfrom)
                     CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
 		    std::vector<CNetAddr> nodelist = mnodeman.SeenByNodes(inv.hash);
 		    int size = nodelist.size();
+		    LogPrintf("%d items to send via mnpb\n", size);
 		    if (size) {
                         ss.reserve(1000 + 8 * size);
                         ss << mnp;

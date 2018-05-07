@@ -1481,11 +1481,13 @@ void CMasternodeMan::UpdateSeenByNodes(const uint256& hash,
     LogPrintf("UpdateSeenNodes\n");
     std::vector<CNetAddr> temp;
     std::vector<CNetAddr> search = SeenByNodes(hash);
+    LogPrintf("Before: %d\n", search.size());
 
     std::sort(search.begin(), search.end());
     std::sort(seenNodes.begin(), seenNodes.end());
     std::set_union(search.begin(), search.end(), seenNodes.begin(),
 		   seenNodes.end(), std::back_inserter(temp));
+    LogPrintf("After: %d\n", temp.size());
     mMasternodesSeen[hash] = temp;
 }
 
