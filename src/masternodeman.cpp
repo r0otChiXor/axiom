@@ -474,6 +474,7 @@ void CMasternodeMan::DsegUpdate(CNode* pnode)
 {
     LOCK(cs);
 
+#if 0
     if (Params().NetworkID() == CBaseChainParams::MAIN) {
         if (!(pnode->addr.IsRFC1918() || pnode->addr.IsLocal())) {
             std::map<CNetAddr, int64_t>::iterator it = mWeAskedForMasternodeList.find(pnode->addr);
@@ -485,6 +486,7 @@ void CMasternodeMan::DsegUpdate(CNode* pnode)
             }
         }
     }
+#endif
 
     pnode->PushMessage("dseg", CTxIn());
     int64_t askAgain = GetTime() + MASTERNODES_DSEG_SECONDS;
@@ -495,6 +497,7 @@ void CMasternodeMan::DsegpUpdate(CNode* pnode)
 {
     LOCK(cs);
 
+#if 0
     LogPrintf("DsegpUpdate\n");
     if (Params().NetworkID() == CBaseChainParams::MAIN) {
         if (!(pnode->addr.IsRFC1918() || pnode->addr.IsLocal())) {
@@ -507,6 +510,7 @@ void CMasternodeMan::DsegpUpdate(CNode* pnode)
             }
         }
     }
+#endif
 
     pnode->PushMessage("dsegp", CTxIn());
     int64_t askAgain = GetTime() + MASTERNODES_DSEGP_SECONDS;
