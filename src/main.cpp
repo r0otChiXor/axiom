@@ -2151,7 +2151,7 @@ int64_t GetPOWBlockValue(int nHeight)
         } else if (nHeight <= Params().LAST_POW_BLOCK() && nHeight > 0) {
             // 2 min blocks, get number of intervals
             int64_t nIntervals = nHeight / Params().SubsidyHalvingInterval();
-            nSubsidy = (8 * COIN) >> nIntervals;
+            nSubsidy = max(10 - nIntervals, int64_t(0)) * COIN;
         }
     }
     return nSubsidy;

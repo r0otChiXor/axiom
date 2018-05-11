@@ -124,7 +124,7 @@ public:
         nMaxMoneyOut = 21000000 * COIN;
 
         /** Height or Time Based Activations **/
-        nLastPOWBlock = nSubsidyHalvingInterval * 5;  // 5 yrs at 2min blocks
+        nLastPOWBlock = nSubsidyHalvingInterval * 10;  // 10 yrs at 2min blocks
         nModifierUpdateBlock = 1; // TODO
         nZerocoinStartHeight = 21; // MUST be >= 20!
         nZerocoinStartTime = 1519976760; // March 2, 2018 07:48:00 GMT
