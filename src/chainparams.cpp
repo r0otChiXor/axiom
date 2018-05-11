@@ -117,7 +117,7 @@ public:
         nRejectBlockOutdatedMajority = 950;
         nToCheckBlockUpgradeMajority = 1000;
         nMinerThreads = 0;
-        nTargetTimespan = 1 * 60; // Castle: 1 day
+        nTargetTimespan = 1 * 60; // Castle: 1 minute
         nTargetSpacing = 2 * 60;  // Castle: 2 minute
         nMaturity = 100;
         nMasternodeCountDrift = 20;

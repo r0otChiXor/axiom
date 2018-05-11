@@ -1019,7 +1019,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
             if (i != mAskedUsForPotentialMasternodeList.end()) {
                 int64_t t = i->second;
                 if (GetTime() < t) {
-                    Misbehaving(pfrom->GetId(), 34, "dsegp already asked");
+                    //Misbehaving(pfrom->GetId(), 34, "dsegp already asked");
                     LogPrint("masternode","dsegp - peer already asked me for the list\n");
                     return;
                 }
@@ -1259,7 +1259,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
         bool stop;
         vRecv >> vin >> vchSig >> sigTime >> stop;
 
-        //LogPrint("masternode","dseep - Received: vin: %s sigTime: %lld stop: %s\n", vin.ToString().c_str(), sigTime, stop ? "true" : "false");
+        LogPrint("masternode","dseep - Received: vin: %s sigTime: %lld stop: %s\n", vin.ToString().c_str(), sigTime, stop ? "true" : "false");
 
         if (sigTime > GetAdjustedTime() + 60 * 60) {
             LogPrint("masternode","dseep - Signature rejected, too far into the future %s\n", vin.prevout.hash.ToString());
@@ -1282,7 +1282,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
         // see if we have this Masternode
         CMasternode* pmn = this->Find(vin);
         if (pmn != NULL && pmn->protocolVersion >= masternodePayments.GetMinMasternodePaymentsProto()) {
-            // LogPrint("masternode","dseep - Found corresponding mn for vin: %s\n", vin.ToString().c_str());
+             LogPrint("masternode","dseep - Found corresponding mn for vin: %s\n", vin.ToString().c_str());
             // take this only if it's newer
             if (sigTime - pmn->nLastDseep > MASTERNODE_MIN_MNP_SECONDS) {
                 std::string strMessage = pmn->addr.ToString() + boost::lexical_cast<std::string>(sigTime) + boost::lexical_cast<std::string>(stop);
