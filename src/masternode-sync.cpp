@@ -38,23 +38,37 @@ bool CMasternodeSync::IsBlockchainSynced()
     // if the last call to this function was more than 60 minutes ago (client was in sleep mode) reset the sync process
     if (GetTime() - lastProcess > 60 * 60) {
         Reset();
+	LogPrint("masternode", "IsBlockchainSynced: last processed over an hour ago\n");
         fBlockchainSynced = false;
     }
     lastProcess = GetTime();
 
-    if (fBlockchainSynced) return true;
+    if (fBlockchainSynced) {
+	return true;
+    }
 
-    if (fImporting || fReindex) return false;
+    if (fImporting || fReindex) {
+	LogPrint("masternode", "IsBlockchainSynced: importing: %d, reindexing: %s\n", fImporting, fReindex);
+	return false;
+    }
 
     TRY_LOCK(cs_main, lockMain);
-    if (!lockMain) return false;
+    if (!lockMain) {
+	LogPrint("masternode", "IsBlockchainSynced: can't lock main\n");
+	return false;
+    }
 
     CBlockIndex* pindex = chainActive.Tip();
-    if (pindex == NULL) return false;
+    if (pindex == NULL) {
+	LogPrint("masternode", "IsBlockchainSynced: empty blockchain\n");
+	return false;
+    }
 
 
-    if (pindex->nTime + 60 * 60 < GetTime())
+    if (pindex->nTime + 60 * 60 < GetTime()) {
+	LogPrint("masternode", "IsBlockchainSynced: blockchain over an hour old\n");
         return false;
+    }
 
     fBlockchainSynced = true;
 

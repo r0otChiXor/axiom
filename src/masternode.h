@@ -343,4 +343,6 @@ public:
     static bool CheckDefaultPort(std::string strService, std::string& strErrorRet, std::string strContext);
 };
 
+bool CheckMasternodePort(CService &addr);
+
 #endif

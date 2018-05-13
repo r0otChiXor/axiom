@@ -500,6 +500,12 @@ bool CMasternodeBroadcast::CheckDefaultPort(std::string strService, std::string&
     return true;
 }
 
+bool CheckMasternodePort(CService &addr) {
+    int mainport = Params(CBaseChainParams::MAIN).GetDefaultPort();
+    return ((addr.GetPort() == mainport) ^
+            (Params().NetworkID() == CBaseChainParams::MAIN));
+}
+
 bool CMasternodeBroadcast::CheckAndUpdate(int& nDos)
 {
     // make sure signature isn't in the future (past is OK)
@@ -548,10 +554,10 @@ bool CMasternodeBroadcast::CheckAndUpdate(int& nDos)
         return false;
     }
 
-    if (Params().NetworkID() == CBaseChainParams::MAIN) {
-        if (addr.GetPort() != 35433) return false;
-    } else if (addr.GetPort() == 35433)
-        return false;
+    if (!CheckMasternodePort(addr)) {
+        LogPrintf("mnb - Got bad Masternode port\n");
+	return false;
+    }
 
     //search existing Masternode list, this is where we update existing Masternodes with new mnb broadcasts
     CMasternode* pmn = mnodeman.Find(vin);

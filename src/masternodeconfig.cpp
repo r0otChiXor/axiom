@@ -12,6 +12,9 @@
 #include <base58.h>
 // clang-format on
 
+// defined in masternode.cpp, trying to avoid header pollution
+bool CheckMasternodePort(CService &addr);
+
 CMasternodeConfig masternodeConfig;
 
 void CMasternodeConfig::add(std::string alias, std::string ip, std::string privKey, std::string txHash, std::string outputIndex)
@@ -31,7 +34,9 @@ bool CMasternodeConfig::read(std::string& strErr)
         if (configFile != NULL) {
             std::string strHeader = "# Masternode config file\n"
                                     "# Format: alias IP:port masternodeprivkey collateral_output_txid collateral_output_index\n"
-                                    "# Example: mn1 127.0.0.2:35433 93HaYBVUCYjEMeeH1Y4sBGLALQZE1Yc1K64xiqgX37tGBDQL8Xg 2bcd3c84c84f87eaa86e4e56834c92927a07f9e18718810b92e0d0324456a67c 0\n";
+                                    "# Example: mn1 127.0.0.2:" +
+				    std::to_string(Params(CBaseChainParams::MAIN).GetDefaultPort()) +
+				    " 93HaYBVUCYjEMeeH1Y4sBGLALQZE1Yc1K64xiqgX37tGBDQL8Xg 2bcd3c84c84f87eaa86e4e56834c92927a07f9e18718810b92e0d0324456a67c 0\n";
             fwrite(strHeader.c_str(), std::strlen(strHeader.c_str()), 1, configFile);
             fclose(configFile);
         }
@@ -61,22 +66,23 @@ bool CMasternodeConfig::read(std::string& strErr)
             }
         }
 
-        if (Params().NetworkID() == CBaseChainParams::MAIN) {
-            if (CService(ip).GetPort() != 35433) {
+	CService addr(ip);
+	if (!CheckMasternodePort(addr)) {
+	    int mainPort = Params(CBaseChainParams::MAIN).GetDefaultPort();
+            if (Params().NetworkID() == CBaseChainParams::MAIN) {
                 strErr = _("Invalid port detected in masternode.conf") + "\n" +
-                         strprintf(_("Line: %d"), linenumber) + "\n\"" + line + "\"" + "\n" +
-                         _("(must be 35433 for mainnet)");
-                streamConfig.close();
-                return false;
-            }
-        } else if (CService(ip).GetPort() == 35433) {
-            strErr = _("Invalid port detected in masternode.conf") + "\n" +
-                     strprintf(_("Line: %d"), linenumber) + "\n\"" + line + "\"" + "\n" +
-                     _("(35433 could be used only on mainnet)");
+                         strprintf(_("Line: %d"), linenumber) + "\n\"" + line +
+			 "\"" + "\n" + _("(must be ") +
+			 std::to_string(mainPort) + _(" for mainnet)");
+            } else {
+                strErr = _("Invalid port detected in masternode.conf") + "\n" +
+                         strprintf(_("Line: %d"), linenumber) + "\n\"" + line +
+		         "\"" + "\n(" + std::to_string(mainPort) +
+                         _(" may be used only on mainnet)");
+	    }
             streamConfig.close();
             return false;
         }
-
 
         add(alias, ip, privKey, txHash, outputIndex);
     }
