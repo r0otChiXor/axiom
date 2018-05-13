@@ -502,8 +502,6 @@ bool CMasternodeBroadcast::CheckDefaultPort(std::string strService, std::string&
 
 bool CheckMasternodePort(CService &addr) {
     int mainport = Params(CBaseChainParams::MAIN).GetDefaultPort();
-    fprintf(stderr, "addr.port: %d, network: %d, mainport: %d\n",
-             addr.GetPort(), Params().NetworkID(), mainport);
     return ((addr.GetPort() == mainport) ==
             (Params().NetworkID() == CBaseChainParams::MAIN));
 }
