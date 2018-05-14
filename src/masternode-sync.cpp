@@ -288,10 +288,10 @@ void CMasternodeSync::Process()
             Resync if we lose all masternodes from sleep/wake or failure to sync originally
         */
         if (mnodeman.CountEnabled() == 0) {
-            LogPrintf("masternode", "Resync\n");
+            LogPrint("masternode", "Resync\n");
             Reset();
         } else {
-            LogPrintf("masternode", "IsSynced\n");
+            LogPrint("masternode", "IsSynced\n");
             return;
 	}
     }
@@ -299,10 +299,10 @@ void CMasternodeSync::Process()
     // try syncing again
     if (RequestedMasternodeAssets == MASTERNODE_SYNC_FAILED) {
         if (lastFailure + (1 * 60) < GetTime()) {
-            LogPrintf("masternode", "Resync after failure\n");
+            LogPrint("masternode", "Resync after failure\n");
             Reset();
         } else {
-            LogPrintf("masternode", "Failed sync\n");
+            LogPrint("masternode", "Failed sync\n");
             return;
 	}
     }
