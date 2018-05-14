@@ -319,6 +319,7 @@ void CMasternodeSync::Process()
         !IsBlockchainSynced() &&
        	RequestedMasternodeAssets > MASTERNODE_SYNC_SPORKS) {
 	LogPrint("masternode", "Sporks synced, blockchain not\n");
+	GetNextAsset();
 	return;
     }	
 
