@@ -550,7 +550,7 @@ bool CMasternodeBroadcast::CheckAndUpdate(int& nDos)
     std::string errorMessage = "";
     if (!obfuScationSigner.VerifyMessage(pubKeyCollateralAddress, sig, strMessage, errorMessage)) {
         LogPrintf("mnb - Got bad Masternode address signature\n");
-        nDos = 100;
+        //nDos = 100;
         return false;
     }
 
