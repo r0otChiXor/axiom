@@ -376,7 +376,7 @@ void CMasternodeSync::Process()
 
                 if (pnode->HasFulfilledRequest("mnsync")) {
 		    LogPrint("masternode", "HasFulfilled mnpsync\n");
-	            continue;
+	            // continue;
                 }
                 pnode->FulfilledRequest("mnsync");
 
@@ -419,7 +419,7 @@ void CMasternodeSync::Process()
 
                 if (pnode->HasFulfilledRequest("mnpsync")) {
 		    LogPrint("masternode", "HasFulfilled mnpsync\n");
-		    continue;
+		    // continue;
                 }
 
                 pnode->FulfilledRequest("mnpsync");
