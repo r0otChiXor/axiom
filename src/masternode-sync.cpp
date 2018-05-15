@@ -64,7 +64,6 @@ bool CMasternodeSync::IsBlockchainSynced()
 	return false;
     }
 
-
     if (pindex->nTime + 60 * 60 < GetTime()) {
 	LogPrint("masternode", "IsBlockchainSynced: blockchain over an hour old\n");
         return false;

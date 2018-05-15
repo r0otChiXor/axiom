@@ -5597,10 +5597,9 @@ void static ProcessGetData(CNode* pfrom)
 		    int size = nodelist.size();
 		    LogPrintf("%d items to send via mnpb\n", size);
 		    if (size) {
-                        ss.reserve(1000 + 8 * size);
+                        ss.reserve(1000);
                         ss << mnp;
-                        ss << nodelist;
-                        pfrom->PushMessage("mnpb", ss);
+                        pfrom->PushMessage("mnpb", ss, nodelist);
                         pushed = true;
 		    }
                 }
