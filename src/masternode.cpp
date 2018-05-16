@@ -239,6 +239,12 @@ bool CMasternode::Check(bool forceCheck)
 
     if (activeState == MASTERNODE_POTENTIAL)
     {
+	if (activeMasternode.status == ACTIVE_MASTERNODE_STARTED) {
+            std::vector<CNetAddr> myaddr;
+            myaddr.push_back(activeMasternode.service);
+            mnodeman.UpdateSeenByNodes(vin.prevout.GetHash(), myaddr);
+	}
+
 	// Check number of nodes seen vs required
         if (!mnodeman.CheckConsensus(*this)) {
 	    LogPrintf("No consensus yet, still potential\n");

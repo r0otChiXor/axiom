@@ -5590,16 +5590,14 @@ void static ProcessGetData(CNode* pfrom)
 
                 if (!pushed && inv.type == MSG_MASTERNODE_POTENTIAL_ANNOUNCE) {
 		    LogPrintf("ProcessGetData - potential - %s\n", inv.hash.ToString());
-                    CMasternodeBroadcast mnp = mnodeman.mapSeenMasternodeBroadcast[inv.hash];
-                    CMasternode mn(mnp);
-                    CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
-		    std::vector<CNetAddr> nodelist = mnodeman.SeenByNodes(inv.hash);
+		    auto nodelist = mnodeman.SeenByNodes(inv.hash);
 		    int size = nodelist.size();
 		    LogPrintf("%d items to send via mnpb\n", size);
-		    if (size) {
+		    for (auto& addr : nodelist) {
+                        CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
                         ss.reserve(1000);
-                        ss << mnp;
-                        pfrom->PushMessage("mnpb", ss, nodelist);
+                        ss << inv.hash << addr;
+                        pfrom->PushMessage("mnpb", ss);
                         pushed = true;
 		    }
                 }

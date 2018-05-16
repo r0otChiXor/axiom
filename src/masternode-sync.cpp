@@ -114,7 +114,7 @@ void CMasternodeSync::AddedMasternodeList(uint256 hash)
 void CMasternodeSync::AddedMasternodePotentialList(uint256 hash, std::vector<CNetAddr>& seenNodes)
 {
     LogPrintf("AddedMasternodePotentialList, %d entries\n", seenNodes.size());
-    if (mnodeman.mapSeenMasternodeBroadcast.count(hash)) {
+    if (mapSeenSyncMNPB.count(hash)) {
         if (mapSeenSyncMNPB[hash] < MASTERNODE_SYNC_THRESHOLD) {
             lastMasternodePotentialList = GetTime();
             mapSeenSyncMNPB[hash]++;
@@ -124,7 +124,6 @@ void CMasternodeSync::AddedMasternodePotentialList(uint256 hash, std::vector<CNe
         mapSeenSyncMNPB.insert(make_pair(hash, 1));
     }
 
-    CMasternodeBroadcast mnb = mnodeman.mapSeenMasternodeBroadcast[hash];
     mnodeman.UpdateSeenByNodes(hash, seenNodes);
 }
 

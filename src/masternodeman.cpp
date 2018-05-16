@@ -877,46 +877,16 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
 
     else if (strCommand == "mnpb") { // Potential Masternode Broadcast
 	LogPrintf("ProcessMessage - mnpb\n");
-        CMasternodeBroadcast mnb;
-	std::vector<CNetAddr> seenNodes;
-        vRecv >> mnb;
-	vRecv >> seenNodes;
+        uint256 hash;
+	CNetAddr seenNode;
+        vRecv >> hash;
+	vRecv >> seenNode;
 
-        if (mapSeenMasternodeBroadcast.count(mnb.GetHash())) { //seen
-            masternodeSync.AddedMasternodePotentialList(mnb.GetHash(), seenNodes);
-            return;
-        }
-        mapSeenMasternodeBroadcast.insert(make_pair(mnb.GetHash(), mnb));
+	LogPrint("masternode", "mnpb - hash: %s, seen by %s\n", hash.ToString(), seenNode.ToString());
 
-        int nDoS = 0;
-        if (!mnb.CheckAndUpdate(nDoS)) {
-            if (nDoS > 0)
-                Misbehaving(pfrom->GetId(), nDoS, "mnpb fail");
-
-            //failed
-            return;
-        }
-
-        // make sure the vout that was signed is related to the transaction that spawned the Masternode
-        //  - this is expensive, so it's only done once per Masternode
-        if (!obfuScationSigner.IsVinAssociatedWithPubkey(mnb.vin, mnb.pubKeyCollateralAddress)) {
-            LogPrint("masternode","mnpb - Got mismatched pubkey and vin\n");
-            Misbehaving(pfrom->GetId(), 33, "mnpb mismatched pubkey");
-            return;
-        }
-
-        // make sure it's still unspent
-        //  - this is checked later by .check() in many places and by ThreadCheckObfuScationPool()
-        if (mnb.CheckInputsAndAdd(nDoS)) {
-            // use this as a peer
-            addrman.Add(CAddress(mnb.addr), pfrom->addr, 2 * 60 * 60);
-            masternodeSync.AddedMasternodePotentialList(mnb.GetHash(), seenNodes);
-        } else {
-            LogPrint("masternode","mnpb - Rejected Masternode entry %s\n", mnb.vin.prevout.hash.ToString());
-
-            if (nDoS > 0)
-                Misbehaving(pfrom->GetId(), nDoS, "mnpb rejected");
-        }
+        std::vector<CNetAddr> seenNodes;
+        seenNodes.push_back(seenNode);
+        masternodeSync.AddedMasternodePotentialList(hash, seenNodes);
     }
 
     else if (strCommand == "mnp") { //Masternode Ping
