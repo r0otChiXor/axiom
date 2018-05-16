@@ -226,9 +226,9 @@ bool CMasternodeMan::Add(CMasternode& mn)
 
 void CMasternodeMan::AskForMN(CNode* pnode, CTxIn& vin)
 {
-    std::map<COutPoint, int64_t>::iterator i = mWeAskedForMasternodeListEntry.find(vin.prevout);
+    auto i = mWeAskedForMasternodeListEntry.find(vin.prevout);
     if (i != mWeAskedForMasternodeListEntry.end()) {
-        int64_t t = (*i).second;
+        int64_t t = i->second;
         if (GetTime() < t) return; // we've asked recently
     }
 
@@ -955,11 +955,11 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
             bool isLocal = (pfrom->addr.IsRFC1918() || pfrom->addr.IsLocal());
 
             if (!isLocal && Params().NetworkID() == CBaseChainParams::MAIN) {
-                std::map<CNetAddr, int64_t>::iterator i = mAskedUsForMasternodeList.find(pfrom->addr);
+                auto i = mAskedUsForMasternodeList.find(pfrom->addr);
                 if (i != mAskedUsForMasternodeList.end()) {
-                    int64_t t = (*i).second;
+                    int64_t t = i->second;
                     if (GetTime() < t) {
-                        Misbehaving(pfrom->GetId(), 34, "dseg already asked");
+                        // Misbehaving(pfrom->GetId(), 34, "dseg already asked");
                         LogPrint("masternode","dseg - peer already asked me for the list\n");
                         return;
                     }
@@ -972,23 +972,48 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
 
         int nInvCount = 0;
 
-        BOOST_FOREACH (CMasternode& mn, vMasternodes) {
-            if (mn.addr.IsRFC1918()) continue; //local network
+        for (CMasternode& mn : vMasternodes) {
+            if (mn.addr.IsRFC1918()) {
+		continue; //local network
+	    }
 
-            if (mn.IsEnabled()) {
-                LogPrint("masternode", "dseg - Sending Masternode entry - %s \n", mn.vin.prevout.hash.ToString());
-                if (vin == CTxIn() || vin == mn.vin) {
-                    CMasternodeBroadcast mnb = CMasternodeBroadcast(mn);
-                    uint256 hash = mnb.GetHash();
-                    pfrom->PushInventory(CInv(MSG_MASTERNODE_ANNOUNCE, hash));
-                    nInvCount++;
+            if (vin == CTxIn() || vin == mn.vin) {
+                LogPrint("masternode", "dseg - Sending Masternode entry to %s - %s \n", pfrom->addr.ToString(), mn.vin.prevout.hash.ToString());
+                CMasternodeBroadcast mnb = CMasternodeBroadcast(mn);
+                uint256 hash = mnb.GetHash();
+                pfrom->PushInventory(CInv(MSG_MASTERNODE_ANNOUNCE, hash));
+                nInvCount++;
 
-                    if (!mapSeenMasternodeBroadcast.count(hash)) mapSeenMasternodeBroadcast.insert(make_pair(hash, mnb));
+                if (!mapSeenMasternodeBroadcast.count(hash)) {
+	            mapSeenMasternodeBroadcast.insert(make_pair(hash, mnb));
+		}
 
-                    if (vin == mn.vin) {
-                        LogPrint("masternode", "dseg - Sent 1 Masternode entry to peer %i\n", pfrom->GetId());
-                        return;
-                    }
+                if (vin == mn.vin) {
+                    LogPrint("masternode", "dseg - Sent 1 Masternode entry to peer %i\n", pfrom->GetId());
+                    return;
+                }
+            }
+        }
+
+        for (CMasternode& mn : vPotentialMasternodes) {
+            if (mn.addr.IsRFC1918()) {
+		continue; //local network
+	    }
+
+            if (vin == CTxIn() || vin == mn.vin) {
+                LogPrint("masternode", "dseg - Sending Potential Masternode entry to %s - %s \n", pfrom->addr.ToString(), mn.vin.prevout.hash.ToString());
+                CMasternodeBroadcast mnb = CMasternodeBroadcast(mn);
+                uint256 hash = mnb.GetHash();
+                pfrom->PushInventory(CInv(MSG_MASTERNODE_ANNOUNCE, hash));
+                nInvCount++;
+
+                if (!mapSeenMasternodeBroadcast.count(hash)) {
+	            mapSeenMasternodeBroadcast.insert(make_pair(hash, mnb));
+		}
+
+                if (vin == mn.vin) {
+                    LogPrint("masternode", "dseg - Sent 1 Masternode entry to peer %i\n", pfrom->GetId());
+                    return;
                 }
             }
         }

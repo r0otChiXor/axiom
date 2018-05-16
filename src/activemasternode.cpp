@@ -213,9 +213,6 @@ bool CActiveMasternode::SendMasternodePing(std::string& errorMessage)
 
         mnp.Relay();
 
-	/* Add the potential node map */
-	std::vector<CNetAddr> nodelist = mnodeman.SeenByNodes(hash);
-
         /*
          * IT'S SAFE TO REMOVE THIS IN FURTHER VERSIONS
          * AFTER MIGRATION TO V12 IS DONE
@@ -242,7 +239,7 @@ bool CActiveMasternode::SendMasternodePing(std::string& errorMessage)
         LogPrint("masternode", "dseep - relaying from active mn, %s \n", vin.ToString().c_str());
         LOCK(cs_vNodes);
         BOOST_FOREACH (CNode* pnode, vNodes) {
-	    LogPrint("masternode", "Pushing dseep: hash %s\n", hash.ToString());
+	    LogPrint("masternode", "Pushing dseep: target: %s, vin %s\n", pnode->addr.ToString(), vin.ToString());
             pnode->PushMessage("dseep", vin, vchMasterNodeSignature, masterNodeSignatureTime, false);
             pnode->PushInventory(CInv(MSG_MASTERNODE_POTENTIAL_ANNOUNCE, hash));
 	}
