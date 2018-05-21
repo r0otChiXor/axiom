@@ -1437,7 +1437,7 @@ int CMasternodeMan::MaxMasternodeCount()
 {
     // 2 min blocks, get number of intervals
     int64_t nHeight = chainActive.Tip()->nHeight;
-    int nIntervals = nHeight / Params().SubsidyHalvingInterval();
+    int nIntervals = nHeight / Params().SubsidyDecreaseInterval();
     int max = Params().MasternodeMaxBase() +
 	      nIntervals * Params().MasternodeMaxIncrement();
 

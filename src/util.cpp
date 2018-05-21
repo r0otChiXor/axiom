@@ -431,7 +431,7 @@ boost::filesystem::path GetDefaultDataDir()
 // Unix: ~/.castle
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "Castle";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "Castle-new";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -443,10 +443,10 @@ boost::filesystem::path GetDefaultDataDir()
     // Mac
     pathRet /= "Library/Application Support";
     TryCreateDirectory(pathRet);
-    return pathRet / "Castle";
+    return pathRet / "Castle-new";
 #else
     // Unix
-    return pathRet / ".castle";
+    return pathRet / ".castle-new";
 #endif
 #endif
 }

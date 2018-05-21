@@ -2147,11 +2147,13 @@ int64_t GetPOWBlockValue(int nHeight)
         }
     } else {
         if (nHeight == 0) {
-            nSubsidy = 8000000 * COIN;
+            nSubsidy = COIN_PREMINE_AMOUNT * COIN;
         } else if (nHeight <= Params().LAST_POW_BLOCK() && nHeight > 0) {
             // 2 min blocks, get number of intervals
-            int64_t nIntervals = nHeight / Params().SubsidyHalvingInterval();
-            nSubsidy = max(10 - nIntervals, int64_t(0)) * COIN;
+            int64_t nIntervals = nHeight / Params().SubsidyDecreaseInterval();
+	    nSubsidy = COIN_BLOCK_POW_REWARD;
+	    nSubsidy -= nIntervals * COIN_POW_DECREASE_AMOUNT;
+            nSubsidy = max(nSubsidy, int64_t(0)) * COIN;
         }
     }
     return nSubsidy;
@@ -2159,7 +2161,7 @@ int64_t GetPOWBlockValue(int nHeight)
 
 int64_t GetPOSBlockValue(int64_t nCoinAge)
 {
-    int64_t nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) / CENT;
+    int64_t nSubsidy = nCoinAge * COIN_YEAR_POS_REWARD * 33 / (365 * 33 + 8) / CENT;
 
     return nSubsidy;
 }

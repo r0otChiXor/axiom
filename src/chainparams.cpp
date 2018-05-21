@@ -111,7 +111,7 @@ public:
         vAlertPubKey = ParseHex("0000098d3ba6ba6e7423fa5cbd6a89e0a9a5348f88d332b44a5cb1a8b7ed2c1eaa335fc8dc4f012cb8241cc0bdafd6ca70c5f5448916e4e6f511bcd746ed57dc50");
         nDefaultPort = 35433;
         bnProofOfWorkLimit = ~uint256(0) >> 20; // Castle starting difficulty is 1 / 2^12
-        nSubsidyHalvingInterval = 262980; // 1 yr at 2 min blocks
+        nSubsidyDecreaseInterval = 262980; // 1 yr at 2 min blocks
         nMaxReorganizationDepth = 100;
         nEnforceBlockUpgradeMajority = 750;
         nRejectBlockOutdatedMajority = 950;
@@ -124,7 +124,7 @@ public:
         nMaxMoneyOut = 21000000 * COIN;
 
         /** Height or Time Based Activations **/
-        nLastPOWBlock = nSubsidyHalvingInterval * 10;  // 10 yrs at 2min blocks
+        nLastPOWBlock = nSubsidyDecreaseInterval * 10;  // 10 yrs at 2min blocks
         nModifierUpdateBlock = 1; // TODO
         nZerocoinStartHeight = 21; // MUST be >= 20!
         nZerocoinStartTime = 1519976760; // March 2, 2018 07:48:00 GMT
@@ -208,7 +208,7 @@ public:
         nDefaultSecurityLevel = 100; //full security level for accumulators
         nZerocoinHeaderVersion = 4; //Block headers must be this version once zerocoin is active
         nBudget_Fee_Confirmations = 6; // Number of confirmations for the finalization fee
-	nMasternodeMaxBase = 4; //70;
+	nMasternodeMaxBase = 70;
 	nMasternodeMaxIncrement = 25;
     }
 
@@ -316,7 +316,7 @@ public:
         pchMessageStart[1] = 0xcf;
         pchMessageStart[2] = 0x7e;
         pchMessageStart[3] = 0xac;
-        nSubsidyHalvingInterval = 150;
+        nSubsidyDecreaseInterval = 150;
         nEnforceBlockUpgradeMajority = 750;
         nRejectBlockOutdatedMajority = 950;
         nToCheckBlockUpgradeMajority = 1000;
@@ -376,7 +376,7 @@ public:
     }
 
     //! Published setters to allow changing values in unit test cases
-    virtual void setSubsidyHalvingInterval(int anSubsidyHalvingInterval) { nSubsidyHalvingInterval = anSubsidyHalvingInterval; }
+    virtual void setSubsidyDecreaseInterval(int anSubsidyDecreaseInterval) { nSubsidyDecreaseInterval = anSubsidyDecreaseInterval; }
     virtual void setEnforceBlockUpgradeMajority(int anEnforceBlockUpgradeMajority) { nEnforceBlockUpgradeMajority = anEnforceBlockUpgradeMajority; }
     virtual void setRejectBlockOutdatedMajority(int anRejectBlockOutdatedMajority) { nRejectBlockOutdatedMajority = anRejectBlockOutdatedMajority; }
     virtual void setToCheckBlockUpgradeMajority(int anToCheckBlockUpgradeMajority) { nToCheckBlockUpgradeMajority = anToCheckBlockUpgradeMajority; }
