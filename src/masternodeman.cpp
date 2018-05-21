@@ -212,11 +212,11 @@ bool CMasternodeMan::Add(CMasternode& mn)
     }
 
     if (mn.IsEnabled()) {
-        LogPrintf("CMasternodeMan: Adding new Masternode %s - %i now\n", mn.vin.prevout.hash.ToString(), vMasternodes.size() + 1);
+        LogPrint("masternode", "CMasternodeMan: Adding new Masternode %s - %i now\n", mn.vin.prevout.hash.ToString(), vMasternodes.size() + 1);
         vMasternodes.push_back(mn);
     } else {
 	uint256 hash = mn.vin.prevout.hash;
-        LogPrintf("CMasternodeMan: Adding new Potential Masternode %s - %i now\n", hash.ToString(), vPotentialMasternodes.size() + 1);
+        LogPrint("masternode", "CMasternodeMan: Adding new Potential Masternode %s - %i now\n", hash.ToString(), vPotentialMasternodes.size() + 1);
         vPotentialMasternodes.push_back(mn);
     }
     activeMasternode.ManageStatus();
@@ -244,12 +244,12 @@ void CMasternodeMan::Check()
 {
     LOCK(cs);
 
-    LogPrintf("Checking vMasternodes : %d\n", vMasternodes.size());
+    LogPrint("masternode", "Checking vMasternodes : %d\n", vMasternodes.size());
     for (auto mn : vMasternodes) {
         mn.Check();
     }
 
-    LogPrintf("Checking vPotentialMasternodes : %d\n", vPotentialMasternodes.size());
+    LogPrint("masternode", "Checking vPotentialMasternodes : %d\n", vPotentialMasternodes.size());
     // Clear all visited bits
     for (auto& mn : vPotentialMasternodes) {
 	mn.SetVisited(false);
@@ -291,7 +291,7 @@ void CMasternodeMan::RemoveInactive(std::vector<CMasternode>& vec,
             (*it).activeState == CMasternode::MASTERNODE_VIN_SPENT ||
             (forceExpiredRemoval && (*it).activeState == CMasternode::MASTERNODE_EXPIRED) ||
             (*it).protocolVersion < masternodePayments.GetMinMasternodePaymentsProto()) {
-            LogPrintf("CMasternodeMan: Removing inactive Masternode %s - %i now\n", (*it).vin.prevout.hash.ToString(), vec.size() - 1);
+            LogPrint("masternode", "CMasternodeMan: Removing inactive Masternode %s - %i now\n", (*it).vin.prevout.hash.ToString(), vec.size() - 1);
 
             //erase all of the broadcasts we've seen from this vin
             // -- if we missed a few pings and the node was removed, this will allow is to get it back without them
@@ -333,9 +333,9 @@ void CMasternodeMan::CheckAndRemove(bool forceExpiredRemoval)
     int64_t pingExpiry = now - (MASTERNODE_REMOVAL_SECONDS * 2);
 
     //remove inactive and outdated
-    LogPrintf("Pruning vMasternodes\n");
+    LogPrint("masternode", "Pruning vMasternodes\n");
     RemoveInactive(vMasternodes, forceExpiredRemoval);
-    LogPrintf("Pruning vPotentialMasternodes\n");
+    LogPrint("masternode", "Pruning vPotentialMasternodes\n");
     RemoveInactive(vPotentialMasternodes, forceExpiredRemoval);
 
     // check who's asked for the Masternode list
@@ -498,7 +498,7 @@ void CMasternodeMan::DsegpUpdate(CNode* pnode)
     LOCK(cs);
 
 #if 0
-    LogPrintf("DsegpUpdate\n");
+    LogPrint("masternode", "DsegpUpdate\n");
     if (Params().NetworkID() == CBaseChainParams::MAIN) {
         if (!(pnode->addr.IsRFC1918() || pnode->addr.IsLocal())) {
             std::map<CNetAddr, int64_t>::iterator it = mWeAskedForPotentialMasternodeList.find(pnode->addr);
@@ -876,7 +876,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
     }
 
     else if (strCommand == "mnpb") { // Potential Masternode Broadcast
-	LogPrintf("ProcessMessage - mnpb\n");
+	LogPrint("masternode", "ProcessMessage - mnpb\n");
         uint256 hash;
 	CNetAddr seenNode;
         vRecv >> hash;
@@ -994,12 +994,12 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
         }
     } else if (strCommand == "dsegp") { //Get Potential Masternode list or specific entry
 
-	LogPrintf("ProcessMessage - dsegp\n");
+	LogPrint("masternode", "ProcessMessage - dsegp\n");
         CTxIn vin;
         vRecv >> vin;
 
         if (vin != CTxIn()) {
-	    LogPrintf("dsegp - vin: %s, hash %s\n", vin.ToString(), vin.prevout.hash.ToString());
+	    LogPrint("masternode", "dsegp - vin: %s, hash %s\n", vin.ToString(), vin.prevout.hash.ToString());
             pfrom->PushInventory(CInv(MSG_MASTERNODE_POTENTIAL_ANNOUNCE, vin.prevout.hash));
 	    return;
 	}
@@ -1024,7 +1024,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
         }
 
         for (auto& it : mMasternodesSeen) {
-	    LogPrintf("dsegp - Sending Potential Masternode entry - hash %s \n", it.first.ToString());
+	    LogPrint("masternode", "dsegp - Sending Potential Masternode entry - hash %s \n", it.first.ToString());
             pfrom->PushInventory(CInv(MSG_MASTERNODE_POTENTIAL_ANNOUNCE, it.first));
             nInvCount++;
         }
@@ -1332,7 +1332,7 @@ CMasternode CMasternodeMan::RemoveFromVector(std::vector<CMasternode>& vec,
     vector<CMasternode>::iterator it = vec.begin();
     while (it != vec.end()) {
         if ((*it).vin == vin) {
-            LogPrintf("CMasternodeMan: Removing Masternode %s - %i now\n", (*it).vin.prevout.hash.ToString(), vec.size() - 1);
+            LogPrint("masternode", "CMasternodeMan: Removing Masternode %s - %i now\n", (*it).vin.prevout.hash.ToString(), vec.size() - 1);
 	    CMasternode mn(*it);
             it = vec.erase(it);
             return mn;
@@ -1367,7 +1367,7 @@ void CMasternodeMan::UpdateMasternodePotentialList(CMasternodeBroadcast mnb)
     mapSeenMasternodePing.insert(std::make_pair(mnb.lastPing.GetHash(), mnb.lastPing));
     mapSeenMasternodeBroadcast.insert(std::make_pair(mnb.GetHash(), mnb));
 
-    LogPrintf("CMasternodeMan::UpdateMasternodePotentialList -- masternode=%s\n", mnb.vin.prevout.ToStringShort());
+    LogPrint("masternode", "CMasternodeMan::UpdateMasternodePotentialList -- masternode=%s\n", mnb.vin.prevout.ToStringShort());
 
     std::vector<CNetAddr> myaddr;
     myaddr.push_back(activeMasternode.service);
@@ -1407,11 +1407,11 @@ bool CMasternodeMan::CheckConsensus(CMasternode &mn)
     int needed = ConsensusRequired();
 
     if (needed < 0) {
-	LogPrintf("At cap.  No consensus needed\n");
+	LogPrint("masternode", "At cap.  Consensus is irrelevant\n");
         return false;
     }
 
-    LogPrintf("CheckConsensus - seenBy: %d, needed: %d\n", seenBy, needed);
+    LogPrint("masternode", "CheckConsensus - seenBy: %d, needed: %d\n", seenBy, needed);
     return (seenBy >= needed);
 }
 
@@ -1441,7 +1441,7 @@ int CMasternodeMan::MaxMasternodeCount()
     int max = Params().MasternodeMaxBase() +
 	      nIntervals * Params().MasternodeMaxIncrement();
 
-    LogPrintf("MaxMasternodeCount: %d\n", max);
+    LogPrint("masternode", "MaxMasternodeCount: %d\n", max);
     return max;
 }
 
@@ -1462,7 +1462,7 @@ std::vector<CNetAddr>& CMasternodeMan::SeenByNodes(const uint256& hash)
 void CMasternodeMan::RemoveSeenByNodes(const uint256& hash,
                                        std::vector<CNetAddr>& seenNodes)
 {
-    LogPrintf("RemoveSeenByNodes\n");
+    LogPrint("masternode", "RemoveSeenByNodes\n");
     std::vector<CNetAddr> temp;
     std::vector<CNetAddr> search = SeenByNodes(hash);
 
@@ -1476,22 +1476,22 @@ void CMasternodeMan::RemoveSeenByNodes(const uint256& hash,
 void CMasternodeMan::UpdateSeenByNodes(const uint256& hash,
                                        std::vector<CNetAddr>& seenNodes)
 {
-    LogPrintf("UpdateSeenNodes\n");
+    LogPrint("masternode", "UpdateSeenNodes\n");
     std::vector<CNetAddr> temp;
     std::vector<CNetAddr> search = SeenByNodes(hash);
-    LogPrintf("Before: %d\n", search.size());
+    LogPrint("masternode", "Before: %d\n", search.size());
 
     std::sort(search.begin(), search.end());
     std::sort(seenNodes.begin(), seenNodes.end());
     std::set_union(search.begin(), search.end(), seenNodes.begin(),
 		   seenNodes.end(), std::back_inserter(temp));
-    LogPrintf("After: %d\n", temp.size());
+    LogPrint("masternode", "After: %d\n", temp.size());
     mMasternodesSeen[hash] = temp;
 }
 
 void CMasternodeMan::RemoveAllSeenByNodes(std::vector<CNetAddr>& seenNodes)
 {
-    LogPrintf("RemoveAllSeenByNodes\n");
+    LogPrint("masternode", "RemoveAllSeenByNodes\n");
     for (auto it = mMasternodesSeen.begin(); it != mMasternodesSeen.end(); ++it) {
 	RemoveSeenByNodes(it->first, seenNodes);
     }
@@ -1499,7 +1499,7 @@ void CMasternodeMan::RemoveAllSeenByNodes(std::vector<CNetAddr>& seenNodes)
 
 void CMasternodeMan::UpdateAllSeenByNodes(std::vector<CNetAddr>& seenNodes)
 {
-    LogPrintf("UpdateAllSeenNodes\n");
+    LogPrint("masternode", "UpdateAllSeenNodes\n");
     for (auto it = mMasternodesSeen.begin(); it != mMasternodesSeen.end(); ++it) {
 	UpdateSeenByNodes(it->first, seenNodes);
     }
