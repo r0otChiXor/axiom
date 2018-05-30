@@ -219,7 +219,7 @@ bool CMasternode::Check(bool forceCheck)
 
     if(lastPing.sigTime - sigTime < MASTERNODE_MIN_MNP_SECONDS){
     	activeState = MASTERNODE_PRE_ENABLED;
-    	return;
+    	return true;
     }
 
     if (!unitTest) {

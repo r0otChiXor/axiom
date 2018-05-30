@@ -316,7 +316,7 @@ bool IsZCSTLType(TransactionRecord::Type type)
         case TransactionRecord::ZerocoinMint:
         case TransactionRecord::ZerocoinSpend:
         case TransactionRecord::RecvFromZerocoinSpend:
-        case TransactionRecord::ZerocoinSpend_Change_zCstl:
+        case TransactionRecord::ZerocoinSpend_Change_zCSTL:
         case TransactionRecord::ZerocoinSpend_FromMe:
             return true;
         default:

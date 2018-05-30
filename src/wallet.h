@@ -107,7 +107,7 @@ enum ZerocoinSpendStatus {
     ZCSTL_INVALID_WITNESS = 12,                      // Spend coin transaction did not verify
     ZCSTL_BAD_SERIALIZATION = 13,                    // Transaction verification failed
     ZCSTL_SPENT_USED_ZCSTL = 14,                      // Coin has already been spend
-    ZCSTL_TX_TOO_LARGE = 15                          // The transaction is larger than the max tx size
+    ZCSTL_TX_TOO_LARGE = 15,                         // The transaction is larger than the max tx size
     ZCSTL_SPEND_V1_SEC_LEVEL                         // Spend is V1 and security level is not set to 100
 };
 

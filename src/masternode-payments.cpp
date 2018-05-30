@@ -269,7 +269,7 @@ bool IsBlockPayeeValid(const CBlock& block, int nBlockHeight)
 }
 
 
-void FillBlockPayee(CMutableTransaction& txNew, CAmount nFees, bool fProofOfStake, bool fZCSTLStake)
+void FillBlockPayee(CMutableTransaction& txNew, CAmount nFees, bool fProofOfStake, uint32_t nTime)
 {
     CBlockIndex* pindexPrev = chainActive.Tip();
     if (!pindexPrev) return;
@@ -277,7 +277,7 @@ void FillBlockPayee(CMutableTransaction& txNew, CAmount nFees, bool fProofOfStak
     if (IsSporkActive(SPORK_13_ENABLE_SUPERBLOCKS) && budget.IsBudgetPaymentBlock(pindexPrev->nHeight + 1)) {
         budget.FillBlockPayee(txNew, nFees, fProofOfStake);
     } else {
-        masternodePayments.FillBlockPayee(txNew, nFees, fProofOfStake, fZCSTLStake);
+        masternodePayments.FillBlockPayee(txNew, nFees, fProofOfStake, nTime);
     }
 }
 
@@ -290,7 +290,7 @@ std::string GetRequiredPaymentsString(int nBlockHeight)
     }
 }
 
-void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int64_t nFees, bool fProofOfStake, bool fZCSTLStake)
+void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int64_t nFees, bool fProofOfStake, uint32_t nTime)
 {
     CBlockIndex* pindexPrev = chainActive.Tip();
     if (!pindexPrev) return;
@@ -309,9 +309,6 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int64_t nFe
             hasPayment = false;
         }
     }
-
-    CAmount blockValue = GetBlockValue(pindexPrev->nHeight);
-    CAmount masternodePayment = GetMasternodePayment(pindexPrev->nHeight, blockValue, 0, fZCSTLStake);
 
     if (hasPayment) {
         CAmount masternodePayment;
@@ -339,8 +336,8 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int64_t nFe
                 txNew.vout[i - 1].nValue -= masternodePayment;
 #endif
         } else {
-            blockValue = GetPOWBlockValue(pindexPrev->nHeight);
-            masternodePayment = GetMasternodePayment(blockValue, fProofOfStake);
+            uint64_t blockValue = GetPOWBlockValue(pindexPrev->nHeight);
+            masternodePayment = GetMasternodePayment(blockValue, false);
 
             txNew.vout.resize(2);
             txNew.vout[1].scriptPubKey = payee;
@@ -430,7 +427,7 @@ void CMasternodePayments::ProcessMessageMasternodePayments(CNode* pfrom, std::st
         if (!winner.SignatureValid()) {
             if (masternodeSync.IsSynced()) {
                 LogPrint("masternode", "CMasternodePayments::ProcessMessageMasternodePayments() : mnw - invalid signature\n");
-                Misbehaving(pfrom->GetId(), 20);
+                Misbehaving(pfrom->GetId(), 20, "mnw invalid signature");
             }
             // it could just be a non-synced masternode
             mnodeman.AskForMN(pfrom, winner.vinMasternode);
@@ -560,7 +557,7 @@ bool CMasternodeBlockPayees::IsTransactionValid(const CTransaction& txNew)
         nReward = GetPOWBlockValue(nBlockHeight);
     }
 
-    requiredMasternodePayment = GetMasternodePayment(nReward, txNew.IsCoinStake(), txNew.IsZerocoinSpend());
+    requiredMasternodePayment = GetMasternodePayment(nReward, txNew.IsCoinStake());
 
     //require at least 6 signatures
     BOOST_FOREACH (CMasternodePayee& payee, vecPayments)

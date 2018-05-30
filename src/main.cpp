@@ -6112,7 +6112,6 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
                 // a different signature key, etc.
                 LOCK(cs_main);
                 Misbehaving(pfrom->GetId(), 10, "alert");
-                Misbehaving(pfrom->GetId(), 10);
             }
         }
     }

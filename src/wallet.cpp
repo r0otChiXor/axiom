@@ -2108,7 +2108,7 @@ bool CWallet::SelectStakeCoins(std::list<std::unique_ptr<CStakeInput> >& listInp
             //add to our stake set
             nAmountSelected += out.tx->vout[out.i].nValue;
 
-            std::unique_ptr<CCstlvStake> input(new CCstlvStake());
+            std::unique_ptr<CCstlStake> input(new CCstlStake());
             input->SetInput((CTransaction) *out.tx, out.i);
             listInputs.emplace_back(std::move(input));
         }
@@ -3041,7 +3041,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             }
     
             //Masternode payment
-            FillBlockPayee(txNew, nMinFee, true, nTxNewTime, stakeInput->IsZCSTL());
+            FillBlockPayee(txNew, nMinFee, true);
 
             uint256 hashTxOut = txNew.GetHash();
             CTxIn in;
@@ -3099,13 +3099,6 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             if (!zcstlTracker->UpdateState(meta))
                 return error("%s: failed to update metadata in tracker", __func__);
         }
-    }
-
-    // Sign
-    int nIn = 0;
-    BOOST_FOREACH (const CWalletTx* pcoin, vwtxPrev) {
-        if (!SignSignature(*this, *pcoin, txNew, nIn++))
-            return error("CreateCoinStake : failed to sign coinstake");
     }
 
     // Successfully generated coinstake
@@ -5329,7 +5322,7 @@ bool CWallet::UpdateMint(const CBigNum& bnValue, const int& nHeight, const uint2
     uint256 hashValue = GetPubCoinHash(bnValue);
     CZerocoinMint mint;
     if (zcstlTracker->HasPubcoinHash(hashValue)) {
-        CMintMeta meta = zcstzcstlcker->GetMetaFromPubcoin(hashValue);
+        CMintMeta meta = zcstlTracker->GetMetaFromPubcoin(hashValue);
         meta.nHeight = nHeight;
         meta.txid = txid;
         return zcstlTracker->UpdateState(meta);

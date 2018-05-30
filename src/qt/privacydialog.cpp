@@ -486,7 +486,7 @@ void PrivacyDialog::sendzCSTL()
     }
 
     // Clear zCSTL selector in case it was used
-    ZCSTLControlDialog::listSelectedMints.clear();
+    ZCSTLControlDialog::setSelectedMints.clear();
     ui->labelzCSTLSelected_int->setText(QString("0"));
     ui->labelQuantitySelected_int->setText(QString("0"));
 

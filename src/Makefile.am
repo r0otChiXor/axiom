@@ -284,7 +284,7 @@ libbitcoin_wallet_a_SOURCES = \
   wallet.cpp \
   wallet_ismine.cpp \
   walletdb.cpp \
-  zcstlvwallet.cpp \
+  zcstlwallet.cpp \
   zcstltracker.cpp \
   stakeinput.cpp \
   $(BITCOIN_CORE_H)

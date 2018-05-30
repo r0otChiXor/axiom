@@ -89,7 +89,7 @@ void ProcessSpork(CNode* pfrom, std::string& strCommand, CDataStream& vRecv)
         if (spork.nTimeSigned >= Params().NewSporkStart()) {
             if (!sporkManager.CheckSignature(spork, true)) {
                 LogPrintf("%s : Invalid Signature\n", __func__);
-                Misbehaving(pfrom->GetId(), 100);
+                Misbehaving(pfrom->GetId(), 100, "spork invalid signature");
                 return;
             }
         }
