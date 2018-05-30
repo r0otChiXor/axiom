@@ -114,23 +114,6 @@
                     <height>0</height>
                    </size>
                   </property>
-<<<<<<< HEAD
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="frameShape">
-                   <enum>QFrame::WinPanel</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Raised</enum>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_5">
-                   <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,0,0">
-=======
                   <item>
                    <widget class="QFrame" name="frame_CombinedBalances">
                     <property name="minimumSize">
@@ -177,7 +160,7 @@
                           <cursorShape>WhatsThisCursor</cursorShape>
                          </property>
                          <property name="toolTip">
-                          <string>The displayed information may be out of date. Your wallet automatically synchronizes with the PIVX network after a connection is established, but this process has not completed yet.</string>
+                          <string>The displayed information may be out of date. Your wallet automatically synchronizes with the Castle network after a connection is established, but this process has not completed yet.</string>
                          </property>
                          <property name="styleSheet">
                           <string notr="true">QLabel { color: red; }</string>
@@ -205,7 +188,6 @@
                        </item>
                       </layout>
                      </item>
->>>>>>> pivx/master
                      <item>
                       <widget class="QLabel" name="label_5z">
                        <property name="minimumSize">
@@ -430,13 +412,6 @@
                       </widget>
                      </item>
                      <item>
-<<<<<<< HEAD
-                      <widget class="QLabel" name="labelCSTLPercent">
-                       <property name="text">
-                        <string notr="true">0 %</string>
-                       </property>
-                      </widget>
-=======
                       <layout class="QGridLayout" name="gridLayout">
                        <property name="spacing">
                         <number>12</number>
@@ -483,7 +458,7 @@
                           <string>Your current spendable balance</string>
                          </property>
                          <property name="text">
-                          <string notr="true">0.000 000 00 PIV</string>
+                          <string notr="true">0.000 000 00 CSTL</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -508,7 +483,7 @@
                           <string>Your current balance in watch-only addresses</string>
                          </property>
                          <property name="text">
-                          <string notr="true">0.000 000 00 PIV</string>
+                          <string notr="true">0.000 000 00 CSTL</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -540,7 +515,7 @@
                           <string>Total of transactions that have yet to be confirmed, and do not yet count toward the spendable balance</string>
                          </property>
                          <property name="text">
-                          <string notr="true">0.000 000 00 PIV</string>
+                          <string notr="true">0.000 000 00 CSTL</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -565,7 +540,7 @@
                           <string>Unconfirmed transactions to watch-only addresses</string>
                          </property>
                          <property name="text">
-                          <string notr="true">0.000 000 00 PIV</string>
+                          <string notr="true">0.000 000 00 CSTL</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -597,7 +572,7 @@
                           <string>Staked or masternode rewards that has not yet matured</string>
                          </property>
                          <property name="text">
-                          <string notr="true">0.000 000 00 PIV</string>
+                          <string notr="true">0.000 000 00 CSTL</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -622,7 +597,7 @@
                           <string>Staked or masternode rewards in watch-only addresses that has not yet matured</string>
                          </property>
                          <property name="text">
-                          <string notr="true">0.000 000 00 PIV</string>
+                          <string notr="true">0.000 000 00 CSTL</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -635,7 +610,7 @@
                        <item row="4" column="0">
                         <widget class="QLabel" name="labelLockedBalanceText">
                          <property name="toolTip">
-                          <string>Locked PIV or Masternode collaterals. These are excluded from zPIV minting.</string>
+                          <string>Locked CSTL or Masternode collaterals. These are excluded from zCSTL minting.</string>
                          </property>
                          <property name="text">
                           <string>Locked:</string>
@@ -654,10 +629,10 @@
                           <cursorShape>IBeamCursor</cursorShape>
                          </property>
                          <property name="toolTip">
-                          <string>Locked PIV or Masternode collaterals. These are excluded from zPIV minting.</string>
+                          <string>Locked CSTL or Masternode collaterals. These are excluded from zCSTL minting.</string>
                          </property>
                          <property name="text">
-                          <string notr="true">0.000 000 00 PIV</string>
+                          <string notr="true">0.000 000 00 CSTL</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -682,7 +657,7 @@
                           <string>Current locked balance in watch-only addresses</string>
                          </property>
                          <property name="text">
-                          <string notr="true">0.000 000 00 PIV</string>
+                          <string notr="true">0.000 000 00 CSTL</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -695,7 +670,7 @@
                        <item row="5" column="0">
                         <widget class="QLabel" name="labelTotalText">
                          <property name="toolTip">
-                          <string>Your current PIVX balance, unconfirmed and immature transactions included</string>
+                          <string>Your current CSTL balance, unconfirmed and immature transactions included</string>
                          </property>
                          <property name="text">
                           <string>Total:</string>
@@ -714,10 +689,10 @@
                           <cursorShape>IBeamCursor</cursorShape>
                          </property>
                          <property name="toolTip">
-                          <string>Your current PIVX balance, unconfirmed and immature transactions included</string>
+                          <string>Your current CSTL balance, unconfirmed and immature transactions included</string>
                          </property>
                          <property name="text">
-                          <string notr="true">0.000 000 00 PIV</string>
+                          <string notr="true">0.000 000 00 CSTL</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -742,7 +717,7 @@
                           <string>Current total balance in watch-only addresses</string>
                          </property>
                          <property name="text">
-                          <string notr="true">0.000 000 00 PIV</string>
+                          <string notr="true">0.000 000 00 CSTL</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -766,7 +741,6 @@
                         </spacer>
                        </item>
                       </layout>
->>>>>>> pivx/master
                      </item>
                      <item>
                       <spacer name="horizontalSpacer_3">
@@ -782,356 +756,6 @@
                       </spacer>
                      </item>
                     </layout>
-<<<<<<< HEAD
-                   </item>
-                   <item>
-                    <widget class="Line" name="line_Balance">
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>1</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>1</height>
-                      </size>
-                     </property>
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <layout class="QGridLayout" name="gridLayout">
-                     <property name="spacing">
-                      <number>12</number>
-                     </property>
-                     <item row="0" column="1">
-                      <widget class="QLabel" name="labelSpendable">
-                       <property name="text">
-                        <string>Spendable:</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="2">
-                      <widget class="QLabel" name="labelWatchonly">
-                       <property name="text">
-                        <string>Watch-only:</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="0">
-                      <widget class="QLabel" name="labelBalanceText">
-                       <property name="text">
-                        <string>Available:</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="1">
-                      <widget class="QLabel" name="labelBalance">
-                       <property name="font">
-                        <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                        </font>
-                       </property>
-                       <property name="cursor">
-                        <cursorShape>IBeamCursor</cursorShape>
-                       </property>
-                       <property name="toolTip">
-                        <string>Your current spendable balance</string>
-                       </property>
-                       <property name="text">
-                        <string notr="true">0.000 000 00 CSTL</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                       <property name="textInteractionFlags">
-                        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="2">
-                      <widget class="QLabel" name="labelWatchAvailable">
-                       <property name="font">
-                        <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                        </font>
-                       </property>
-                       <property name="cursor">
-                        <cursorShape>IBeamCursor</cursorShape>
-                       </property>
-                       <property name="toolTip">
-                        <string>Your current balance in watch-only addresses</string>
-                       </property>
-                       <property name="text">
-                        <string notr="true">0.000 000 00 CSTL</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                       <property name="textInteractionFlags">
-                        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="0">
-                      <widget class="QLabel" name="labelPendingText">
-                       <property name="text">
-                        <string>Pending:</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="1">
-                      <widget class="QLabel" name="labelUnconfirmed">
-                       <property name="font">
-                        <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                        </font>
-                       </property>
-                       <property name="cursor">
-                        <cursorShape>IBeamCursor</cursorShape>
-                       </property>
-                       <property name="toolTip">
-                        <string>Total of transactions that have yet to be confirmed, and do not yet count toward the spendable balance</string>
-                       </property>
-                       <property name="text">
-                        <string notr="true">0.000 000 00 CSTL</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                       <property name="textInteractionFlags">
-                        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="2">
-                      <widget class="QLabel" name="labelWatchPending">
-                       <property name="font">
-                        <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                        </font>
-                       </property>
-                       <property name="cursor">
-                        <cursorShape>IBeamCursor</cursorShape>
-                       </property>
-                       <property name="toolTip">
-                        <string>Unconfirmed transactions to watch-only addresses</string>
-                       </property>
-                       <property name="text">
-                        <string notr="true">0.000 000 00 CSTL</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                       <property name="textInteractionFlags">
-                        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="3" column="0">
-                      <widget class="QLabel" name="labelImmatureText">
-                       <property name="text">
-                        <string>Immature:</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="3" column="1">
-                      <widget class="QLabel" name="labelImmature">
-                       <property name="font">
-                        <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                        </font>
-                       </property>
-                       <property name="cursor">
-                        <cursorShape>IBeamCursor</cursorShape>
-                       </property>
-                       <property name="toolTip">
-                        <string>Staked or masternode rewards that has not yet matured</string>
-                       </property>
-                       <property name="text">
-                        <string notr="true">0.000 000 00 CSTL</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                       <property name="textInteractionFlags">
-                        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="3" column="2">
-                      <widget class="QLabel" name="labelWatchImmature">
-                       <property name="font">
-                        <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                        </font>
-                       </property>
-                       <property name="cursor">
-                        <cursorShape>IBeamCursor</cursorShape>
-                       </property>
-                       <property name="toolTip">
-                        <string>Staked or masternode rewards in watch-only addresses that has not yet matured</string>
-                       </property>
-                       <property name="text">
-                        <string notr="true">0.000 000 00 CSTL</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                       <property name="textInteractionFlags">
-                        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="4" column="0">
-                      <widget class="QLabel" name="labelLockedBalanceText">
-                       <property name="toolTip">
-                        <string>Locked CSTL or Masternode collaterals. These are excluded from zCSTL minting.</string>
-                       </property>
-                       <property name="text">
-                        <string>Locked:</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="4" column="1">
-                      <widget class="QLabel" name="labelLockedBalance">
-                       <property name="font">
-                        <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                        </font>
-                       </property>
-                       <property name="cursor">
-                        <cursorShape>IBeamCursor</cursorShape>
-                       </property>
-                       <property name="toolTip">
-                        <string>Locked CSTL or Masternode collaterals. These are excluded from zCSTL minting.</string>
-                       </property>
-                       <property name="text">
-                        <string notr="true">0.000 000 00 CSTL</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                       <property name="textInteractionFlags">
-                        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="4" column="2">
-                      <widget class="QLabel" name="labelWatchLocked">
-                       <property name="font">
-                        <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                        </font>
-                       </property>
-                       <property name="cursor">
-                        <cursorShape>IBeamCursor</cursorShape>
-                       </property>
-                       <property name="toolTip">
-                        <string>Current locked balance in watch-only addresses</string>
-                       </property>
-                       <property name="text">
-                        <string notr="true">0.000 000 00 CSTL</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                       <property name="textInteractionFlags">
-                        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="5" column="0">
-                      <widget class="QLabel" name="labelTotalText">
-                       <property name="toolTip">
-                        <string>Your current Castle balance, unconfirmed and immature transactions included</string>
-                       </property>
-                       <property name="text">
-                        <string>Total:</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="5" column="1">
-                      <widget class="QLabel" name="labelTotal">
-                       <property name="font">
-                        <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                        </font>
-                       </property>
-                       <property name="cursor">
-                        <cursorShape>IBeamCursor</cursorShape>
-                       </property>
-                       <property name="toolTip">
-                        <string>Your current Castle balance, unconfirmed and immature transactions included</string>
-                       </property>
-                       <property name="text">
-                        <string notr="true">0.000 000 00 CSTL</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                       <property name="textInteractionFlags">
-                        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="5" column="2">
-                      <widget class="QLabel" name="labelWatchTotal">
-                       <property name="font">
-                        <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                        </font>
-                       </property>
-                       <property name="cursor">
-                        <cursorShape>IBeamCursor</cursorShape>
-                       </property>
-                       <property name="toolTip">
-                        <string>Current total balance in watch-only addresses</string>
-                       </property>
-                       <property name="text">
-                        <string notr="true">0.000 000 00 CSTL</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                       <property name="textInteractionFlags">
-                        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="5" column="3">
-                      <spacer name="horizontalSpacer_9">
-                       <property name="orientation">
-                        <enum>Qt::Horizontal</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>40</width>
-                         <height>20</height>
-                        </size>
-                       </property>
-                      </spacer>
-=======
                    </widget>
                   </item>
                   <item>
@@ -1161,12 +785,12 @@
                           </font>
                          </property>
                          <property name="text">
-                          <string>zPIV Balance</string>
+                          <string>zCSTL Balance</string>
                          </property>
                         </widget>
                        </item>
                        <item>
-                        <widget class="QLabel" name="labelzPIVPercent">
+                        <widget class="QLabel" name="labelzCSTLPercent">
                          <property name="text">
                           <string notr="true">0 %</string>
                          </property>
@@ -1186,7 +810,6 @@
                         </spacer>
                        </item>
                       </layout>
->>>>>>> pivx/master
                      </item>
                     </layout>
                    </item>
@@ -1316,89 +939,6 @@ These zCSTL are spendable.</string>
                        </property>
                       </widget>
                      </item>
-<<<<<<< HEAD
-                     <item row="1" column="1">
-                      <widget class="QLabel" name="labelzBalanceMature">
-                       <property name="font">
-                        <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                        </font>
-                       </property>
-                       <property name="toolTip">
-                        <string>Mature: more than 20 confirmation and more than 3 mints of the same denomination after it was minted.
-These zCSTL are spendable.</string>
-                       </property>
-                       <property name="text">
-                        <string notr="true">0.000 000 00 CSTL</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="0">
-                      <widget class="QLabel" name="labelzBalanceUnconfirmedText">
-                       <property name="toolTip">
-                        <string>Unconfirmed: less than 20 confirmations
-Immature: confirmed, but less than 3 mints of the same denomination after it was minted</string>
-                       </property>
-                       <property name="text">
-                        <string>Unconfirmed:</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="1">
-                      <widget class="QLabel" name="labelzBalanceUnconfirmed">
-                       <property name="font">
-                        <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                        </font>
-                       </property>
-                       <property name="toolTip">
-                        <string>Unconfirmed: less than 20 confirmations
-Immature: confirmed, but less than 3 mints of the same denomination after it was minted</string>
-                       </property>
-                       <property name="text">
-                        <string notr="true">0.000 000 00 CSTL</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="3" column="0">
-                      <widget class="QLabel" name="labelzBalanceImmatureText">
-                       <property name="toolTip">
-                        <string>Unconfirmed: less than 20 confirmations
-Immature: confirmed, but less than 3 mints of the same denomination after it was minted</string>
-                       </property>
-                       <property name="text">
-                        <string>Immature:</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="3" column="1">
-                      <widget class="QLabel" name="labelzBalanceImmature">
-                       <property name="font">
-                        <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                        </font>
-                       </property>
-                       <property name="toolTip">
-                        <string>Unconfirmed: less than 20 confirmations
-Immature: confirmed, but less than 3 mints of the same denomination after it was minted</string>
-                       </property>
-                       <property name="text">
-                        <string notr="true">0.000 000 00 CSTL</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                      </widget>
-=======
                      <item>
                       <layout class="QGridLayout" name="gridLayout_5">
                        <property name="spacing">
@@ -1408,7 +948,7 @@ Immature: confirmed, but less than 3 mints of the same denomination after it was
                         <widget class="QLabel" name="labelzBalanceMatureText">
                          <property name="toolTip">
                           <string>Mature: more than 20 confirmation and more than 1 mint of the same denomination after it was minted.
-These zPIV are spendable.</string>
+These zCSTL are spendable.</string>
                          </property>
                          <property name="text">
                           <string>Available:</string>
@@ -1425,10 +965,10 @@ These zPIV are spendable.</string>
                          </property>
                          <property name="toolTip">
                           <string>Mature: more than 20 confirmation and more than 1 mint of the same denomination after it was minted.
-These zPIV are spendable.</string>
+These zCSTL are spendable.</string>
                          </property>
                          <property name="text">
-                          <string notr="true">0.000 000 00 PIV</string>
+                          <string notr="true">0.000 000 00 CSTL</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1459,7 +999,7 @@ Immature: confirmed, but less than 1 mint of the same denomination after it was 
 Immature: confirmed, but less than 1 mint of the same denomination after it was minted</string>
                          </property>
                          <property name="text">
-                          <string notr="true">0.000 000 00 PIV</string>
+                          <string notr="true">0.000 000 00 CSTL</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1490,7 +1030,7 @@ Immature: confirmed, but less than 1 mint of the same denomination after it was 
 Immature: confirmed, but less than 1 mint of the same denomination after it was minted</string>
                          </property>
                          <property name="text">
-                          <string notr="true">0.000 000 00 PIV</string>
+                          <string notr="true">0.000 000 00 CSTL</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1500,7 +1040,7 @@ Immature: confirmed, but less than 1 mint of the same denomination after it was 
                        <item row="4" column="0">
                         <widget class="QLabel" name="labelzBalanceText">
                          <property name="toolTip">
-                          <string>Your current zPIV balance, unconfirmed and immature zPIV included.</string>
+                          <string>Your current zCSTL balance, unconfirmed and immature zCSTL included.</string>
                          </property>
                          <property name="text">
                           <string>Total:</string>
@@ -1519,10 +1059,10 @@ Immature: confirmed, but less than 1 mint of the same denomination after it was 
                           <cursorShape>IBeamCursor</cursorShape>
                          </property>
                          <property name="toolTip">
-                          <string>Your current zPIV balance, unconfirmed and immature zPIV included.</string>
+                          <string>Your current zCSTL balance, unconfirmed and immature zCSTL included.</string>
                          </property>
                          <property name="text">
-                          <string notr="true">0.000 000 00 PIV</string>
+                          <string notr="true">0.000 000 00 CSTL</string>
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1546,7 +1086,6 @@ Immature: confirmed, but less than 1 mint of the same denomination after it was 
                         </spacer>
                        </item>
                       </layout>
->>>>>>> pivx/master
                      </item>
                      <item row="4" column="0">
                       <widget class="QLabel" name="labelzBalanceText">

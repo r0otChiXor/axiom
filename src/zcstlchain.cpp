@@ -1,8 +1,9 @@
 // Copyright (c) 2018 The PIVX developers
+// Copyright (c) 2018 The Castle developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "zpivchain.h"
+#include "zcstlchain.h"
 #include "invalid.h"
 #include "main.h"
 #include "txdb.h"

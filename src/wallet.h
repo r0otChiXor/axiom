@@ -3,7 +3,6 @@
 // Copyright (c) 2014-2015 The Dash developers
 // Copyright (c) 2015-2018 The PIVX developers
 // Copyright (c) 2018 The Castle developers
->>>>>>> pivx/master
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -25,8 +24,8 @@
 #include "validationinterface.h"
 #include "wallet_ismine.h"
 #include "walletdb.h"
-#include "zpivwallet.h"
-#include "zpivtracker.h"
+#include "zcstlwallet.h"
+#include "zcstltracker.h"
 
 #include <algorithm>
 #include <map>
@@ -217,13 +216,13 @@ public:
     void ReconsiderZerocoins(std::list<CZerocoinMint>& listMintsRestored, std::list<CDeterministicMint>& listDMintsRestored);
     void ZCSTLBackupWallet();
     bool GetZerocoinKey(const CBigNum& bnSerial, CKey& key);
-    bool CreateZPIVOutPut(libzerocoin::CoinDenomination denomination, CTxOut& outMint, CDeterministicMint& dMint);
+    bool CreateZCSTLOutPut(libzerocoin::CoinDenomination denomination, CTxOut& outMint, CDeterministicMint& dMint);
     bool GetMint(const uint256& hashSerial, CZerocoinMint& mint);
     bool GetMintFromStakeHash(const uint256& hashStake, CZerocoinMint& mint);
     bool DatabaseMint(CDeterministicMint& dMint);
     bool SetMintUnspent(const CBigNum& bnSerial);
     bool UpdateMint(const CBigNum& bnValue, const int& nHeight, const uint256& txid, const libzerocoin::CoinDenomination& denom);
-    string GetUniqueWalletBackupName(bool fzpivAuto) const;
+    string GetUniqueWalletBackupName(bool fzcstlAuto) const;
 
 
     /** Zerocin entry changed.
@@ -239,13 +238,13 @@ public:
      */
     mutable CCriticalSection cs_wallet;
 
-    CzPIVWallet* zwalletMain;
+    CzCSTLWallet* zwalletMain;
 
     bool fFileBacked;
     bool fWalletUnlockAnonymizeOnly;
     std::string strWalletFile;
     bool fBackupMints;
-    std::unique_ptr<CzPIVTracker> zpivTracker;
+    std::unique_ptr<CzCSTLTracker> zcstlTracker;
 
     std::set<int64_t> setKeyPool;
     std::map<CKeyID, CKeyMetadata> mapKeyMetadata;
@@ -330,13 +329,13 @@ public:
         return nZeromintPercentage;
     }
 
-    void setZWallet(CzPIVWallet* zwallet)
+    void setZWallet(CzCSTLWallet* zwallet)
     {
         zwalletMain = zwallet;
-        zpivTracker = std::unique_ptr<CzPIVTracker>(new CzPIVTracker(strWalletFile));
+        zcstlTracker = std::unique_ptr<CzCSTLTracker>(new CzCSTLTracker(strWalletFile));
     }
 
-    CzPIVWallet* getZWallet() { return zwalletMain; }
+    CzCSTLWallet* getZWallet() { return zwalletMain; }
 
     bool isZeromintEnabled()
     {
@@ -671,8 +670,8 @@ public:
     /** MultiSig address added */
     boost::signals2::signal<void(bool fHaveMultiSig)> NotifyMultiSigChanged;
 
-    /** zPIV reset */
-    boost::signals2::signal<void()> NotifyzPIVReset;
+    /** zCSTL reset */
+    boost::signals2::signal<void()> NotifyzCSTLReset;
 
     /** notify wallet file backed up */
     boost::signals2::signal<void (const bool& fSuccess, const std::string& filename)> NotifyWalletBacked;

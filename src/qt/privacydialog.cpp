@@ -172,7 +172,7 @@ void PrivacyDialog::on_pushButtonMintzCSTL_clicked()
     // Request unlock if wallet was locked or unlocked for mixing:
     WalletModel::EncryptionStatus encStatus = walletModel->getEncryptionStatus();
     if (encStatus == walletModel->Locked) {
-        WalletModel::UnlockContext ctx(walletModel->requestUnlock(AskPassphraseDialog::Context::Mint_zPIV, true));
+        WalletModel::UnlockContext ctx(walletModel->requestUnlock(AskPassphraseDialog::Context::Mint_zCSTL, true));
         if (!ctx.isValid()) {
             // Unlock wallet was cancelled
             ui->TEMintStatus->setPlainText(tr("Error: Your wallet is locked. Please enter the wallet passphrase first."));
@@ -279,7 +279,7 @@ void PrivacyDialog::on_pushButtonSpendzCSTL_clicked()
     // Request unlock if wallet was locked or unlocked for mixing:
     WalletModel::EncryptionStatus encStatus = walletModel->getEncryptionStatus();
     if (encStatus == walletModel->Locked || encStatus == walletModel->UnlockedForAnonymizationOnly) {
-        WalletModel::UnlockContext ctx(walletModel->requestUnlock(AskPassphraseDialog::Context::Send_zPIV, true));
+        WalletModel::UnlockContext ctx(walletModel->requestUnlock(AskPassphraseDialog::Context::Send_zCSTL, true));
         if (!ctx.isValid()) {
             // Unlock wallet was cancelled
             return;
@@ -451,9 +451,9 @@ void PrivacyDialog::sendzCSTL()
 
     // Display errors during spend
     if (!fSuccess) {
-        if (receipt.GetStatus() == ZPIV_SPEND_V1_SEC_LEVEL) {
-            QMessageBox::warning(this, tr("Spend Zerocoin"), tr("Version 1 zPIV require a security level of 100 to successfully spend."), QMessageBox::Ok, QMessageBox::Ok);
-            ui->TEMintStatus->setPlainText(tr("Failed to spend zPIV"));
+        if (receipt.GetStatus() == ZCSTL_SPEND_V1_SEC_LEVEL) {
+            QMessageBox::warning(this, tr("Spend Zerocoin"), tr("Version 1 zCSTL require a security level of 100 to successfully spend."), QMessageBox::Ok, QMessageBox::Ok);
+            ui->TEMintStatus->setPlainText(tr("Failed to spend zCSTL"));
             ui->TEMintStatus->repaint();
             return;
         }
@@ -618,7 +618,7 @@ void PrivacyDialog::setBalance(const CAmount& balance, const CAmount& unconfirme
         mapImmature.insert(make_pair(denom, 0));
     }
 
-    std::vector<CMintMeta> vMints = pwalletMain->zpivTracker->GetMints(false);
+    std::vector<CMintMeta> vMints = pwalletMain->zcstlTracker->GetMints(false);
     map<libzerocoin::CoinDenomination, int> mapMaturityHeights = GetMintMaturityHeight();
     for (auto& meta : vMints){
         // All denominations
@@ -791,23 +791,23 @@ void PrivacyDialog::updateAutomintStatus()
 void PrivacyDialog::updateSPORK16Status()
 {
     // Update/enable labels, buttons and tooltips depending on the current SPORK_16 status
-    bool fButtonsEnabled =  ui->pushButtonMintzPIV->isEnabled();
+    bool fButtonsEnabled =  ui->pushButtonMintzCSTL->isEnabled();
     bool fMaintenanceMode = GetAdjustedTime() > GetSporkValue(SPORK_16_ZEROCOIN_MAINTENANCE_MODE);
     if (fMaintenanceMode && fButtonsEnabled) {
-        // Mint zPIV
-        ui->pushButtonMintzPIV->setEnabled(false);
-        ui->pushButtonMintzPIV->setToolTip(tr("zPIV is currently disabled due to maintenance."));
+        // Mint zCSTL
+        ui->pushButtonMintzCSTL->setEnabled(false);
+        ui->pushButtonMintzCSTL->setToolTip(tr("zCSTL is currently disabled due to maintenance."));
 
-        // Spend zPIV
-        ui->pushButtonSpendzPIV->setEnabled(false);
-        ui->pushButtonSpendzPIV->setToolTip(tr("zPIV is currently disabled due to maintenance."));
+        // Spend zCSTL
+        ui->pushButtonSpendzCSTL->setEnabled(false);
+        ui->pushButtonSpendzCSTL->setToolTip(tr("zCSTL is currently disabled due to maintenance."));
     } else if (!fMaintenanceMode && !fButtonsEnabled) {
-        // Mint zPIV
-        ui->pushButtonMintzPIV->setEnabled(true);
-        ui->pushButtonMintzPIV->setToolTip(tr("PrivacyDialog", "Enter an amount of PIV to convert to zPIV", 0));
+        // Mint zCSTL
+        ui->pushButtonMintzCSTL->setEnabled(true);
+        ui->pushButtonMintzCSTL->setToolTip(tr("PrivacyDialog", "Enter an amount of CSTL to convert to zCSTL", 0));
 
-        // Spend zPIV
-        ui->pushButtonSpendzPIV->setEnabled(true);
-        ui->pushButtonSpendzPIV->setToolTip(tr("Spend Zerocoin. Without 'Pay To:' address creates payments to yourself."));
+        // Spend zCSTL
+        ui->pushButtonSpendzCSTL->setEnabled(true);
+        ui->pushButtonSpendzCSTL->setToolTip(tr("Spend Zerocoin. Without 'Pay To:' address creates payments to yourself."));
     }
 }

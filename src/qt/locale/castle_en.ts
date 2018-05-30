@@ -2814,7 +2814,7 @@ Immature: confirmed, but less than 1 mint of the same denomination after it was 
     <message>
         <location line="+191"/>
         <location line="+19"/>
-        <source>Locked PIV or Masternode collaterals. These are excluded from zPIV minting.</source>
+        <source>Locked PIV or Masternode collaterals. These are excluded from zCSTL minting.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3375,14 +3375,14 @@ Immature: confirmed, but less than 1 mint of the same denomination after it was 
     </message>
     <message>
         <location line="+40"/>
-        <source>Show the current status of automatic zPIV minting.
+        <source>Show the current status of automatic zCSTL minting.
 
 To change the status (restart required):
 - enable: add &apos;enablezeromint=1&apos; to pivx.conf
 - disable: add &apos;enablezeromint=0&apos; to pivx.conf
 
 To change the percentage (no restart required):
-- menu Settings-&gt;Options-&gt;Percentage of autominted zPIV
+- menu Settings-&gt;Options-&gt;Percentage of autominted zCSTL
 
 </source>
         <translation type="unfinished"></translation>
@@ -3616,12 +3616,12 @@ To change the percentage (no restart required):
     </message>
     <message>
         <location line="+442"/>
-        <source>zPIV Spend #: </source>
+        <source>zCSTL Spend #: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+16"/>
-        <source>zPIV Mint</source>
+        <source>zCSTL Mint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3839,13 +3839,13 @@ Please be patient...</source>
     <message>
         <location line="+13"/>
         <location line="+32"/>
-        <source>Version 1 zPIV require a security level of 100 to successfully spend.</source>
+        <source>Version 1 zCSTL require a security level of 100 to successfully spend.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-31"/>
         <location line="+32"/>
-        <source>Failed to spend zPIV</source>
+        <source>Failed to spend zCSTL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4320,7 +4320,7 @@ Either mint higher denominations (so fewer inputs are needed) or reduce the amou
     </message>
     <message>
         <location line="+29"/>
-        <source>Custom zPIV Backup Path:</source>
+        <source>Custom zCSTL Backup Path:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5919,7 +5919,7 @@ Either mint higher denominations (so fewer inputs are needed) or reduce the amou
     </message>
     <message>
         <location line="+2"/>
-        <source>zPIV Stake</source>
+        <source>zCSTL Stake</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5944,32 +5944,32 @@ Either mint higher denominations (so fewer inputs are needed) or reduce the amou
     </message>
     <message>
         <location line="+4"/>
-        <source>Converted PIV to zPIV</source>
+        <source>Converted PIV to zCSTL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Spent zPIV</source>
+        <source>Spent zCSTL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Received PIV from zPIV</source>
+        <source>Received PIV from zCSTL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Minted Change as zPIV from zPIV Spend</source>
+        <source>Minted Change as zCSTL from zCSTL Spend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Converted zPIV to PIV</source>
+        <source>Converted zCSTL to PIV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+56"/>
-        <source>Anonymous (zPIV Transaction)</source>
+        <source>Anonymous (zCSTL Transaction)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5999,7 +5999,7 @@ Either mint higher denominations (so fewer inputs are needed) or reduce the amou
     </message>
     <message>
         <location line="+2"/>
-        <source>Anonymous (zPIV Stake)</source>
+        <source>Anonymous (zCSTL Stake)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6278,12 +6278,12 @@ Either mint higher denominations (so fewer inputs are needed) or reduce the amou
     </message>
     <message>
         <location line="-280"/>
-        <source>Received PIV from zPIV</source>
+        <source>Received PIV from zCSTL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>Zerocoin Spend, Change in zPIV</source>
+        <source>Zerocoin Spend, Change in zCSTL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6470,7 +6470,7 @@ Either mint higher denominations (so fewer inputs are needed) or reduce the amou
     </message>
     <message>
         <location line="+5"/>
-        <source>Enable automatic wallet backups triggered after each zPIV minting (0-1, default: %u)</source>
+        <source>Enable automatic wallet backups triggered after each zCSTL minting (0-1, default: %u)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6480,7 +6480,7 @@ Either mint higher denominations (so fewer inputs are needed) or reduce the amou
     </message>
     <message>
         <location line="+2"/>
-        <source>Enable or disable staking functionality for zPIV inputs (0-1, default: %u)</source>
+        <source>Enable or disable staking functionality for zCSTL inputs (0-1, default: %u)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7245,7 +7245,7 @@ for example: alertnotify=echo %%s | mail -s &quot;Castle Alert&quot; admin@foo.c
     </message>
     <message>
         <location line="+9"/>
-        <source>Reindex the PIV and zPIV money supply statistics</source>
+        <source>Reindex the PIV and zCSTL money supply statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7342,7 +7342,7 @@ for example: alertnotify=echo %%s | mail -s &quot;Castle Alert&quot; admin@foo.c
     </message>
     <message>
         <location line="+24"/>
-        <source>Specify custom backup path to add a copy of any automatic zPIV backup. If set as dir, every backup generates a timestamped file. If set as file, will rewrite to that file every backup. If backuppath is set as well, 4 backups will happen</source>
+        <source>Specify custom backup path to add a copy of any automatic zCSTL backup. If set as dir, every backup generates a timestamped file. If set as file, will rewrite to that file every backup. If backuppath is set as well, 4 backups will happen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7967,7 +7967,7 @@ for example: alertnotify=echo %%s | mail -s &quot;Castle Alert&quot; admin@foo.c
     </message>
     <message>
         <location line="+1"/>
-        <source>Syncing zPIV wallet...</source>
+        <source>Syncing zCSTL wallet...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8152,7 +8152,7 @@ for example: alertnotify=echo %%s | mail -s &quot;Castle Alert&quot; admin@foo.c
     </message>
     <message>
         <location line="+1"/>
-        <source>Value is below the smallest available denomination (= 1) of zPIV</source>
+        <source>Value is below the smallest available denomination (= 1) of zCSTL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8172,7 +8172,7 @@ for example: alertnotify=echo %%s | mail -s &quot;Castle Alert&quot; admin@foo.c
     </message>
     <message>
         <location line="+1"/>
-        <source>Version 1 zPIV require a security level of 100 to successfully spend.</source>
+        <source>Version 1 zCSTL require a security level of 100 to successfully spend.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
