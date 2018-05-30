@@ -163,11 +163,12 @@ public:
         assert(hashGenesisBlock == uint256("0x0000053b037f086dc070e10df460f40b64d575a3f06138e4c890a626035aaac2"));
         assert(genesis.hashMerkleRoot == uint256("0x4f605c3d563c09330e43f5c75a3b8ae9abc6735c6e644d24907b6b7c11eb0276"));
 
-        vSeeds.push_back(CDNSSeedData("fuzzbawls.pw", "castle.seed.fuzzbawls.pw"));     // Primary DNS Seeder from Fuzzbawls
-        vSeeds.push_back(CDNSSeedData("fuzzbawls.pw", "castle.seed2.fuzzbawls.pw"));    // Secondary DNS Seeder from Fuzzbawls
-        vSeeds.push_back(CDNSSeedData("coin-server.com", "coin-server.com"));         // Single node address
-        vSeeds.push_back(CDNSSeedData("s3v3nh4cks.ddns.net", "s3v3nh4cks.ddns.net")); // Single node address
-        vSeeds.push_back(CDNSSeedData("178.254.23.111", "178.254.23.111"));           // Single node address
+	vSeeds.clear();
+//        vSeeds.push_back(CDNSSeedData("fuzzbawls.pw", "castle.seed.fuzzbawls.pw"));     // Primary DNS Seeder from Fuzzbawls
+//        vSeeds.push_back(CDNSSeedData("fuzzbawls.pw", "castle.seed2.fuzzbawls.pw"));    // Secondary DNS Seeder from Fuzzbawls
+//        vSeeds.push_back(CDNSSeedData("coin-server.com", "coin-server.com"));         // Single node address
+//        vSeeds.push_back(CDNSSeedData("s3v3nh4cks.ddns.net", "s3v3nh4cks.ddns.net")); // Single node address
+//        vSeeds.push_back(CDNSSeedData("178.254.23.111", "178.254.23.111"));           // Single node address
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 28);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 46);
@@ -263,10 +264,10 @@ public:
 
         vFixedSeeds.clear();
         vSeeds.clear();
-        vSeeds.push_back(CDNSSeedData("fuzzbawls.pw", "castle-testnet.seed.fuzzbawls.pw"));
-        vSeeds.push_back(CDNSSeedData("fuzzbawls.pw", "castle-testnet.seed2.fuzzbawls.pw"));
-        vSeeds.push_back(CDNSSeedData("s3v3nh4cks.ddns.net", "s3v3nh4cks.ddns.net"));
-        vSeeds.push_back(CDNSSeedData("88.198.192.110", "88.198.192.110"));
+//        vSeeds.push_back(CDNSSeedData("fuzzbawls.pw", "castle-testnet.seed.fuzzbawls.pw"));
+//        vSeeds.push_back(CDNSSeedData("fuzzbawls.pw", "castle-testnet.seed2.fuzzbawls.pw"));
+//        vSeeds.push_back(CDNSSeedData("s3v3nh4cks.ddns.net", "s3v3nh4cks.ddns.net"));
+//        vSeeds.push_back(CDNSSeedData("88.198.192.110", "88.198.192.110"));
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 88); // Testnet castle addresses start with 'c'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 46);  // Testnet castle script addresses start with 'k'
