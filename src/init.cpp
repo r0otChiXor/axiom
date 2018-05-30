@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2017 The PIVX developers
+// Copyright (c) 2015-2018 The PIVX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -11,6 +11,7 @@
 
 #include "init.h"
 
+#include "accumulatorcheckpoints.h"
 #include "accumulators.h"
 #include "activemasternode.h"
 #include "addrman.h"
@@ -19,6 +20,7 @@
 #include "compat/sanity.h"
 #include "httpserver.h"
 #include "httprpc.h"
+#include "invalid.h"
 #include "key.h"
 #include "main.h"
 #include "masternode-budget.h"
@@ -38,6 +40,8 @@
 #include "util.h"
 #include "utilmoneystr.h"
 #include "validationinterface.h"
+#include "zpivchain.h"
+
 #ifdef ENABLE_WALLET
 #include "db.h"
 #include "wallet.h"
@@ -70,6 +74,7 @@ using namespace std;
 
 #ifdef ENABLE_WALLET
 CWallet* pwalletMain = NULL;
+CzPIVWallet* zwalletMain = NULL;
 int nWalletBackups = 10;
 #endif
 volatile bool fFeeEstimatesInitialized = false;
@@ -281,6 +286,8 @@ void Shutdown()
 #ifdef ENABLE_WALLET
     delete pwalletMain;
     pwalletMain = NULL;
+    delete zwalletMain;
+    zwalletMain = NULL;
 #endif
     LogPrintf("%s: done\n", __func__);
 }
@@ -421,7 +428,9 @@ std::string HelpMessage(HelpMessageMode mode)
 
 #ifdef ENABLE_WALLET
     strUsage += HelpMessageGroup(_("Wallet options:"));
+    strUsage += HelpMessageOpt("-backuppath=<dir|file>", _("Specify custom backup path to add a copy of any wallet backup. If set as dir, every backup generates a timestamped file. If set as file, will rewrite to that file every backup."));
     strUsage += HelpMessageOpt("-createwalletbackups=<n>", _("Number of automatic wallet backups (default: 10)"));
+    strUsage += HelpMessageOpt("-custombackupthreshold=<n>", strprintf(_("Number of custom location backups to retain (default: %d)"), DEFAULT_CUSTOMBACKUPTHRESHOLD));
     strUsage += HelpMessageOpt("-disablewallet", _("Do not load the wallet and disable wallet RPC calls"));
     strUsage += HelpMessageOpt("-keypool=<n>", strprintf(_("Set key pool size to <n> (default: %u)"), 100));
     if (GetBoolArg("-help-debug", false))
@@ -505,6 +514,8 @@ std::string HelpMessage(HelpMessageMode mode)
 #ifdef ENABLE_WALLET
     strUsage += HelpMessageGroup(_("Staking options:"));
     strUsage += HelpMessageOpt("-staking=<n>", strprintf(_("Enable staking functionality (0-1, default: %u)"), 1));
+    strUsage += HelpMessageOpt("-pivstake=<n>", strprintf(_("Enable or disable staking functionality for PIV inputs (0-1, default: %u)"), 1));
+    strUsage += HelpMessageOpt("-zpivstake=<n>", strprintf(_("Enable or disable staking functionality for zPIV inputs (0-1, default: %u)"), 1));
     strUsage += HelpMessageOpt("-reservebalance=<amt>", _("Keep the specified amount available for spending at all times (default: 0)"));
     if (GetBoolArg("-help-debug", false)) {
         strUsage += HelpMessageOpt("-printstakemodifier", _("Display the stake modifier calculations in the debug.log file."));
@@ -521,10 +532,14 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += HelpMessageOpt("-budgetvotemode=<mode>", _("Change automatic finalized budget voting behavior. mode=auto: Vote for only exact finalized budget match to my generated budget. (string, default: auto)"));
 
     strUsage += HelpMessageGroup(_("Zerocoin options:"));
+#ifdef ENABLE_WALLET
     strUsage += HelpMessageOpt("-enablezeromint=<n>", strprintf(_("Enable automatic Zerocoin minting (0-1, default: %u)"), 1));
-    strUsage += HelpMessageOpt("-zeromintpercentage=<n>", strprintf(_("Percentage of automatically minted Zerocoin  (10-100, default: %u)"), 10));
+    strUsage += HelpMessageOpt("-zeromintpercentage=<n>", strprintf(_("Percentage of automatically minted Zerocoin  (1-100, default: %u)"), 10));
     strUsage += HelpMessageOpt("-preferredDenom=<n>", strprintf(_("Preferred Denomination for automatically minted Zerocoin  (1/5/10/50/100/500/1000/5000), 0 for no preference. default: %u)"), 0));
-    strUsage += HelpMessageOpt("-backupzpiv=<n>", strprintf(_("Enable automatic wallet backups triggered after each zPiv minting (0-1, default: %u)"), 1));
+    strUsage += HelpMessageOpt("-backupzpiv=<n>", strprintf(_("Enable automatic wallet backups triggered after each zPIV minting (0-1, default: %u)"), 1));
+    strUsage += HelpMessageOpt("-zpivbackuppath=<dir|file>", _("Specify custom backup path to add a copy of any automatic zPIV backup. If set as dir, every backup generates a timestamped file. If set as file, will rewrite to that file every backup. If backuppath is set as well, 4 backups will happen"));
+#endif // ENABLE_WALLET
+    strUsage += HelpMessageOpt("-reindexzerocoin=<n>", strprintf(_("Delete all zerocoin spends and mints that have been recorded to the blockchain database and reindex them (0-1, default: %u)"), 0));
 
 //    strUsage += "  -anonymizepivxamount=<n>     " + strprintf(_("Keep N PIV anonymized (default: %u)"), 0) + "\n";
 //    strUsage += "  -liquidityprovider=<n>       " + strprintf(_("Provide liquidity to Obfuscation by infrequently mixing coins on a continual basis (0-100, default: %u, 1=very frequent, high fees, 100=very infrequent, low fees)"), 0) + "\n";
@@ -827,7 +842,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     }
 
     if (!GetBoolArg("-enableswifttx", fEnableSwiftTX)) {
-        if (SoftSetArg("-swifttxdepth", 0))
+        if (SoftSetArg("-swifttxdepth", "0"))
             LogPrintf("AppInit2 : parameter interaction: -enableswifttx=false -> setting -nSwiftTXDepth=0\n");
     }
 
@@ -1060,7 +1075,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
                 sourceFile.make_preferred();
                 backupFile.make_preferred();
                 if (boost::filesystem::exists(sourceFile)) {
-#if BOOST_VERSION >= 158000
+#if BOOST_VERSION >= 105800
                     try {
                         boost::filesystem::copy_file(sourceFile, backupFile);
                         LogPrintf("Creating backup of %s -> %s\n", sourceFile, backupFile);
@@ -1313,6 +1328,9 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
     // ********************************************************* Step 7: load block chain
 
+    //PIVX: Load Accumulator Checkpoints according to network (main/test/regtest)
+    assert(AccumulatorCheckpoints::LoadCheckpoints(Params().NetworkIDString()));
+
     fReindex = GetBoolArg("-reindex", false);
 
     // Upgrading to 0.8; hard-link the old blknnnn.dat files into /blocks/
@@ -1414,7 +1432,18 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
                 }
 
                 // Populate list of invalid/fraudulent outpoints that are banned from the chain
-                PopulateInvalidOutPointMap();
+                invalid_out::LoadOutpoints();
+                invalid_out::LoadSerials();
+
+                // Drop all information from the zerocoinDB and repopulate
+                if (GetBoolArg("-reindexzerocoin", false)) {
+                    uiInterface.InitMessage(_("Reindexing zerocoin database..."));
+                    std::string strError = ReindexZerocoinDB();
+                    if (strError != "") {
+                        strLoadError = strError;
+                        break;
+                    }
+                }
 
                 // Recalculate money supply for blocks that are impacted by accounting issue after zerocoin activation
                 if (GetBoolArg("-reindexmoneysupply", false)) {
@@ -1506,6 +1535,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 #ifdef ENABLE_WALLET
     if (fDisableWallet) {
         pwalletMain = NULL;
+        zwalletMain = NULL;
         LogPrintf("Wallet disabled!\n");
     } else {
         // needed to restore wallet transaction meta data after -zapwallettxes
@@ -1579,6 +1609,8 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
         LogPrintf("%s", strErrors.str());
         LogPrintf(" wallet      %15dms\n", GetTimeMillis() - nStart);
+        zwalletMain = new CzPIVWallet(pwalletMain->strWalletFile);
+        pwalletMain->setZWallet(zwalletMain);
 
         RegisterValidationInterface(pwalletMain);
 
@@ -1624,8 +1656,16 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         }
         fVerifyingBlocks = false;
 
+        //Inititalize zPIVWallet
+        uiInterface.InitMessage(_("Syncing zPIV wallet..."));
+
         bool fEnableZPivBackups = GetBoolArg("-backupzpiv", true);
         pwalletMain->setZPivAutoBackups(fEnableZPivBackups);
+
+        //Load zerocoin mint hashes to memory
+        pwalletMain->zpivTracker->Init();
+        zwalletMain->LoadMintPoolFromDB();
+        zwalletMain->SyncWithChain();
     }  // (!fDisableWallet)
 #else  // ENABLE_WALLET
     LogPrintf("No wallet compiled in!\n");
@@ -1763,7 +1803,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
     nZeromintPercentage = GetArg("-zeromintpercentage", 10);
     if (nZeromintPercentage > 100) nZeromintPercentage = 100;
-    if (nZeromintPercentage < 10) nZeromintPercentage = 10;
+    if (nZeromintPercentage < 1) nZeromintPercentage = 1;
 
     nPreferredDenom  = GetArg("-preferredDenom", 0);
     if (nPreferredDenom != 0 && nPreferredDenom != 1 && nPreferredDenom != 5 && nPreferredDenom != 10 && nPreferredDenom != 50 &&

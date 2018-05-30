@@ -1,7 +1,7 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2017 The PIVX developers
+// Copyright (c) 2015-2018 The PIVX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -125,6 +125,7 @@ static const CRPCConvertParam vRPCConvertParams[] =
         {"listspentzerocoins", 0},
         {"listzerocoinamounts", 0},
         {"mintzerocoin", 0},
+        {"mintzerocoin", 1},
         {"spendzerocoin", 0},
         {"spendzerocoin", 1},
         {"spendzerocoin", 2},
@@ -134,6 +135,12 @@ static const CRPCConvertParam vRPCConvertParams[] =
         {"exportzerocoins", 1},
         {"resetmintzerocoin", 0},
         {"getspentzerocoinamount", 1},
+        {"generatemintlist", 0},
+        {"generatemintlist", 1},
+        {"searchdzpiv", 0},
+        {"searchdzpiv", 1},
+        {"searchdzpiv", 2},
+        {"getaccumulatorvalues", 0},
         {"getfeeinfo", 0}
     };
 
