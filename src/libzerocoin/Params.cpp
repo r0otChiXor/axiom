@@ -11,6 +11,7 @@
 **/
 // Copyright (c) 2017 The PIVX developers
 // Copyright (c) 2018 The Castle developers
+
 #include "Params.h"
 #include "ParamGeneration.h"
 

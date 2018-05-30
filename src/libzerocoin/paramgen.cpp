@@ -12,7 +12,6 @@
 // Copyright (c) 2017 The PIVX developers
 // Copyright (c) 2018 The Castle developers
 
-
 #include <string>
 #include <iostream>
 #include <fstream>

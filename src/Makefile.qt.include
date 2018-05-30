@@ -7,31 +7,7 @@ EXTRA_LIBRARIES += qt/libbitcoinqt.a
 
 # castle qt core #
 QT_TS = \
-  qt/locale/castle_bg.ts \
-  qt/locale/castle_ca.ts \
-  qt/locale/castle_cs.ts \
-  qt/locale/castle_da.ts \
-  qt/locale/castle_de.ts \
-  qt/locale/castle_en.ts \
-  qt/locale/castle_en_US.ts \
-  qt/locale/castle_es.ts \
-  qt/locale/castle_fi.ts \
-  qt/locale/castle_fr_FR.ts \
-  qt/locale/castle_it.ts \
-  qt/locale/castle_ja.ts \
-  qt/locale/castle_ko_KR.ts \
-  qt/locale/castle_nl.ts \
-  qt/locale/castle_pl.ts \
-  qt/locale/castle_pt.ts \
-  qt/locale/castle_pt_BR.ts \
-  qt/locale/castle_ro_RO.ts \
-  qt/locale/castle_ru.ts \
-  qt/locale/castle_sk.ts \
-  qt/locale/castle_sv.ts \
-  qt/locale/castle_tr.ts \
-  qt/locale/castle_uk.ts \
-  qt/locale/castle_zh_CN.ts \
-  qt/locale/castle_zh_TW.ts
+  qt/locale/castle_en.ts
 
 QT_FORMS_UI = \
   qt/forms/addressbookpage.ui \
@@ -197,6 +173,8 @@ BITCOIN_QT_H = \
 RES_ICONS = \
   qt/res/icons/add.png \
   qt/res/icons/address-book.png \
+  qt/res/icons/automint_active.png \
+  qt/res/icons/automint_inactive.png \
   qt/res/icons/bitcoin.ico \
   qt/res/icons/bitcoin.png \
   qt/res/icons/bitcoin_testnet.ico \
