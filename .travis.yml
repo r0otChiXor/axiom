@@ -91,7 +91,7 @@ deploy:
     api_key:
       secure: lJqus52v0Sj6sw7lrz4Dogi4uGF6viaoyYVP4zcBHELQeCD1VhcZYr4CAS9VItQkEaTEyLHC3/wRJb1n4bTCt69CIcFd758LTw8Vzq7W5iy9jJqouVvD+qFf82aGh2Hnz/PH52PhQHI3Go4U4XhN99UpOhHCane3sLFNqrTX2hrtXayKzyUQHMuMVZ9xe8DxZFfBSoCyaV82BWpRvON9IZ9aW1y8xlTCA+JWs+djM7csC8lBXnDXC3qnvbWMc7wHoQT0+EUYdaFDGHxctwls5w4NK6GCoSXSeGIYSKVVZ2b2BMV4XqelDvLWUr8XJi2Oz0sNUxHZsHDmu6aHeUVaKBsbBbFOwXxcBMKKx8Xn518u4KCcpsgjM7MySayozheclT9jyOpAGc0nCR+Lg4tJW60p50RfaldpnUZTbvjPKwuREaURLYW8N+yRWng5k/Kr2hTBgWevA6Pb/Be54IDkgVS4JLCeFdwUV3k0du0uGvw2iu3rQiNJgRfEhdPYHpGwrub22KkvUFrQJxP/lJK02wG7xT/juWlAI4Z9XDbpHqsIdwufLn56fbXjvI9zgl1h3XFL3FGwU/OJGCMr5R9tigMJ/djIPH8qWspnfDhbWlcDEbqDK74zEIH698gXoIZatOF6QFmNFTQvQTO5N/3w6JjhD3Sj06CffX9HgFMqP9c=
     file_glob: true
-    file: $TRAVIS_BUILD_DIR/release-build/*
+    file: $TRAVIS_BUILD_DIR/release-build/**/*
     on:
       repo: MyCryptoCoins/Castle
       tags: true
