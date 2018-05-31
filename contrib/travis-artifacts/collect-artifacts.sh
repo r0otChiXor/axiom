@@ -20,7 +20,7 @@ ZIPFILES=$(ls $OUTDIR/bin/* || true)
 
 # Linux artifacts
 [ -z "$ZIPFILES" ] || \
-       zip -uj $RELEASEDIR/castle-$COMMIT.zip ${ZIPFILES}
+       zip -uj $RELEASEDIR/castle-$COMMIT-$HOST.zip ${ZIPFILES}
 
 # MaxOSX artifacts
 cp -a Castle-Core.dmg $RELEASEDIR || true
