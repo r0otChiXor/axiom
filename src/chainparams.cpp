@@ -226,7 +226,7 @@ public:
         nZerocoinRequiredStakeDepth = 200; //The required confirmations for a zcstl to be stakable
 
         nBudget_Fee_Confirmations = 6; // Number of confirmations for the finalization fee
-	nMasternodeMaxBase = 70;
+	nMasternodeMaxBase = 130;
 	nMasternodeMaxIncrement = 25;
     }
 
