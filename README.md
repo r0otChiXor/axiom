@@ -62,15 +62,19 @@ More information at https://projectcastle.tech/
 The masternode payments are minted additional to the POW and POS rewards rather than deducted from them.  This is done to make it simpler and more fair for miners and stakers to calculate their return, and to reduce the surprise factor.
 
 What about inflation?
+<br>
 Castle is a long term project. Therefore, controlling inflation is a major focus. Creating a sustainable project with low inflation and high utility purpose value is critical to the success of the community and coin holders. 
 
 What is a Masternode Cap?
+<br>
 We are implementing a masternode cap. A masternode cap helps reward YOU, the loyal Castle holder. Only so many masternodes will be permitted on the network at a given time. More masternodes online means less rewards per masternode holders. There are many projects that do not take this into consideration, and, in fact, sometimes, masternode holders even receive a smaller reward than just staking. In the end, masternode holders are those of you who believe in the project. And we therefore want to thank you for securing our network for the entire community. The cap will increase by 25 Masternodes every year to allow more people into our ecosystem at a controlled and safe rate. 
 
 What is a Masternode Grace Period?
+<br>
 As a team, we decided that it would be fair to give you some time to bring your Masternode back online if there is any problem such as network disconnections. That grace period is set to 18 hours, after which, the next person in the queue will replace your position. We take masternodes seriously as masternodes are the backbone that secure the network. It is important to make sure it is up and running properly. 
 
 What does Additional Block Rewards Mean?
+<br>
 At castle, we believe that everyone should get what is rightfully theirs. Masternode rewards for blocks found are additive, not subtractive, so miners of POW or stakers of POS will get every last coin from staking and mining. Masternodes receive additionally generate coin for their reward.
 
 Have a crypto project, new or existing, and wish to discuss partnering? Reach out to an admin here or, even better, come over to our Discord https://discord.gg/CeUBJGB and reach out to a Core member. Please give details about your project and what your goals are in the message. 
