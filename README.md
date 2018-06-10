@@ -19,6 +19,7 @@ More information at https://projectcastle.tech/
 <tr><td>Block Time</td><td>120 Seconds</td></tr>
 <tr><td>Difficulty Retargeting</td><td>Every Block</td></tr>
 <tr><td>Premine</td><td>8,500,000 CSTL*</td></tr>
+    <tr><td>Masternode Collateral</td><td>40,000 CSTL</td></tr>
   <tr><td>Masternode Cap</td><td>130</td></tr>
   <tr><td>Yearly Masternode Increase</td><td>25</td></tr>
   <tr><td>Masternode Grace Period</td><td> 18 hours</td></tr>
