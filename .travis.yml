@@ -67,31 +67,12 @@ script:
 after_script:
     - echo $TRAVIS_COMMIT_RANGE
     - echo $TRAVIS_COMMIT_LOG
-notifications:
-    webhooks: http://travis-hooks.mycryptocoins.net/travis-ci.php
-before_deploy:
-  - $TRAVIS_BUILD_DIR/contrib/travis-artifacts/collect-artifacts.sh $TRAVIS_BUILD_DIR $OUTDIR build $TRAVIS_COMMIT $HOST
-  - if [ -n "$TRAVIS_TAG" ] ; then $TRAVIS_BUILD_DIR/contrib/travis-artifacts/collect-artifacts.sh $TRAVIS_BUILD_DIR $OUTDIR release-build $TRAVIS_TAG $HOST ; fi
-deploy:
-  - provider: s3
-    skip_cleanup: true
-    access_key_id: AKIAJXYN32U4M4AWLCXA
-    secret_access_key:
-      secure: hpm4q6lIobUj7WHSy/9/xTpvLHVJoTIuoM3QcDzXSOM58tD/LKysozG0BOEbAvt4ka29o47bkj49j3wGSOJwmNFPYdpQ1Y/GR4rwhwoOrYkPeQXYw88/lMyoYEeNqcGNkl1JsTTbICjurVhf/gmJZRmQvhg+hnhps5ksTbOX4GwogO3ABORrKeWTNWAwFIpOraFxxVsbK7FAhhc3JdqOegrk58X9d40vOh85f8cu4Jp/yHgT15DSkuDxAkX6+nLb+hMa09sY1UDyvO6WNVmyTQwsVluslUWALDz+bJ6fwGxAn9STV3nDiWyMTy/b/TSZ1sFe9VAzIN/as9R+BUJF4KQ+YJRXAzq9XRK5hh77F338EzdjhUO5ZvgfdMDWdM8Pg5iVGT0Ez8P+k9Zu36x9r8nGIKft9PqhzY61Y6ZfWSuG6hjNV2NnLGjdhGBZ1+hG/PfvOEg3mub+LFHuAUYNuOkpncQzF3hRIIw/DS4+l+XF5FvcPFYBf3eLzWG2wHEaKl4IveJVf+hJs0k0yv55P8znzt89LMTbXxm3KOZTYmH6dR/4rZlKTG++Ag3H3NaI1bC8109LD+x17CsF7AWw/79vtKRl3pRPJ77Ty+nuaxCDmEeUu82jgxr7j6GaSYaklxuIbUhUHOCnZKGwp3QRFq92IiUD5qXSnit1j6lbrE4=
-    bucket: coin-build-archive
-    region: us-west-2
-    local-dir: $TRAVIS_BUILD_DIR/build
-    upload-dir: castle
-    acl: public_read
-    on:
-      branch: master
-      repo: MyCryptoCoins/Castle
-  - provider: releases
-    skip_cleanup: true
-    api_key:
-      secure: lJqus52v0Sj6sw7lrz4Dogi4uGF6viaoyYVP4zcBHELQeCD1VhcZYr4CAS9VItQkEaTEyLHC3/wRJb1n4bTCt69CIcFd758LTw8Vzq7W5iy9jJqouVvD+qFf82aGh2Hnz/PH52PhQHI3Go4U4XhN99UpOhHCane3sLFNqrTX2hrtXayKzyUQHMuMVZ9xe8DxZFfBSoCyaV82BWpRvON9IZ9aW1y8xlTCA+JWs+djM7csC8lBXnDXC3qnvbWMc7wHoQT0+EUYdaFDGHxctwls5w4NK6GCoSXSeGIYSKVVZ2b2BMV4XqelDvLWUr8XJi2Oz0sNUxHZsHDmu6aHeUVaKBsbBbFOwXxcBMKKx8Xn518u4KCcpsgjM7MySayozheclT9jyOpAGc0nCR+Lg4tJW60p50RfaldpnUZTbvjPKwuREaURLYW8N+yRWng5k/Kr2hTBgWevA6Pb/Be54IDkgVS4JLCeFdwUV3k0du0uGvw2iu3rQiNJgRfEhdPYHpGwrub22KkvUFrQJxP/lJK02wG7xT/juWlAI4Z9XDbpHqsIdwufLn56fbXjvI9zgl1h3XFL3FGwU/OJGCMr5R9tigMJ/djIPH8qWspnfDhbWlcDEbqDK74zEIH698gXoIZatOF6QFmNFTQvQTO5N/3w6JjhD3Sj06CffX9HgFMqP9c=
-    file_glob: true
-    file: $TRAVIS_BUILD_DIR/release-build/**/*
-    on:
-      repo: MyCryptoCoins/Castle
-      tags: true
+after_success:
+    - chmod +x $TRAVIS_BUILD_DIR/contrib/travis-artifacts/collect-artifacts.sh
+    - $TRAVIS_BUILD_DIR/contrib/travis-artifacts/collect-artifacts.sh $TRAVIS_BUILD_DIR $OUTDIR build $TRAVIS_COMMIT $HOST
+    - sudo apt-get install sshpass
+    - export SYMFONY_ENV=prod && composer install --no-dev -o
+    - cd $TRAVIS_BUILD_DIR
+    - tar -cvzf package-$HOST.tgz build
+    - export SSHPASS=$DEPLOY_PASS
+    - sshpass -p $DEPLOY_PASS rsync -avz -e "ssh -o StrictHostKeyChecking=no" $TRAVIS_BUILD_DIR/package-$HOST.tgz  $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/
