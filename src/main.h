@@ -57,7 +57,7 @@ class CValidationState;
 struct CBlockTemplate;
 struct CNodeStateStats;
 
-static const uint64_t COIN_PREMINE_AMOUNT = 8200000;
+static const uint64_t COIN_PREMINE_AMOUNT = 8500000;
 static const uint64_t COIN_BLOCK_POW_REWARD = 10;
 static const uint64_t COIN_POW_DECREASE_AMOUNT = 1;
 static const uint64_t COIN_YEAR_POS_REWARD = 8 * CENT;
