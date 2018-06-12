@@ -65,6 +65,7 @@ bool CMasternodeConfig::read(std::string& strErr)
         }
 
 	CService addr(ip);
+	LogPrintf("Masternode address (string): %s, port: %d\n", ip, addr.port);
 	if (!CheckMasternodePort(addr)) {
 	    int mainPort = Params(CBaseChainParams::MAIN).GetDefaultPort();
             if (Params().NetworkID() == CBaseChainParams::MAIN) {
