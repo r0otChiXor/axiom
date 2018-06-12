@@ -11,7 +11,7 @@
 #include <base58.h>
 
 // defined in masternode.cpp, trying to avoid header pollution
-bool CheckMasternodePort(CService &addr);
+bool CheckMasternodePortNumber(unsigned short port);
 
 CMasternodeConfig masternodeConfig;
 
@@ -74,8 +74,8 @@ bool CMasternodeConfig::read(std::string& strErr)
             return false;
         }
 
-	LogPrintf("Masternode address (string): %s, port: %d\n", ip, addr.GetPort());
-	if (!CheckMasternodePort(port)) {
+	LogPrintf("Masternode address: %s, port: %d\n", hostname.c_str(), port);
+	if (!CheckMasternodePortNumber(port)) {
 	    int mainPort = Params(CBaseChainParams::MAIN).GetDefaultPort();
             if (Params().NetworkID() == CBaseChainParams::MAIN) {
                 strErr = strprintf(_("Invalid port (%d) detected in masternode.conf"), port) + "\n" +
