@@ -85,18 +85,12 @@ void SplitHostPort(std::string in, int& portOut, std::string& hostOut)
         if (ParseInt32(in.substr(colon + 1), &n) && n > 0 && n < 0x10000) {
             in = in.substr(0, colon);
             portOut = n;
-	    LogPrintf("Split port off as %d\n", portOut);
-        } else {
-	    LogPrintf("Failed ParseInt32!\n");
-	}
-    } else {
-	LogPrintf("Couldn't find a :, no port detected\n");
+        }
     }
     if (in.size() > 0 && in[0] == '[' && in[in.size() - 1] == ']')
         hostOut = in.substr(1, in.size() - 2);
     else
         hostOut = in;
-    LogPrintf("Split host off as %s", hostOut.c_str());
 }
 
 bool static LookupIntern(const char* pszName, std::vector<CNetAddr>& vIP, unsigned int nMaxSolutions, bool fAllowLookup)

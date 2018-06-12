@@ -478,10 +478,8 @@ static bool ParsePrechecks(const std::string& str)
 
 bool ParseInt32(const std::string& str, int32_t *out)
 {
-    if (!ParsePrechecks(str)) {
-	LogPrintf("Failed ParsePrechecks!\n");
+    if (!ParsePrechecks(str))
         return false;
-    }
     char *endp = NULL;
     errno = 0; // strtol will not set errno if valid
     long int n = strtol(str.c_str(), &endp, 10);
@@ -489,7 +487,6 @@ bool ParseInt32(const std::string& str, int32_t *out)
     // Note that strtol returns a *long int*, so even if strtol doesn't report a over/underflow
     // we still have to check that the returned value is within the range of an *int32_t*. On 64-bit
     // platforms the size of these types may be different.
-    LogPrintf("parsed Int32: %d, endp: %p\n", (int32_t)n, endp);
     return endp && *endp == 0 && !errno &&
         n >= std::numeric_limits<int32_t>::min() &&
         n <= std::numeric_limits<int32_t>::max();
