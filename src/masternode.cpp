@@ -511,10 +511,13 @@ bool CMasternodeBroadcast::CheckDefaultPort(std::string strService, std::string&
     return true;
 }
 
-bool CheckMasternodePort(CService &addr) {
+bool CheckMasternodePort(unsigned short port) {
     int mainport = Params(CBaseChainParams::MAIN).GetDefaultPort();
-    return ((addr.GetPort() == mainport) ==
-            (Params().NetworkID() == CBaseChainParams::MAIN));
+    return ((port == mainport) == (Params().NetworkID() == CBaseChainParams::MAIN));
+}
+
+bool CheckMasternodePort(CService &addr) {
+    return CheckMasternodePort(addr.GetPort());
 }
 
 bool CMasternodeBroadcast::CheckAndUpdate(int& nDos)

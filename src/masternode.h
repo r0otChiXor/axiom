@@ -348,5 +348,6 @@ public:
 };
 
 bool CheckMasternodePort(CService &addr);
+bool CheckMasternodePort(unsigned short port);
 
 #endif
