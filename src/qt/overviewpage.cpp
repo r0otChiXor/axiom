@@ -210,11 +210,11 @@ void OverviewPage::setBalance(const CAmount& balance, const CAmount& unconfirmed
         nWatchOnlyLockedBalance = pwalletMain->GetLockedWatchOnlyBalance();
     }
     // CSTL Balance
-    CAmount nTotalBalance = balance + unconfirmedBalance + nLockedBalance;
+    CAmount nTotalBalance = balance + unconfirmedBalance;
     CAmount cstlAvailableBalance = balance - immatureBalance;
     CAmount nTotalWatchBalance = watchOnlyBalance + watchUnconfBalance + watchImmatureBalance;    
-    CAmount nUnlockedBalance = nTotalBalance - nLockedBalance - nLockedBalance; // increment nLockedBalance twice because it was added to
-                                                                                // nTotalBalance above
+    CAmount nUnlockedBalance = nTotalBalance - nLockedBalance;
+    
     // zCSTL Balance
     CAmount matureZerocoinBalance = zerocoinBalance - unconfirmedZerocoinBalance;
     // Percentages
