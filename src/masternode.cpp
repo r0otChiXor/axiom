@@ -193,10 +193,12 @@ uint256 CMasternode::CalculateScore(int mod, int64_t nBlockHeight)
 bool CMasternode::Check(bool forceCheck)
 {
     if (ShutdownRequested()) {
+	LogPrint("masternode", "CMasternode::Check: shutdown requested\n");
 	return true;
     }
 
     if (!forceCheck && (GetTime() - lastTimeChecked < MASTERNODE_CHECK_SECONDS)) {
+	LogPrint("masternode", "CMasternode::Check: too soon\n");
 	return true;
     }
 
@@ -204,23 +206,32 @@ bool CMasternode::Check(bool forceCheck)
 
     //once spent, stop doing the checks
     if (activeState == MASTERNODE_VIN_SPENT) {
+	LogPrint("masternode", "CMasternode::Check: spent\n");
 	return true;
     }
 
     if (!IsPingedWithin(MASTERNODE_REMOVAL_SECONDS)) {
         activeState = MASTERNODE_REMOVE;
+	LogPrint("masternode", "CMasternode::Check: remove\n");
         return true;
     }
 
     if (!IsPingedWithin(MASTERNODE_EXPIRATION_SECONDS)) {
         activeState = MASTERNODE_EXPIRED;
+	LogPrint("masternode", "CMasternode::Check: expired\n");
         return true;
     }
 
+    LogPrint("masternode", "CMasternode::Check: activeState: %d\n", activeState);
+
+#if 0
     if(lastPing.sigTime - sigTime < MASTERNODE_MIN_MNP_SECONDS){
     	activeState = MASTERNODE_PRE_ENABLED;
+	LogPrint("masternode", "CMasternode::Check: pre-enabled (%d)\n",
+	         lastPing.sigTime - sigTime);
     	return true;
     }
+#endif
 
     if (!unitTest) {
         CValidationState state;
@@ -232,17 +243,20 @@ bool CMasternode::Check(bool forceCheck)
         {
             TRY_LOCK(cs_main, lockMain);
             if (!lockMain) {
+	        LogPrint("masternode", "CMasternode::Check: can't lock \n");
 		return true;
 	    }
 
             if (!AcceptableInputs(mempool, state, CTransaction(tx), false, NULL)) {
                 activeState = MASTERNODE_VIN_SPENT;
+	        LogPrint("masternode", "CMasternode::Check: No acceptable inputs\n");
                 return true;
             }
         }
     }
 
-    if (activeState == MASTERNODE_POTENTIAL)
+    if (activeState == MASTERNODE_POTENTIAL ||
+        activeState == MASTERNODE_PRE_ENABLED)
     {
 	if (activeMasternode.status == ACTIVE_MASTERNODE_STARTED) {
             std::vector<CNetAddr> myaddr;
@@ -252,10 +266,10 @@ bool CMasternode::Check(bool forceCheck)
 
 	// Check number of nodes seen vs required
         if (!mnodeman.CheckConsensus(*this)) {
-	    LogPrintf("No consensus yet, still potential\n");
+	    LogPrint("masternode", "CMasternode::Check: No consensus yet, still potential\n");
 	    return true;
 	} else {
-	    LogPrintf("Consensus met, moving to active list\n");
+	    LogPrint("masternode", "CMasternode::Check: Consensus met, moving to active list\n");
 	    CMasternode mn = mnodeman.RemovePotential(vin);
             mn.activeState = MASTERNODE_ENABLED; // OK
             mnodeman.Add(mn);
@@ -264,6 +278,7 @@ bool CMasternode::Check(bool forceCheck)
     }
 
     activeState = MASTERNODE_ENABLED; // OK
+    LogPrint("masternode", "CMasternode::Check: Enabled\n");
     return true;
 }
 
