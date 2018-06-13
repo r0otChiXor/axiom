@@ -455,11 +455,6 @@ void CMasternodeSync::Process()
                     return;
                 }
 
-                if (pnode->HasFulfilledRequest("mnwsync")) {
-		    continue;
-		}
-                pnode->FulfilledRequest("mnwsync");
-
                 // timeout
                 if (lastMasternodeWinner == 0 &&
                     (RequestedMasternodeAttempt >= MASTERNODE_SYNC_THRESHOLD * 3 ||
@@ -475,6 +470,11 @@ void CMasternodeSync::Process()
                     }
                     return;
                 }
+
+                if (pnode->HasFulfilledRequest("mnwsync")) {
+		    continue;
+		}
+                pnode->FulfilledRequest("mnwsync");
 
                 if (RequestedMasternodeAttempt >= MASTERNODE_SYNC_THRESHOLD * 3) {
 		    LogPrint("masternode", "mnwsync timeout\n");
