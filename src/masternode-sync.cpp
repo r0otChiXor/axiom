@@ -285,7 +285,8 @@ void CMasternodeSync::Process()
         /* 
             Resync if we lose all masternodes from sleep/wake or failure to sync originally
         */
-        if (mnodeman.CountEnabled() == 0) {
+        if (mnodeman.CountEnabled() == 0 && 
+	    GetTime() - nAssetSyncStarted > MASTERNODE_RESET_TIMEOUT) {
             LogPrint("masternode", "Resetting mnsync due to no masternodes enabled\n");
             Reset();
         } else {
@@ -295,7 +296,7 @@ void CMasternodeSync::Process()
 
     // try syncing again
     if (RequestedMasternodeAssets == MASTERNODE_SYNC_FAILED) {
-        if (lastFailure + (1 * 60) < GetTime()) {
+        if (lastFailure + MASTERNODE_RESET_TIMEOUT < GetTime()) {
             LogPrint("masternode", "Resetting mnsync after failure\n");
             Reset();
         } else {

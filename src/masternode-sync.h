@@ -20,6 +20,7 @@
 
 #define MASTERNODE_SYNC_TIMEOUT 5
 #define MASTERNODE_SYNC_THRESHOLD 2
+#define MASTERNODE_RESET_TIMEOUT 120
 
 class CMasternodeSync;
 extern CMasternodeSync masternodeSync;
