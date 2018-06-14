@@ -2948,16 +2948,22 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     if (mapArgs.count("-reservebalance") && !ParseMoney(mapArgs["-reservebalance"], nReserveBalance))
         return error("CreateCoinStake : invalid reserve balance amount");
 
-    if (nBalance > 0 && nBalance <= nReserveBalance)
+    if (nBalance > 0 && nBalance <= nReserveBalance) {
+	LogPrintf("Balance below reserve\n");
         return false;
+    }
 
     // Get the list of stakable inputs
     std::list<std::unique_ptr<CStakeInput> > listInputs;
-    if (!SelectStakeCoins(listInputs, nBalance - nReserveBalance))
+    if (!SelectStakeCoins(listInputs, nBalance - nReserveBalance)) {
+	LogPrintf("Failure in SelectStakeCoins\n");
         return false;
+    }
 
-    if (listInputs.empty())
+    if (listInputs.empty()) {
+	LogPrintf("ListInputs empty\n");
         return false;
+    }
 
     if (GetAdjustedTime() - chainActive.Tip()->GetBlockTime() < 60)
         MilliSleep(10000);
@@ -2967,8 +2973,10 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     bool fKernelFound = false;
     for (std::unique_ptr<CStakeInput>& stakeInput : listInputs) {
         // Make sure the wallet is unlocked and shutdown hasn't been requested
-        if (IsLocked() || ShutdownRequested())
+        if (IsLocked() || ShutdownRequested()) {
+	    LogPrintf("Locked or shutdown\n");
             return false;
+	}
 
         //make sure that enough time has elapsed between
         CBlockIndex* pindex = stakeInput->GetIndexFrom();
@@ -2993,7 +3001,6 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
             // Found a kernel
             LogPrintf("CreateCoinStake : kernel found\n");
-            nCredit += stakeInput->GetValue();
 
             // Calculate reward
             CAmount nReward;
@@ -3012,34 +3019,21 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             txNew.vout.insert(txNew.vout.end(), vout.begin(), vout.end());
 
             CAmount nMinFee = 0;
-            while (true) {
-                if (!stakeInput->IsZCSTL()) {
-                    // Set output amount
-                    if (txNew.vout.size() == 3) {
-                        txNew.vout[1].nValue = ((nCredit - nMinFee) / 2 / CENT) * CENT;
-                        txNew.vout[2].nValue = nCredit - nMinFee - txNew.vout[1].nValue;
-                    } else
-                        txNew.vout[1].nValue = nCredit - nMinFee;
-		}
-        
-                // Limit size
-                unsigned int nBytes = ::GetSerializeSize(txNew, SER_NETWORK, PROTOCOL_VERSION);
-                if (nBytes >= DEFAULT_BLOCK_MAX_SIZE / 5)
-                    return error("CreateCoinStake : exceeded coinstake size limit");
-        
-                CAmount nFeeNeeded = GetMinimumFee(nBytes, nTxConfirmTarget, mempool);
-        
-                // Check enough fee is paid
-                if (nMinFee < nFeeNeeded) {
-                    nMinFee = nFeeNeeded;
-                    continue; // try signing again
+            if (!stakeInput->IsZCSTL()) {
+                // Set output amount
+                if (txNew.vout.size() == 3) {
+                    txNew.vout[1].nValue = ((nCredit - nMinFee) / 2 / CENT) * CENT;
+                    txNew.vout[2].nValue = nCredit - nMinFee - txNew.vout[1].nValue;
                 } else {
-                    if (fDebug)
-                        LogPrintf("CreateCoinStake : fee for coinstake %s\n", FormatMoney(nMinFee).c_str());
-                    break;
-                }
+                    txNew.vout[1].nValue = nCredit - nMinFee;
+		}
             }
-    
+        
+            // Limit size
+            unsigned int nBytes = ::GetSerializeSize(txNew, SER_NETWORK, PROTOCOL_VERSION);
+            if (nBytes >= DEFAULT_BLOCK_MAX_SIZE / 5)
+                return error("CreateCoinStake : exceeded coinstake size limit");
+        
             //Masternode payment
             FillBlockPayee(txNew, nMinFee, true);
 
@@ -3067,8 +3061,10 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         if (fKernelFound)
             break; // if kernel is found stop searching
     }
-    if (!fKernelFound)
+    if (!fKernelFound) {
+	LogPrintf("No kernel found\n");
         return false;
+    }
 
     // Sign for CSTL
     int nIn = 0;
