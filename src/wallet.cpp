@@ -3009,8 +3009,6 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             CTransaction(txNew).GetCoinAge(nCoinAge, nTxNewTime, nRawValue);
             nReward = GetPOSBlockValue(nCoinAge);
             nCredit = nRawValue + nReward;
-	    //TODO remove this debug	
-	    LogPrintf("%s : nReward: %d nRawValue:%d nCoinAge:%d\n", __func__, nReward, nRawValue, nCoinAge);
 
             // Create the output transaction(s)
             vector<CTxOut> vout;
