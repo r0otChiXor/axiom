@@ -130,8 +130,7 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, CWallet* pwallet, 
     txNew.vout.resize(1);
     txNew.vout[0].scriptPubKey = scriptPubKeyIn;
     // Will get removed below for POS
-    if (!fProofOfStake)	
-       txNew.vout[0].nValue = GetPOWBlockValue(chainActive.Tip()->nHeight);
+    txNew.vout[0].nValue = GetPOWBlockValue(chainActive.Tip()->nHeight);
     pblock->vtx.push_back(txNew);
     pblocktemplate->vTxFees.push_back(-1);   // updated at end
     pblocktemplate->vTxSigOps.push_back(-1); // updated at end
