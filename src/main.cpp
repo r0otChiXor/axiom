@@ -81,7 +81,9 @@ bool fVerifyingBlocks = false;
 unsigned int nCoinCacheSize = 5000;
 bool fAlerts = DEFAULT_ALERTS;
 
-unsigned int nStakeMinAge = 6 * 60 * 60;  // 6h
+//unsigned int nStakeMinAge = 6 * 60 * 60;  // 6h
+//TODO remove this
+unsigned int nStakeMinAge = 10 * 60;  // 6h
 int64_t nReserveBalance = 0;
 
 /** Fees smaller than this (in uCSTL) are considered zero fee (for relaying and mining)
