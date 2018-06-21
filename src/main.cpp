@@ -2456,6 +2456,8 @@ bool RecalculateCSTLSupply(int nHeightStart)
 
     CBlockIndex* pindex = chainActive[nHeightStart];
     CAmount nSupplyPrev = pindex->pprev->nMoneySupply;
+    if (nHeightStart == Params().Zerocoin_StartHeight())
+        nSupplyPrev = CAmount(COIN_PREMINE_AMOUNT*Params().Zerocoin_StartHeight()*COIN_BLOCK_POW_REWARD*COIN);
 
     while (true) {
         if (pindex->nHeight % 1000 == 0)
