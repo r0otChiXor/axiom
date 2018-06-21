@@ -76,3 +76,5 @@ after_success:
     - tar -cvzf package-$HOST.tgz build
     - export SSHPASS=$DEPLOY_PASS
     - sshpass -p $DEPLOY_PASS rsync -e "ssh -o StrictHostKeyChecking=no" $TRAVIS_BUILD_DIR/package-$HOST.tgz  $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/
+deploy:
+    -provider: gcs
