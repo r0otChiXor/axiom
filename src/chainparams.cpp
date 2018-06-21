@@ -128,7 +128,8 @@ public:
         nMinerThreads = 0;
         nTargetTimespan = 1 * 60; // Castle: 1 minute
         nTargetSpacing = 2 * 60;  // Castle: 2 minute
-        nMaturity = 100;
+	//nMaturity = 100;
+        nMaturity = 25;
         nMasternodeCountDrift = 20;
         nMaxMoneyOut = 21000000 * COIN;
 
