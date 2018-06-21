@@ -3,6 +3,10 @@ Castle Core integration/staging repository
 
 [![Build Status](https://travis-ci.org/MyCryptoCoins/Castle.svg?branch=master)](https://travis-ci.org/MyCryptoCoins/Castle) [![GitHub version](https://badge.fury.io/gh/MyCryptoCoins%2FCastle.svg)](https://badge.fury.io/gh/MyCryptoCoins%2FCastle)
 
+| Code Quality | Windows Tests | Linux Tests | OSX Tests | License |
+| :----| :---- | :------ | :------| :------ |
+| [![CodeFactor][9]][10] | [![Windows build status][1]][2] | [![Linux build status][3]][4] | [![OSX build status][5]][6] |[![GitHub license][7]][8] |
+
 Castle is an open source crypto-currency focused on fast private transactions with low transaction fees & environmental footprint.  The goal of Castle is to achieve a decentralized sustainable crypto currency with near instant full-time private transactions, fair governance and community intelligence.
 
 Castle is based on [PIVX](http://www.pivx.org) code.
